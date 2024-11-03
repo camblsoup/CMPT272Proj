@@ -26,5 +26,5 @@ function hash(toHash) {
     })
 
 }
-hash("helloWorld")
-    .then((result) => console.log(result["Digest"]))
+//hash("helloWorld")
+//    .then((result) => console.log(result["Digest"]))
