@@ -25,7 +25,6 @@ function Window() {
                     </div>
                 </div>
                 <div className={"body"}>
-
                 </div>
                 <div className={"info"}></div>
             </div>
