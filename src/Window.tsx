@@ -24,7 +24,9 @@ function Window() {
                         <button className={"window-button"}><img className={"window-button-icon"} src={cross} alt={"close icon"}/></button>
                     </div>
                 </div>
-                <div className={"body"}></div>
+                <div className={"body"}>
+
+                </div>
                 <div className={"info"}></div>
             </div>
         </>
