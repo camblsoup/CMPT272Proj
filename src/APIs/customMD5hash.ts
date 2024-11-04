@@ -123,10 +123,13 @@ function md5Preprocessing(str: string): number[]{
     }while((bytes.length % 64) !== 56);
 
     let origLen = BigInt(BigInt(str.length * 8) % 0x10000000000000000n); //who is inputting a string that is 2^64 bits long?
-    bytes = bytes.concat([Number(origLen & 0xff00000000000000n),
-        Number(origLen & 0x00ff000000000000n), Number(origLen & 0x0000ff0000000000n),
-        Number(origLen & 0x000000ff00000000n), Number(origLen & 0x00000000ff000000n),
-        Number(origLen & 0x0000000000ff0000n), Number(origLen & 0x000000000000ff00n),
+    bytes = bytes.concat([Number((origLen & 0xff00000000000000n) >> BigInt(56)),
+        Number((origLen & 0x00ff000000000000n) >> BigInt(48)),
+        Number((origLen & 0x0000ff0000000000n) >> BigInt(40)),
+        Number((origLen & 0x000000ff00000000n) >> BigInt(32)),
+        Number((origLen & 0x00000000ff000000n) >> BigInt(24)),
+        Number((origLen & 0x0000000000ff0000n) >> BigInt(16)),
+        Number((origLen & 0x000000000000ff00n) >> BigInt(8)),
         Number(origLen & 0x00000000000000ffn)]);
     return bytes;
 }
