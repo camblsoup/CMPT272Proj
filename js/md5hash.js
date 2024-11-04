@@ -181,6 +181,6 @@ function md5Hash(message){
 }
 
 
-console.log(md5Hash("The quick brown fox jumps over the lazy dog"));
-console.log(md5Hash("The quick brown fox jumps over the lazy dog"));
-console.log(md5Hash("The quick brown fox jumps over the lazy dog."));
+// console.log(md5Hash("The quick brown fox jumps over the lazy dog"));
+// console.log(md5Hash("The quick brown fox jumps over the lazy dog"));
+// console.log(md5Hash("The quick brown fox jumps over the lazy dog."));
