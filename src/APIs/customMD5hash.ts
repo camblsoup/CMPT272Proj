@@ -138,7 +138,7 @@ function md5Preprocessing(str: string): number[]{
 // Main MD5 hash function
 // @param {string} message - regular encoded string to be hashed
 // @return {string} - hex representation of the hashed bits
-function md5Hash(message: string): string{
+export function md5Hash(message: string): string{
     let a0 = 0x67452301;
     let b0 = 0xefcdab89;
     let c0 = 0x98badcfe;
@@ -191,6 +191,6 @@ function md5Hash(message: string): string{
     return stringify(digest);
 }
 
-function md5Verify(toHash: string, toMatch: string): boolean{
+export function md5Verify(toHash: string, toMatch: string): boolean{
     return (md5Hash(toHash) === toMatch);
 }
