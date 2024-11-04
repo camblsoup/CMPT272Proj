@@ -122,13 +122,11 @@ function md5Preprocessing(str: string): number[]{
         bytes = bytes.concat([0x00]);
     }while((bytes.length % 64) !== 56);
 
-    // @ts-ignore
-    let origLen: number = (str.length * 8) % 0x10000000000000000; //who is inputting a string that is 2^64 bits long?
-    // @ts-ignore
-    bytes = bytes.concat([(origLen & 0xff00000000000000) >>> 24,
-        (origLen & 0x00ff000000000000) >>> 16, (origLen & 0x0000ff0000000000) >>> 8,
-        (origLen & 0x000000ff00000000) >>> 0, (origLen & 0x00000000ff000000) >>> 24,
-        (origLen & 0x0000000000ff0000) >>> 16, (origLen & 0x000000000000ff00) >>> 8,
+    let origLen = (str.length * 8) % 0x10000000000000000; //who is inputting a string that is 2^64 bits long?
+    bytes = bytes.concat([origLen & 0xff00000000000000,
+        origLen & 0x00ff000000000000, origLen & 0x0000ff0000000000,
+        origLen & 0x000000ff00000000, origLen & 0x00000000ff000000,
+        origLen & 0x0000000000ff0000, origLen & 0x000000000000ff00,
         origLen & 0x00000000000000ff]);
     return bytes;
 }
@@ -189,3 +187,6 @@ function md5Hash(message: string): string{
     digest = digest.concat([a0, b0, c0, d0]);
     return stringify(digest);
 }
+
+console.log(md5Hash("hello world"));
+console.log(md5Hash("helloworld"))
