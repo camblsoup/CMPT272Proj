@@ -187,6 +187,3 @@ function md5Hash(message: string): string{
     digest = digest.concat([a0, b0, c0, d0]);
     return stringify(digest);
 }
-
-console.log(md5Hash("hello world"));
-console.log(md5Hash("helloworld"))
