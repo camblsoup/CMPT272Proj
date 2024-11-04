@@ -190,3 +190,7 @@ function md5Hash(message: string): string{
     digest = digest.concat([a0, b0, c0, d0]);
     return stringify(digest);
 }
+
+function md5Verify(toHash: string, toMatch: string): boolean{
+    return (md5Hash(toHash) === toMatch);
+}
