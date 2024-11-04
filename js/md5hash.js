@@ -38,6 +38,7 @@ function hash(toHash) {
  * this is not a problem, as the strings are still hashed
  */
 
+// Shift values for MD5 iterations
 const s = [
     7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
     5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,
@@ -45,6 +46,7 @@ const s = [
     6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21
 ];
 
+// precomputed table of binary integer part of the sines of integers (radians) for use while hashing
 const k = [
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
     0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
@@ -64,20 +66,38 @@ const k = [
     0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
 ];
 
+// Helper function for MD5
+// performs a bit rotation
+// @param {number} num - 32-bit number to be rotated
+// @param {number} cnt - bits to be rotated by
+// @return {number} - num after bits have been rotated
 function rotL(num, cnt){
     return (num << cnt) | (num >>> 32-cnt);
 }
 
+// Helper function for MD5
+// performs unsigned addition wrapping at 2^32
+// @param {number} x - first integer
+// @param {number} y - second integer
+// @return {number} - sum
 function uAdd(x, y){
     let lsw = (x & 0xffff) + (y & 0xffff);
     let msw = (x >> 16) + (y >> 16) + (lsw >> 16);
     return (msw << 16) | (lsw & 0xffff);
 }
 
+// Helper function for MD5
+// converts raw MD5 result into a hex string
+// @param {array} arr - array of little endian words
+// @return {string} - hex representation of those words
 function stringify(arr){
     return str2hex(bin2str(arr));
 }
 
+// Helper function for MD5
+// converts array of words into a string
+// @param {array} input - array of 4 little endian words
+// @return {string} - raw string encoding of these words (length of 128)
 function bin2str(input){
     let output = "";
     let len32 = input.length * 32;
@@ -87,6 +107,10 @@ function bin2str(input){
     return output;
 }
 
+// Helper function for MD5
+// converts a raw string into its hex representation
+// @param {string} str - raw string to be converted
+// @return {string} - hex representation of the raw string (this is the final hashed value)
 function str2hex(str){
     const hexTab = '0123456789abcdef'
     let output = ''
@@ -97,6 +121,10 @@ function str2hex(str){
     return output
 }
 
+// Helper function for MD5
+// converts 512-bit chunks into 16 little endian words
+// @param {array} chunk - a 64 length array of bytes
+// @return {array} - array of 16 little endian words
 function wordify(chunk){
     let words = [];
     let i = 0;
@@ -108,6 +136,14 @@ function wordify(chunk){
     return words;
 }
 
+// Preprocessing function for md5
+// performs the padding and string encoding necessary for MD5
+// string is encoded in UTF-8
+// UTF-8 bytes are placed into a byte array
+// byte array is padded such that the length is divisible by 64
+// see https://en.wikipedia.org/wiki/MD5 for details on the padding
+// @param {string} str - string to be processed
+// @return {byte array} - a padded array to be hashed
 function md5Preprocessing(str){
     let bytes = [];
     for(let i = 0; i < str.length; i++){
@@ -128,6 +164,10 @@ function md5Preprocessing(str){
     return bytes;
 }
 
+
+// Main MD5 hash function
+// @param {string} message - regular encoded string to be hashed
+// @return {string} - hex representation of the hashed bits
 function md5Hash(message){
     let a0 = 0x67452301;
     let b0 = 0xefcdab89;
