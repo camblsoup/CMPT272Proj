@@ -1,37 +1,4 @@
 /*
- * MD5 HASH FUNCTION
- * USES HASHIFY.NET API
- */
-
-//using this function:
-//      hash("anystring").then(result => {
-//              let hashed = result["Digest"]
-//              /* Operate on the returned value */
-//          }).catch(err => console.log(err));
-//
-//@param {string} toHash - string to be hashed
-//@return {Promise} - returns a promise object
-function hash(toHash) {
-    let requestOptions = {
-        method: 'POST',
-        body: toHash,
-        redirect: 'follow'
-    };
-
-    return new Promise((resolve, reject) => {
-        fetch("https://api.hashify.net/hash/md5/hex", requestOptions)
-            .then(response => response.json())
-            .then(result => resolve(result))
-            .catch(error => reject(error));
-    })
-
-}
-//hash("helloWorld")
-//    .then((result) => console.log(result["Digest"]))
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-/*
  * CUSTOM MD5 IMPLEMENTATION
  * all operations are identical to the MD5 algorithm
  * however, outputs will differ slightly from hashify.net
@@ -39,7 +6,7 @@ function hash(toHash) {
  */
 
 // Shift values for MD5 iterations
-const s = [
+const s: number[] = [
     7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
     5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,
     4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,
@@ -47,7 +14,7 @@ const s = [
 ];
 
 // precomputed table of binary integer part of the sines of integers (radians) for use while hashing
-const k = [
+const k: number[] = [
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
     0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
     0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -71,7 +38,7 @@ const k = [
 // @param {number} num - 32-bit number to be rotated
 // @param {number} cnt - bits to be rotated by
 // @return {number} - num after bits have been rotated
-function rotL(num, cnt){
+function rotL(num: number, cnt: number): number{
     return (num << cnt) | (num >>> 32-cnt);
 }
 
@@ -80,7 +47,7 @@ function rotL(num, cnt){
 // @param {number} x - first integer
 // @param {number} y - second integer
 // @return {number} - sum
-function uAdd(x, y){
+function uAdd(x: number, y: number): number{
     let lsw = (x & 0xffff) + (y & 0xffff);
     let msw = (x >> 16) + (y >> 16) + (lsw >> 16);
     return (msw << 16) | (lsw & 0xffff);
@@ -90,7 +57,7 @@ function uAdd(x, y){
 // converts raw MD5 result into a hex string
 // @param {array} arr - array of little endian words
 // @return {string} - hex representation of those words
-function stringify(arr){
+function stringify(arr: number[]): string{
     return str2hex(bin2str(arr));
 }
 
@@ -98,8 +65,8 @@ function stringify(arr){
 // converts array of words into a string
 // @param {array} input - array of 4 little endian words
 // @return {string} - raw string encoding of these words (length of 128)
-function bin2str(input){
-    let output = "";
+function bin2str(input: number[]): string{
+    let output: string = "";
     let len32 = input.length * 32;
     for(let i = 0; i < len32; i += 8){
         output += String.fromCharCode((input[i >> 5] >>> i % 32) & 0xff);
@@ -111,9 +78,9 @@ function bin2str(input){
 // converts a raw string into its hex representation
 // @param {string} str - raw string to be converted
 // @return {string} - hex representation of the raw string (this is the final hashed value)
-function str2hex(str){
+function str2hex(str: string): string{
     const hexTab = '0123456789abcdef'
-    let output = ''
+    let output: string = ''
     for(let i = 0; i < str.length; i++){
         let code = str.charCodeAt(i);
         output += hexTab.charAt((code >>> 4) & 0x0f) + hexTab.charAt(code & 0x0f);
@@ -125,12 +92,12 @@ function str2hex(str){
 // converts 512-bit chunks into 16 little endian words
 // @param {array} chunk - a 64 length array of bytes
 // @return {array} - array of 16 little endian words
-function wordify(chunk){
-    let words = [];
+function wordify(chunk: number[]): number[]{
+    let words: number[] = [];
     let i = 0;
     while(i < chunk.length){
         words = words.concat([(chunk[i] << 0) | (chunk[i+1] << 8) |
-                              (chunk[i+2] << 16) | (chunk[i+3] << 24)])
+        (chunk[i+2] << 16) | (chunk[i+3] << 24)])
         i += 4;
     }
     return words;
@@ -144,8 +111,8 @@ function wordify(chunk){
 // see https://en.wikipedia.org/wiki/MD5 for details on the padding
 // @param {string} str - string to be processed
 // @return {byte array} - a padded array to be hashed
-function md5Preprocessing(str){
-    let bytes = [];
+function md5Preprocessing(str: string): number[]{
+    let bytes: number[] = [];
     for(let i = 0; i < str.length; i++){
         let code = str.charCodeAt(i);
         bytes = bytes.concat([code & 0xff]);
@@ -155,12 +122,15 @@ function md5Preprocessing(str){
         bytes = bytes.concat([0x00]);
     }while((bytes.length % 64) !== 56);
 
-    let origLen = (str.length * 8) % 0x10000000000000000; //who is inputting a string that is 2^64 bits long?
-    bytes = bytes.concat([origLen & 0xff00000000000000,
-        origLen & 0x00ff000000000000, origLen & 0x0000ff0000000000,
-        origLen & 0x000000ff00000000, origLen & 0x00000000ff000000,
-        origLen & 0x0000000000ff0000, origLen & 0x000000000000ff00,
-        origLen & 0x00000000000000ff]);
+    let origLen = BigInt(BigInt(str.length * 8) % 0x10000000000000000n); //who is inputting a string that is 2^64 bits long?
+    bytes = bytes.concat([Number((origLen & 0xff00000000000000n) >> BigInt(56)),
+        Number((origLen & 0x00ff000000000000n) >> BigInt(48)),
+        Number((origLen & 0x0000ff0000000000n) >> BigInt(40)),
+        Number((origLen & 0x000000ff00000000n) >> BigInt(32)),
+        Number((origLen & 0x00000000ff000000n) >> BigInt(24)),
+        Number((origLen & 0x0000000000ff0000n) >> BigInt(16)),
+        Number((origLen & 0x000000000000ff00n) >> BigInt(8)),
+        Number(origLen & 0x00000000000000ffn)]);
     return bytes;
 }
 
@@ -168,15 +138,15 @@ function md5Preprocessing(str){
 // Main MD5 hash function
 // @param {string} message - regular encoded string to be hashed
 // @return {string} - hex representation of the hashed bits
-function md5Hash(message){
+export function md5Hash(message: string): string{
     let a0 = 0x67452301;
     let b0 = 0xefcdab89;
     let c0 = 0x98badcfe;
     let d0 = 0x10325476;
 
-    let bytes = md5Preprocessing(message);
-    let chunks = [];
-    let digest = [];
+    let bytes: number[] = md5Preprocessing(message);
+    let chunks: number[][] = [];
+    let digest: number[] = [];
 
     while(bytes.length !== 0){
         chunks = chunks.concat([bytes.splice(0, 64)]);
@@ -191,7 +161,7 @@ function md5Hash(message){
         let D = d0;
 
         for(let j = 0; j < 64; j++){
-            let F, g;
+            let F: number, g: number;
             if(j >= 0 && j <= 15){
                 F = (B & C) | ((~B) & D);
                 g = j;
@@ -205,6 +175,7 @@ function md5Hash(message){
                 F = C ^ (B | (~D));
                 g = (7*j) % 16;
             }
+            // @ts-ignore
             F = uAdd(uAdd(F, A), uAdd(k[j], words[g]));
             A = D;
             D = C;
@@ -220,7 +191,6 @@ function md5Hash(message){
     return stringify(digest);
 }
 
-
-// console.log(md5Hash("The quick brown fox jumps over the lazy dog"));
-// console.log(md5Hash("The quick brown fox jumps over the lazy dog"));
-// console.log(md5Hash("The quick brown fox jumps over the lazy dog."));
+export function md5Verify(toHash: string, toMatch: string): boolean{
+    return (md5Hash(toHash) === toMatch);
+}
