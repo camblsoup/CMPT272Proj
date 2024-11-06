@@ -3,6 +3,7 @@ import icon from './assets/map-icon.png'
 import minimize from './assets/minimize.png'
 import maximize from './assets/maximize.png'
 import cross from './assets/cross.png'
+import MapWindow from './Map'
 
 // Window Element Specification
 function Window() {
@@ -25,6 +26,7 @@ function Window() {
                     </div>
                 </div>
                 <div className={"body"}>
+                    <MapWindow />
                 </div>
                 <div className={"info"}></div>
             </div>
