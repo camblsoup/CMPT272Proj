@@ -77,17 +77,3 @@ export function clearStorage(pwd: string): boolean{
     return true;
 }
 
-
-initStorage("hello");
-storeEmergency("me", "hit", "here", "", "");
-storeEmergency("you", "shoot", "there", "comment", "jpeg");
-console.log(getEmergency(0));
-console.log(getEmergency(1));
-console.log(getEmergency(2));
-console.log(updateEmergency(0, "hello"));
-console.log(updateEmergency(1, "you"));
-console.log(getEmergency(0));
-console.log(getEmergency(1));
-console.log(deleteEmergency(0, "hello"));
-console.log(deleteEmergency(1, "you"));
-console.log(getEmergency(0));
