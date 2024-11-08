@@ -2,6 +2,12 @@ import {md5Hash, md5Verify} from "./customMD5hash.ts";
 
 export function initStorage(pwd: string): void{
 
+    /*
+     * THIS PROBABLY SHOULD BE CHANGED
+     * RIGHT NOW, THE PASSWORD IS PASSED
+     * AS PLAIN TEXT, THIS IS BAD
+     */
+
     if(localStorage.getItem("idCounter")){
         //storage already initiated
         return;
