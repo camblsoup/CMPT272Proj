@@ -43,6 +43,19 @@ export function getEmergency(id: number): JSON | null{
     return JSON.parse(emergency);
 }
 
+export function getAllEmergencies(){
+    let out: JSON[] = [];
+    const total: number = parseInt(<string>localStorage.getItem("idCounter"), 10);
+
+    for(let i = 0; i < total; i++){
+        let em = localStorage.getItem(i.toString());
+        if(em){
+            out = out.concat([JSON.parse(em)]);
+        }
+    }
+    return out;
+}
+
 export function updateEmergency(id: number, pwd: string): boolean{
     let emergency = localStorage.getItem(String(id));
     if(!emergency){
