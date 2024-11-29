@@ -15,15 +15,19 @@ footer {
 footer a {
     text-decoration: none;
     color: black;
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: left;
     height: 32px;
+    width: fit-content;
     border-top: solid 2px white;
     border-left: solid 2px white;
     border-bottom: solid 2px black;
     border-right: solid 2px black;
     margin: 6px;
     padding: 0 4px;
-    align-content: center;
+    align-items: center;
 }
   
 footer a img {

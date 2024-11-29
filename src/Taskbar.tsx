@@ -6,7 +6,7 @@ function Taskbar() {
         <footer>
             <a className={"normal-tab"} href="">
                 <img src={wondows} alt={"🏠"}></img>
-                <span>Home</span>
+                <h1>Home</h1>
             </a>
         </footer>
     )
