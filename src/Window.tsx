@@ -36,9 +36,6 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
             const newX = e.clientX;
             const newY = e.clientY;
             
-            const windowWidth = width + 6;
-            const windowHeight = height + 6;
-            
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight - 61;
             
