@@ -1,6 +1,6 @@
 import './css/Footer.css'
 import wondows from './assets/wondows.png'
-import { useState, useEffect } from 'react'
+import {useEffect, useState} from 'react'
 
 function Taskbar() {
     const [time, setTime] = useState(new Date())
@@ -13,26 +13,32 @@ function Taskbar() {
         return () => clearInterval(timer)
     }, [])
 
+    function openMap() {
+
+    }
+
     return (
         <footer>
             <a className={"normal-tab"} href="">
                 <img src={wondows} alt={"🏠"}></img>
                 <h1>Home</h1>
             </a>
-            <a className={"normal-tab"} href="">
+            <div className={"black-bar"}></div>
+            <div className={"extruding-bar"}></div>
+            <button className={"normal-tab"} onClick={openMap}>
                 <img src={wondows} alt={"🏠"}></img>
                 <h1>Map</h1>
-            </a>
-            <a className={"normal-tab"} href="">
+            </button>
+            <button className={"normal-tab"} onClick={openMap}>
                 <img src={wondows} alt={"🏠"}></img>
                 <h1>List</h1>
-            </a>
-            <a className={"normal-tab"} href="">
+            </button>
+            <button className={"normal-tab"} onClick={openMap}>
                 <img src={wondows} alt={"🏠"}></img>
                 <h1>Report</h1>
-            </a>
+            </button>
             <div className="taskbar-time">
-                {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
             </div>
         </footer>
     )

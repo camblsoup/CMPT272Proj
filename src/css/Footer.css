@@ -6,17 +6,21 @@ body {
 footer {
     position: absolute;
     bottom: 0;
-    background-color: #BFB8BF;
+    background: #BFB8BF;
     border-top: 3px solid white;
     width: 100%;
-    height: 48px;
+    height: 40px;
     display: flex;
+    gap: 3px;
+    align-items: center;
     z-index: 100;
+    padding-left: 2px;
 }
   
-footer a {
+footer a, footer button {
     text-decoration: none;
     color: black;
+    background: #BFB8BF;
     display: flex;
     flex-direction: row;
     gap: 5px;
@@ -27,24 +31,24 @@ footer a {
     border-left: solid 2px white;
     border-bottom: solid 2px black;
     border-right: solid 2px black;
-    margin: 6px;
     padding: 0 4px;
     align-items: center;
+    box-sizing: border-box;
 }
   
-footer a img {
+footer a img, footer button img {
     width: 24px;
     height: 24px;
     display: inline-block;
     vertical-align: middle;
 }
-footer a span {
+footer a span, footer button span {
     display: inline-block;
     vertical-align: middle;
 }
   
-footer a:active {
-    background-color: "#E4DDE4";
+footer a:active, footer button:active {
+    background-color: #E4DDE4;
     border-bottom: solid 2px white;
     border-right: solid 2px white;
     border-top: solid 2px black;
@@ -60,4 +64,20 @@ footer a:active {
     display: flex;
     align-items: center;
     height: 100%;
+}
+
+.black-bar {
+    height: 90%;
+    width: 1px;
+    background: black;
+}
+
+.extruding-bar {
+    height: 70%;
+    width: 2px;
+    border-top: solid 2px lightgray;
+    border-left: solid 2px white;
+    border-bottom: solid 2px #888888;
+    border-right: solid 2px #777777;
+    border-right: 2px;
 }

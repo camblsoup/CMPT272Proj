@@ -101,7 +101,7 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
                 >
                     <div className={"title"}>
                         <img src={icon} alt={"map icon"} />
-                        <h1>Map</h1>
+                        <h1>{type}</h1>
                     </div>
                     <div className={"window-buttons"}>
                         <div className={"window-size-buttons"}>

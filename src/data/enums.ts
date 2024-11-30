@@ -1,5 +1,5 @@
 export enum windowTypes {
-    MAP,
-    LIST,
-    REPORT
+    MAP = "Map",
+    LIST = "List",
+    REPORT = "Report"
 }
