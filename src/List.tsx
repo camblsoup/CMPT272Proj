@@ -5,13 +5,25 @@ function ListWindow({reports}: ReportList) {
     return (
         <div>
             <h1>Incidents</h1>
-            <ul>
+            <table>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Witness
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Date
+                </th>
                 {reports.map((report: Report) => {
                     return (
                         <ListItem report={report} key={report.id} />
                     )
                 })}
-            </ul>
+            </table>
         </div>
     )
 

@@ -7,7 +7,7 @@ import MapWindow from './Map'
 import ListWindow from './List.tsx'
 import ReportWindow from './Report.tsx'
 import {windowTypes} from "./data/enums.ts";
-import {Report, ReportList} from "./data/reportType";
+import {ReportList} from "./data/reportType";
 
 
 let testReports: ReportList = {
@@ -37,7 +37,7 @@ let testReports: ReportList = {
 ]}
 
 // Window Element Specification
-function Window({width, height, type}: {width: number, height: number, type: windowTypes}) {
+function Window({width, height, type, windowIndex, activeIndex, changeActive}: {width: number, height: number, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void}) {
     const style = {
         width: width,
         height: height
@@ -61,7 +61,8 @@ function Window({width, height, type}: {width: number, height: number, type: win
     // Html to return
     return (
         <>
-            <div className={"window"} style={style}>
+            <div className={"window"} style={style} onClick={() => changeActive(windowIndex)}>
+                {windowIndex === activeIndex ? <h1>ACTIVE</h1> : <h1>INACTIVE</h1>}
                 <div className={"top-bar"}>
                     <div className={"title"}>
                         <img src={icon} alt={"map icon"}/>
