@@ -33,22 +33,25 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
 
     const handleMouseMove = (e: MouseEvent) => {
         if (isDragging) {
-            const newX = e.clientX - dragOffset.x;
-            const newY = e.clientY - dragOffset.y;
+            const newX = e.clientX;
+            const newY = e.clientY;
             
             const windowWidth = width + 6;
             const windowHeight = height + 6;
             
             const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight - 53;
+            const viewportHeight = window.innerHeight - 61;
             
             // can change this to allow windows to be dragged slightly off screen
-            const boundedX = Math.min(Math.max(newX, 0), viewportWidth - windowWidth);
-            const boundedY = Math.min(Math.max(newY, 0), viewportHeight - windowHeight);
+            const boundedX = Math.min(Math.max(newX, 0), viewportWidth);
+            const boundedY = Math.min(Math.max(newY, 12), viewportHeight);
+
+            const windowX = boundedX - dragOffset.x;
+            const windowY = boundedY - dragOffset.y;
     
             setPosition({
-                x: boundedX,
-                y: boundedY
+                x: windowX,
+                y: windowY
             });
         }
     };
