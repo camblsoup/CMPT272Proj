@@ -33,19 +33,16 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
 
     const handleMouseMove = (e: MouseEvent) => {
         if (isDragging) {
-            // Calculate new position
             const newX = e.clientX - dragOffset.x;
             const newY = e.clientY - dragOffset.y;
             
-            // Get window dimensions
-            const windowWidth = width + 6; // Add border width
+            const windowWidth = width + 6;
             const windowHeight = height + 6;
             
-            // Get viewport dimensions
             const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight - 48; // Footer height
+            const viewportHeight = window.innerHeight - 53;
             
-            // Constrain position - keep window at least minimally visible on both sides
+            // can change this to allow windows to be dragged slightly off screen
             const boundedX = Math.min(Math.max(newX, 0), viewportWidth - windowWidth);
             const boundedY = Math.min(Math.max(newY, 0), viewportHeight - windowHeight);
     

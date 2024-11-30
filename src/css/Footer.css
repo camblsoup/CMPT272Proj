@@ -51,3 +51,12 @@ footer a:active {
 }
 
 #map { height: 274px; }
+
+.taskbar-time {
+    position: absolute;
+    right: 10px;
+    color: black;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
