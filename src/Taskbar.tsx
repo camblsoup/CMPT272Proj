@@ -19,26 +19,31 @@ function Taskbar() {
 
     return (
         <footer>
-            <a className={"normal-tab"} href="">
-                <img src={wondows} alt={"🏠"}></img>
-                <h1>Home</h1>
-            </a>
-            <div className={"black-bar"}></div>
-            <div className={"extruding-bar"}></div>
-            <button className={"normal-tab"} onClick={openMap}>
-                <img src={wondows} alt={"🏠"}></img>
-                <h1>Map</h1>
-            </button>
-            <button className={"normal-tab"} onClick={openMap}>
-                <img src={wondows} alt={"🏠"}></img>
-                <h1>List</h1>
-            </button>
-            <button className={"normal-tab"} onClick={openMap}>
-                <img src={wondows} alt={"🏠"}></img>
-                <h1>Report</h1>
-            </button>
-            <div className="taskbar-time">
-                {time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
+            <div className={"taskbar-apps"}>
+                <a className={"normal-tab"} href="">
+                    <img src={wondows} alt={"🏠"}></img>
+                    <h1>Home</h1>
+                </a>
+                <div className={"embossed-bar"}></div>
+                <div className={"extruding-bar"}></div>
+                <button className={"normal-tab"} onClick={openMap}>
+                    <img src={wondows} alt={"🏠"}></img>
+                    <h1>Map</h1>
+                </button>
+                <button className={"normal-tab"} onClick={openMap}>
+                    <img src={wondows} alt={"🏠"}></img>
+                    <h1>List</h1>
+                </button>
+                <button className={"normal-tab"} onClick={openMap}>
+                    <img src={wondows} alt={"🏠"}></img>
+                    <h1>Report</h1>
+                </button>
+            </div>
+            <div className={"taskbar-info"}>
+                <div className={"embossed-bar"}></div>
+                <div className="taskbar-time">
+                    <p>{time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</p>
+                </div>
             </div>
         </footer>
     )

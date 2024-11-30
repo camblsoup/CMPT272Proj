@@ -3,9 +3,9 @@ import icon from './assets/map-icon.png'
 import minimize from './assets/minimize.png'
 import maximize from './assets/maximize.png'
 import cross from './assets/cross.png'
-import MapWindow from './Map'
-import ListWindow from './List.tsx'
-import ReportWindow from './Report.tsx'
+import MapWindow from './windowtypes/Map.tsx'
+import ListWindow from './windowtypes/List.tsx'
+import ReportWindow from './windowtypes/Report.tsx'
 import { windowTypes } from "./data/enums.ts"
 import { Report } from "./data/reportType"
 import { useState, MouseEvent, useEffect } from 'react'

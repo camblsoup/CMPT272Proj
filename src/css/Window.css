@@ -1,5 +1,5 @@
 .window, .window-active {
-    background: #BFB8BF;
+    background: #C0C0C0;
     border: 3px groove;
 
     width: 400px;
@@ -25,7 +25,7 @@
 }
 
 .window-active .top-bar {
-    background: #0000FF;
+    background: #000080;
 }
 
 .top-bar {
@@ -119,6 +119,7 @@ img {
 }
 
 .info {
+    background: #C0C0C0;
     padding-left: 5px;
     width: auto;
     border-top: solid 1px #777777;

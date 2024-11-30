@@ -1,4 +1,4 @@
-import { Report } from "./data/reportType";
+import { Report } from "../data/reportType.ts";
 
 function ReportWindow({ report }: { report: Report }) {
     return (

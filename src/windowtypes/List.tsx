@@ -1,5 +1,5 @@
-import { Report } from "./data/reportType";
-import ListItem from "./ListItem";
+import { Report } from "../data/reportType.ts";
+import ListItem from "./ListItem.tsx";
 import { useState } from "react";
 
 function ListWindow({ 
