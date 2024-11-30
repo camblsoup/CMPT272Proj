@@ -8,13 +8,69 @@ import ListWindow from './List.tsx'
 import ReportWindow from './Report.tsx'
 import { windowTypes } from "./data/enums.ts"
 import { Report } from "./data/reportType"
+import { useState, MouseEvent, useEffect } from 'react'
 
 // Window Element Specification
 function Window({ width, height, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports }: { width: number, height: number, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void }) {
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+
     const style = {
         width: width,
-        height: height
+        height: height,
+        transform: `translate(${position.x}px, ${position.y}px)`,
     }
+
+    const handleMouseDown = (e: MouseEvent) => {
+        setIsDragging(true);
+        setDragOffset({
+            x: e.clientX - position.x,
+            y: e.clientY - position.y,
+        });
+        changeActive(windowIndex);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+        if (isDragging) {
+            // Calculate new position
+            const newX = e.clientX - dragOffset.x;
+            const newY = e.clientY - dragOffset.y;
+            
+            // Get window dimensions
+            const windowWidth = width + 6; // Add border width
+            const windowHeight = height + 6;
+            
+            // Get viewport dimensions
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight - 48; // Footer height
+            
+            // Constrain position - keep window at least minimally visible on both sides
+            const boundedX = Math.min(Math.max(newX, 0), viewportWidth - windowWidth);
+            const boundedY = Math.min(Math.max(newY, 0), viewportHeight - windowHeight);
+    
+            setPosition({
+                x: boundedX,
+                y: boundedY
+            });
+        }
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    useEffect(() => {
+        if (isDragging) {
+            document.addEventListener('mousemove', handleMouseMove as any);
+            document.addEventListener('mouseup', handleMouseUp);
+        }
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove as any);
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isDragging]);
 
     function renderBody() {
         switch (type) {
@@ -37,9 +93,15 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
 
     return (
         <>
-            <div className={"window"} style={style} onClick={() => changeActive(windowIndex)}>
-                {windowIndex === activeIndex ? <h1>ACTIVE</h1> : <h1>INACTIVE</h1>}
-                <div className={"top-bar"}>
+            <div 
+                className={windowIndex === activeIndex ? "window-active" : "window"} 
+                style={style} 
+                onClick={() => !isDragging && changeActive(windowIndex)}
+            >
+                <div 
+                    className="top-bar"
+                    onMouseDown={handleMouseDown}
+                >
                     <div className={"title"}>
                         <img src={icon} alt={"map icon"} />
                         <h1>Map</h1>

@@ -1,4 +1,4 @@
-.window {
+.window, .window-active {
     background: #BFB8BF;
     border: 3px groove;
 
@@ -10,6 +10,22 @@
     flex-direction: column;
     gap: 2px;
     justify-content: center;
+
+    user-select: none;
+}
+
+.window {
+    z-index: 1;
+    position: relative;
+}
+
+.window-active {
+    z-index: 10;
+    position: relative;
+}
+
+.window-active .top-bar {
+    background: #0000FF;
 }
 
 .top-bar {

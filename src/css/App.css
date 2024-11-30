@@ -2,21 +2,3 @@
     position: absolute;
 }
 
-.windows-map {
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-
-.windows-list {
-    top: 300px;
-    left: 300px;
-    z-index: 2;
-}
-
-.windows-report {
-    top: 500px;
-    left: 700px;
-    z-index: 3;
-}
-
