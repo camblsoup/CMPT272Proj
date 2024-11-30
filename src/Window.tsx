@@ -4,8 +4,37 @@ import minimize from './assets/minimize.png'
 import maximize from './assets/maximize.png'
 import cross from './assets/cross.png'
 import MapWindow from './Map'
+import ListWindow from './List.tsx'
+import ReportWindow from './Report.tsx'
 import {windowTypes} from "./data/enums.ts";
+import {Report, ReportList} from "./data/reportType";
 
+
+let testReports: ReportList = {
+    reports: [
+    {
+        id: 1,
+        type: "Medical",
+        wit_name: "John Doe",
+        wit_phone: "123-456-7890",
+        location: "1234 Elm St",
+        picture: "pic",
+        comments: "comment",
+        date: "01/01/2021",
+        status: "open"
+    },
+    {
+        id: 2,
+        type: "Cat stuck in tree",
+        wit_name: "Jane Doe",
+        wit_phone: "123-456-7890",
+        location: "1234 Awesome St",
+        picture: "pic",
+        comments: "comment",
+        date: "01/01/2021",
+        status: "open"
+    }
+]}
 
 // Window Element Specification
 function Window({width, height, type}: {width: number, height: number, type: windowTypes}) {
@@ -21,9 +50,9 @@ function Window({width, height, type}: {width: number, height: number, type: win
             case windowTypes.MAP:
                 return <MapWindow />;
             case windowTypes.LIST:
-                return 'list';
+                return <ListWindow reports={testReports.reports}/>;
             case windowTypes.REPORT:
-                return 'report';
+                return <ReportWindow report={testReports.reports[0]}/>;
             default:
                 return 'error';
         }

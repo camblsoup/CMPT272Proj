@@ -8,6 +8,18 @@ function Taskbar() {
                 <img src={wondows} alt={"🏠"}></img>
                 <h1>Home</h1>
             </a>
+            <a className={"normal-tab"} href="">
+                <img src={wondows} alt={"🏠"}></img>
+                <h1>Map</h1>
+            </a>
+            <a className={"normal-tab"} href="">
+                <img src={wondows} alt={"🏠"}></img>
+                <h1>List</h1>
+            </a>
+            <a className={"normal-tab"} href="">
+                <img src={wondows} alt={"🏠"}></img>
+                <h1>Report</h1>
+            </a>
         </footer>
     )
 }
