@@ -30,9 +30,11 @@ function ListWindow({
             picture: "",
             comments: "",
             date: new Date().toLocaleDateString(),
-            status: "open"
+            status: "Open"
         };
         updateReports([...reports, newReport]);
+
+        return maxId + 1;
     }
 
     function handleEdit(reportID: number) {
@@ -53,20 +55,27 @@ function ListWindow({
         }
     }
 
+    function handleAdd() {
+        let report = addNewReport();
+        changeCurrentReport(report);
+        changeEditing(true);
+    }
+
     return (
         <>
             <div className="list-window-buttons">
-                <button onClick={addNewReport}>New</button>
+                <button onClick={handleAdd}>New</button>
                 <button onClick={() => {handleOpen(selected)}}>Open</button>
                 <button onClick={() => {handleEdit(selected)}}>Edit</button>
                 <button onClick={deleteReport}>Delete</button>
             </div>
             <div>
                 <h1>Incidents</h1>
-                <table>
+                <table style={{"width": "100%"}}>
                     <thead>
                         <tr>
                             <th>Type</th>
+                            <th>Status</th>
                             <th>Witness</th>
                             <th>Location</th>
                             <th>Date</th>

@@ -8,17 +8,17 @@ import cross from './assets/cross.png'
 import MapWindow from './windowtypes/Map.tsx'
 import ListWindow from './windowtypes/List.tsx'
 import ReportWindow from './windowtypes/Report.tsx'
-import {windowTypes} from "./data/enums.ts"
-import {Report} from "./data/reportType"
-import {MouseEvent, useEffect, useState} from 'react'
+import { windowTypes } from "./data/enums.ts"
+import { Report } from "./data/reportType"
+import { MouseEvent, useEffect, useState } from 'react'
 
 // Window Element Specification
-function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports, closeWindow, isMinimized, minimizeWindow, isEditing, changeEditing }: { initWidth: number, initHeight: number, initPos: { x: number, y: number }, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void, closeWindow: (index: number) => void, isMinimized: (index: number) => boolean, minimizeWindow: (index: number) => void, isEditing: boolean, changeEditing: (editing: boolean) => void } ) {
+function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports, closeWindow, isMinimized, minimizeWindow, isEditing, changeEditing }: { initWidth: number, initHeight: number, initPos: { x: number, y: number }, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void, closeWindow: (index: number) => void, isMinimized: (index: number) => boolean, minimizeWindow: (index: number) => void, isEditing: boolean, changeEditing: (editing: boolean) => void }) {
     const [regularPosition, setRegularPosition] = useState(initPos);
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
     const [regularSize, setRegularSize] = useState({ width: initWidth, height: initHeight });
-    const [size, setSize] = useState({ width: initWidth, height: initHeight});
+    const [size, setSize] = useState({ width: initWidth, height: initHeight });
     const [position, setPosition] = useState(initPos);
     const [maximized, setMaximized] = useState<boolean>(false);
 
@@ -46,17 +46,17 @@ function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex
         if (isDragging) {
             const newX = e.clientX;
             const newY = e.clientY;
-            
+
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight - 51;
-            
+
             // can change this to allow windows to be dragged slightly off screen
             const boundedX = Math.min(Math.max(newX, 0), viewportWidth);
             const boundedY = Math.min(Math.max(newY, 0), viewportHeight);
 
             const windowX = boundedX - dragOffset.x;
             const windowY = boundedY - dragOffset.y;
-    
+
             setPosition({
                 x: windowX,
                 y: windowY
@@ -93,9 +93,11 @@ function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex
                 />;
             case windowTypes.REPORT:
                 return <ReportWindow
+                    reports={reports}
                     report={reports.find(r => r.id === currentReport) || reports[0]}
                     isEditing={isEditing}
-
+                    updateReports={updateReports}
+                    changeEditing={changeEditing}
                 />;
             default:
                 return 'error';
@@ -119,7 +121,7 @@ function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex
     return (
         <>
             <div
-                className={ isMinimized(windowIndex) ? "window-hidden" : activeIndex === windowIndex ? "window-active" : "window" }
+                className={isMinimized(windowIndex) ? "window-hidden" : activeIndex === windowIndex ? "window-active" : "window"}
                 style={style}
                 onClick={() => !isDragging && changeActive(windowIndex)}
             >
@@ -139,7 +141,7 @@ function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex
                         <button className={"window-button"} onClick={() => closeWindow(windowIndex)}><img className={"window-button-icon"} src={cross} alt={"close icon"} /></button>
                     </div>
                 </div>
-                <div className={"tools"} style={type === windowTypes.MAP ? {display: "none"} : {display: "block"}}>
+                <div className={"tools"} style={type === windowTypes.MAP ? { display: "none" } : { display: "block" }}>
 
                 </div>
                 <div className={"body"}>
