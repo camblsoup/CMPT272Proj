@@ -11,7 +11,7 @@ import { Report } from "./data/reportType"
 import { useState, MouseEvent, useEffect } from 'react'
 
 // Window Element Specification
-function Window({ initWidth, initHeight, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports, closeWindow, isMinimized, minimizeWindow }: { initWidth: number, initHeight: number, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void, closeWindow: (index: number) => void, isMinimized: (index: number) => boolean, minimizeWindow: (index: number) => void } ) {
+function Window({ initWidth, initHeight, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports, closeWindow, isMinimized, minimizeWindow, isEditing, changeEditing }: { initWidth: number, initHeight: number, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void, closeWindow: (index: number) => void, isMinimized: (index: number) => boolean, minimizeWindow: (index: number) => void, isEditing: boolean, changeEditing: (editing: boolean) => void } ) {
     const [regularPosition, setRegularPosition] = useState({ x: 5, y: 5 });
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -20,7 +20,7 @@ function Window({ initWidth, initHeight, type, windowIndex, activeIndex, changeA
     const [position, setPosition] = useState({ x: 5, y: 5 });
     const [maximized, setMaximized] = useState<boolean>(false);
 
-    const style = {
+    const style: React.CSSProperties = {
         width: size.width,
         height: size.height,
         position: 'absolute',
@@ -87,10 +87,13 @@ function Window({ initWidth, initHeight, type, windowIndex, activeIndex, changeA
                     reports={reports}
                     changeCurrentReport={changeCurrentReport}
                     updateReports={updateReports}
+                    changeEditing={changeEditing}
                 />;
             case windowTypes.REPORT:
                 return <ReportWindow
                     report={reports.find(r => r.id === currentReport) || reports[0]}
+                    isEditing={isEditing}
+
                 />;
             default:
                 return 'error';

@@ -3,6 +3,8 @@ import './css/App.css'
 import Taskbar from './Taskbar'
 import Window from './Window'
 import mapIcon from './assets/map-icon.png'
+import reportIcon from './assets/report-icon.png'
+import listIcon from './assets/list-icon.png'
 import {windowTypes} from "./data/enums.ts";
 import {useEffect, useState} from 'react';
 import {Report} from './data/reportType';
@@ -16,6 +18,7 @@ function App() {
     const [minimizedWindows, setMinimizedWindows] = useState<number[]>([]);
     const [currentReport, setCurrentReport] = useState(0);
     const [windows, setWindows] = useState<windowTypes[]>([]);
+    const [isEditingReport, setIsEditingReport] = useState(false);
 
     useEffect(() => {
         localStorage.setItem('reports', JSON.stringify(reports));
@@ -31,6 +34,10 @@ function App() {
 
     function changeCurrentReport(reportId: number) {
         setCurrentReport(reportId);
+    }
+
+    function changeEditingReport(editing: boolean) {
+        setIsEditingReport(editing);
     }
 
     function openWindow(type: windowTypes) {
@@ -91,13 +98,23 @@ function App() {
                             closeWindow={closeWindow}
                             isMinimized={isMinimized}
                             minimizeWindow={minimizeWindow}
+                            isEditing={isEditingReport}
+                            changeEditing={changeEditingReport}
                     />
                 ))}
             </div>
             <div id={"desktop"}>
-                <button className={"app"} onClick={() => openWindow(windowTypes.MAP)}>
+                <button className={"app"} onDoubleClick={() => openWindow(windowTypes.MAP)}>
                     <img src={mapIcon} alt={"map desktop icon"}/>
-                    <p>Reports Map</p>
+                    <p>Map</p>
+                </button>
+                <button className={"app"} onDoubleClick={() => openWindow(windowTypes.LIST)}>
+                    <img src={listIcon} alt={"list desktop icon"}/>
+                    <p>Reports</p>
+                </button>
+                <button className={"app"} onDoubleClick={() => openWindow(windowTypes.REPORT)}>
+                    <img src={reportIcon} alt={"report desktop icon"}/>
+                    <p>Details</p>
                 </button>
             </div>
             <Taskbar activeIndex={activeWindow} windows={windows} unminimizeWindow={unminimizeWindow}/>
