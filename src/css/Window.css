@@ -24,6 +24,10 @@
     position: relative;
 }
 
+.window-hidden {
+    display: none;
+}
+
 .window-active .top-bar {
     background: #000080;
 }

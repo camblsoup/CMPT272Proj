@@ -1,8 +1,9 @@
 import './css/Footer.css'
 import wondows from './assets/wondows.png'
 import {useEffect, useState} from 'react'
+import {windowTypes} from "./data/enums.ts";
 
-function Taskbar() {
+function Taskbar({openWindow}: { openWindow: (type: windowTypes) => void }) {
     const [time, setTime] = useState(new Date())
 
     useEffect(() => {
@@ -18,7 +19,7 @@ function Taskbar() {
     }
 
     return (
-        <footer>
+        <footer id={"taskbar"}>
             <div className={"taskbar-apps"}>
                 <a className={"normal-tab"} href="">
                     <img src={wondows} alt={"🏠"}></img>
@@ -26,7 +27,7 @@ function Taskbar() {
                 </a>
                 <div className={"embossed-bar"}></div>
                 <div className={"extruding-bar"}></div>
-                <button className={"normal-tab"} onClick={openMap}>
+                <button className={"normal-tab"} onClick={() => openWindow(windowTypes.MAP)}>
                     <img src={wondows} alt={"🏠"}></img>
                     <h1>Map</h1>
                 </button>
