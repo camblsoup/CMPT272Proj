@@ -2,3 +2,28 @@
     position: absolute;
 }
 
+#desktop {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+#desktop .app {
+    box-sizing: border-box;
+    background: none;
+    border: none;
+}
+
+#desktop .app:hover {
+    cursor: pointer;
+    background: #FFFFFF11;
+    border: solid 1px #FFFFFF22;
+}
+
+#desktop .app img {
+    width: 48px;
+}
+
+#desktop .app p {
+    margin: 0;
+}
