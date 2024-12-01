@@ -26,5 +26,7 @@ function hash(toHash: string) {
     })
 
 }
+
+export default hash;
 //hash("helloWorld")
 //    .then((result) => console.log(result["Digest"]))
