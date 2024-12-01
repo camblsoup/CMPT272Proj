@@ -3,3 +3,10 @@ export enum windowTypes {
     LIST = "List",
     REPORT = "Report"
 }
+
+export enum windowActivity {
+    ACTIVE,
+    INACTIVE,
+    MINIMIZED,
+    FULLSCREEN
+}

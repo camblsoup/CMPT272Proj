@@ -26,6 +26,7 @@
 
 .window-hidden {
     display: none;
+    z-index: -10;
 }
 
 .window-active .top-bar {

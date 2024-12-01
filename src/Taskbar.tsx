@@ -1,9 +1,10 @@
 import './css/Footer.css'
 import wondows from './assets/wondows.png'
+import mapIcon from './assets/map-icon.png'
 import {useEffect, useState} from 'react'
 import {windowTypes} from "./data/enums.ts";
 
-function Taskbar({openWindow}: { openWindow: (type: windowTypes) => void }) {
+function Taskbar({ activeIndex, windows, unminimizeWindow }: { activeIndex: number, windows: windowTypes[], unminimizeWindow: (index: number ) => void }) {
     const [time, setTime] = useState(new Date())
 
     useEffect(() => {
@@ -14,10 +15,6 @@ function Taskbar({openWindow}: { openWindow: (type: windowTypes) => void }) {
         return () => clearInterval(timer)
     }, [])
 
-    function openMap() {
-
-    }
-
     return (
         <footer id={"taskbar"}>
             <div className={"taskbar-apps"}>
@@ -27,18 +24,14 @@ function Taskbar({openWindow}: { openWindow: (type: windowTypes) => void }) {
                 </a>
                 <div className={"embossed-bar"}></div>
                 <div className={"extruding-bar"}></div>
-                <button className={"normal-tab"} onClick={() => openWindow(windowTypes.MAP)}>
-                    <img src={wondows} alt={"🏠"}></img>
-                    <h1>Map</h1>
-                </button>
-                <button className={"normal-tab"} onClick={openMap}>
-                    <img src={wondows} alt={"🏠"}></img>
-                    <h1>List</h1>
-                </button>
-                <button className={"normal-tab"} onClick={openMap}>
-                    <img src={wondows} alt={"🏠"}></img>
-                    <h1>Report</h1>
-                </button>
+                <div className={"active-apps"}>
+                    {windows.map((type, index) => (
+                        <button key={index} className={ activeIndex === index ? "focused-window" : "unfocused-window" } onClick={() => unminimizeWindow(index)}>
+                            <img src={mapIcon} alt={"app icon"}/>
+                            <h1>{type} {windows.filter((type) => type === windowTypes.LIST).length > 1 ? (index + 1) : ""}</h1>
+                        </button>
+                    ))}
+                </div>
             </div>
             <div className={"taskbar-info"}>
                 <div className={"embossed-bar"}></div>

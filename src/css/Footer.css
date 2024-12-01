@@ -18,25 +18,46 @@ footer {
     padding-right: 4px;
     justify-content: space-between;
     box-sizing: border-box;
+    flex-grow: 1;
 }
 
-footer a, footer button {
+footer a {
+    max-width: 80px;
+}
+
+footer a, footer .unfocused-window {
+    border-top: solid 2px white;
+    border-left: solid 2px white;
+    border-bottom: solid 2px black;
+    border-right: solid 2px black;
+    background: #BFB8BF;
+}
+
+footer .unfocused-window, footer .focused-window {
+    max-width: 150px;
+    background: #FFFFFF;
+}
+
+footer .focused-window {
+    border-top: solid 2px black;
+    border-left: solid 2px black;
+    border-bottom: none;
+    border-right: none;
+}
+
+footer a, footer .unfocused-window, footer .focused-window {
     text-decoration: none;
     color: black;
-    background: #BFB8BF;
     display: flex;
     flex-direction: row;
     gap: 5px;
     justify-content: left;
     height: 32px;
     width: fit-content;
-    border-top: solid 2px white;
-    border-left: solid 2px white;
-    border-bottom: solid 2px black;
-    border-right: solid 2px black;
     padding: 0 4px;
     align-items: center;
     box-sizing: border-box;
+    flex-grow: 1;
 }
 
 footer a img, footer button img {
@@ -58,11 +79,16 @@ footer a:active, footer button:active {
     border-left: solid 2px black;
 }
 
+footer button:hover {
+    cursor: pointer;
+}
+
 .taskbar-apps {
     display: flex;
     gap: 4px;
     height: 100%;
     align-items: center;
+    flex-grow: 1;
 }
 
 .taskbar-info {
@@ -105,4 +131,11 @@ footer a:active, footer button:active {
     border-bottom: solid 2px #888888;
     border-right: solid 2px #777777;
     border-radius: 2px;
+}
+
+.active-apps {
+    flex-grow: 1;
+    display: flex;
+    gap: 4px;
+    align-items: center;
 }
