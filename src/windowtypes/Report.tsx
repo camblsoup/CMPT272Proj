@@ -56,7 +56,7 @@ function ReportWindow({
                         <p>{report.wit_name}</p>
                         <p>{report.wit_phone}</p>
                         <p>{report.location}</p>
-                        <img src="{report.picture}" alt="Report Picture" />
+                        <img src={report.picture} alt="Report Picture" />
                         <p>{report.comments}</p>
                         <p>{report.date}</p>
                     </div>
