@@ -35,7 +35,6 @@ footer a, footer .unfocused-window {
 
 footer .unfocused-window, footer .focused-window {
     max-width: 150px;
-    background: #FFFFFF;
 }
 
 footer .focused-window {
@@ -43,6 +42,7 @@ footer .focused-window {
     border-left: solid 2px black;
     border-bottom: none;
     border-right: none;
+    background: #FFFFFF;
 }
 
 footer a, footer .unfocused-window, footer .focused-window {

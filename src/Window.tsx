@@ -1,23 +1,25 @@
 import './css/Window.css'
 import mapIcon from './assets/map-icon.png'
+import listIcon from './assets/list.png'
+import reportIcon from './assets/report.png'
 import minimize from './assets/minimize.png'
 import maximize from './assets/maximize.png'
 import cross from './assets/cross.png'
 import MapWindow from './windowtypes/Map.tsx'
 import ListWindow from './windowtypes/List.tsx'
 import ReportWindow from './windowtypes/Report.tsx'
-import { windowTypes } from "./data/enums.ts"
-import { Report } from "./data/reportType"
-import { useState, MouseEvent, useEffect } from 'react'
+import {windowTypes} from "./data/enums.ts"
+import {Report} from "./data/reportType"
+import {MouseEvent, useEffect, useState} from 'react'
 
 // Window Element Specification
-function Window({ initWidth, initHeight, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports, closeWindow, isMinimized, minimizeWindow }: { initWidth: number, initHeight: number, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void, closeWindow: (index: number) => void, isMinimized: (index: number) => boolean, minimizeWindow: (index: number) => void } ) {
-    const [regularPosition, setRegularPosition] = useState({ x: 5, y: 5 });
+function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports, closeWindow, isMinimized, minimizeWindow }: { initWidth: number, initHeight: number, initPos: { x: number, y: number }, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void, closeWindow: (index: number) => void, isMinimized: (index: number) => boolean, minimizeWindow: (index: number) => void } ) {
+    const [regularPosition, setRegularPosition] = useState(initPos);
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
     const [regularSize, setRegularSize] = useState({ width: initWidth, height: initHeight });
     const [size, setSize] = useState({ width: initWidth, height: initHeight});
-    const [position, setPosition] = useState({ x: 5, y: 5 });
+    const [position, setPosition] = useState(initPos);
     const [maximized, setMaximized] = useState<boolean>(false);
 
     const style = {
@@ -123,7 +125,7 @@ function Window({ initWidth, initHeight, type, windowIndex, activeIndex, changeA
                     onMouseDown={handleMouseDown}
                 >
                     <div className={"title"}>
-                        <img src={mapIcon} alt={"map icon"} />
+                        <img src={type === windowTypes.MAP ? mapIcon : type === windowTypes.LIST ? listIcon : reportIcon} alt={"map icon"} />
                         <h1>{type}</h1>
                     </div>
                     <div className={"window-buttons"}>
@@ -134,11 +136,14 @@ function Window({ initWidth, initHeight, type, windowIndex, activeIndex, changeA
                         <button className={"window-button"} onClick={() => closeWindow(windowIndex)}><img className={"window-button-icon"} src={cross} alt={"close icon"} /></button>
                     </div>
                 </div>
+                <div className={"tools"} style={type === windowTypes.MAP ? {display: "none"} : {display: "block"}}>
+
+                </div>
                 <div className={"body"}>
                     {renderBody()}
                 </div>
                 <div className={"info"}>
-                    <h1>{reports.length} Report(s)</h1>
+                    <p>{reports.length} Report(s)</p>
                 </div>
             </div>
         </>

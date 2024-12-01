@@ -41,6 +41,13 @@ function App() {
                 changeActiveWindow(mapWindowIndex);
                 return;
             }
+            setWindows((prevWindows) => [
+                ...prevWindows, type
+            ]);
+            setWindows((prevWindows) => [
+                ...prevWindows, windowTypes.LIST
+            ]);
+            return;
         }
         if (type === windowTypes.LIST) {
             const existingListWindow = windows.find((currType) => currType === type);
@@ -67,7 +74,19 @@ function App() {
     }
 
     function closeWindow(windowIndex: number) {
-        setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex))
+        const windowToClose = windows[windowIndex];
+
+        if (windowToClose === windowTypes.MAP) {
+            setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex && prevWindows[index] !== windowTypes.LIST));
+        } else if (windowToClose === windowTypes.LIST) {
+            setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex && prevWindows[index] !== windowTypes.MAP));
+        } else {
+            setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex));
+        }
+
+        if (windowIndex === activeWindow) {
+            setActiveWindow(-1);
+        }
     }
 
     function unminimizeWindow(windowIndex: number) {
@@ -79,20 +98,52 @@ function App() {
         <>
             <div id={"windowsBody"}>
                 {windows.map((type, index) => (
-                    <Window key={index}
-                            initWidth={800}
-                            initHeight={700}
-                            type={type}
-                            windowIndex={index}
-                            activeIndex={activeWindow} changeActive={changeActiveWindow}
-                            currentReport={currentReport} changeCurrentReport={changeCurrentReport}
-                            reports={reports}
-                            updateReports={updateReports}
-                            closeWindow={closeWindow}
-                            isMinimized={isMinimized}
-                            minimizeWindow={minimizeWindow}
-                    />
-                ))}
+                    type === windowTypes.MAP ?
+                        <Window key={index}
+                                initWidth={800}
+                                initHeight={700}
+                                initPos={{x: 100, y: 5}}
+                                type={type}
+                                windowIndex={index}
+                                activeIndex={activeWindow} changeActive={changeActiveWindow}
+                                currentReport={currentReport} changeCurrentReport={changeCurrentReport}
+                                reports={reports}
+                                updateReports={updateReports}
+                                closeWindow={closeWindow}
+                                isMinimized={isMinimized}
+                                minimizeWindow={minimizeWindow}
+                        /> : type === windowTypes.LIST ?
+                            <Window key={index}
+                                    initWidth={600}
+                                    initHeight={700}
+                                    initPos={{x: 700, y: 100}}
+                                    type={type}
+                                    windowIndex={index}
+                                    activeIndex={activeWindow} changeActive={changeActiveWindow}
+                                    currentReport={currentReport} changeCurrentReport={changeCurrentReport}
+                                    reports={reports}
+                                    updateReports={updateReports}
+                                    closeWindow={closeWindow}
+                                    isMinimized={isMinimized}
+                                    minimizeWindow={minimizeWindow}
+                            /> :
+                            <Window key={index}
+                                    initWidth={800}
+                                    initHeight={700}
+                                    initPos={{x: 25, y: 25}}
+                                    type={type}
+                                    windowIndex={index}
+                                    activeIndex={activeWindow} changeActive={changeActiveWindow}
+                                    currentReport={currentReport} changeCurrentReport={changeCurrentReport}
+                                    reports={reports}
+                                    updateReports={updateReports}
+                                    closeWindow={closeWindow}
+                                    isMinimized={isMinimized}
+                                    minimizeWindow={minimizeWindow}
+                            />
+
+
+                    ))}
             </div>
             <div id={"desktop"}>
                 <button className={"app"} onClick={() => openWindow(windowTypes.MAP)}>

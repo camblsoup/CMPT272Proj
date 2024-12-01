@@ -3,6 +3,8 @@ import wondows from './assets/wondows.png'
 import mapIcon from './assets/map-icon.png'
 import {useEffect, useState} from 'react'
 import {windowTypes} from "./data/enums.ts";
+import listIcon from "./assets/list.png";
+import reportIcon from "./assets/report.png";
 
 function Taskbar({ activeIndex, windows, unminimizeWindow }: { activeIndex: number, windows: windowTypes[], unminimizeWindow: (index: number ) => void }) {
     const [time, setTime] = useState(new Date())
@@ -27,7 +29,7 @@ function Taskbar({ activeIndex, windows, unminimizeWindow }: { activeIndex: numb
                 <div className={"active-apps"}>
                     {windows.map((type, index) => (
                         <button key={index} className={ activeIndex === index ? "focused-window" : "unfocused-window" } onClick={() => unminimizeWindow(index)}>
-                            <img src={mapIcon} alt={"app icon"}/>
+                            <img src={type === windowTypes.MAP ? mapIcon : type === windowTypes.LIST ? listIcon : reportIcon} alt={"app icon"}/>
                             <h1>{type} {windows.filter((type) => type === windowTypes.LIST).length > 1 ? (index + 1) : ""}</h1>
                         </button>
                     ))}
