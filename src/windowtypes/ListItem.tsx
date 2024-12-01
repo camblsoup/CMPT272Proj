@@ -1,4 +1,4 @@
-import { Report } from "./data/reportType";
+import { Report } from "../data/reportType.ts";
 
 function ListItem({ report, selectedItem, setSelectedItem }: { report: Report, selectedItem: number, setSelectedItem: (id: number) => void }) {
     return (

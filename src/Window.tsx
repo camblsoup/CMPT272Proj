@@ -3,15 +3,15 @@ import icon from './assets/map-icon.png'
 import minimize from './assets/minimize.png'
 import maximize from './assets/maximize.png'
 import cross from './assets/cross.png'
-import MapWindow from './Map'
-import ListWindow from './List.tsx'
-import ReportWindow from './Report.tsx'
+import MapWindow from './windowtypes/Map.tsx'
+import ListWindow from './windowtypes/List.tsx'
+import ReportWindow from './windowtypes/Report.tsx'
 import { windowTypes } from "./data/enums.ts"
 import { Report } from "./data/reportType"
 import { useState, MouseEvent, useEffect } from 'react'
 
 // Window Element Specification
-function Window({ width, height, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports }: { width: number, height: number, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void }) {
+function Window({ width, height, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports, closeWindow }: { width: number, height: number, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void, closeWindow: (index: number) => void } ) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -19,7 +19,9 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
     const style = {
         width: width,
         height: height,
-        transform: `translate(${position.x}px, ${position.y}px)`,
+        position: 'absolute',
+        top: position.y,
+        left: position.x
     }
 
     const handleMouseDown = (e: MouseEvent) => {
@@ -37,11 +39,11 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
             const newY = e.clientY;
             
             const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight - 61;
+            const viewportHeight = window.innerHeight - 64;
             
             // can change this to allow windows to be dragged slightly off screen
             const boundedX = Math.min(Math.max(newX, 0), viewportWidth);
-            const boundedY = Math.min(Math.max(newY, 12), viewportHeight);
+            const boundedY = Math.min(Math.max(newY, 8), viewportHeight);
 
             const windowX = boundedX - dragOffset.x;
             const windowY = boundedY - dragOffset.y;
@@ -59,15 +61,15 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
 
     useEffect(() => {
         if (isDragging) {
-            document.addEventListener('mousemove', handleMouseMove as any);
+            document.addEventListener('mousemove', handleMouseMove as never);
             document.addEventListener('mouseup', handleMouseUp);
         }
 
         return () => {
-            document.removeEventListener('mousemove', handleMouseMove as any);
+            document.removeEventListener('mousemove', handleMouseMove as never);
             document.removeEventListener('mouseup', handleMouseUp);
         };
-    }, [isDragging]);
+    }, [handleMouseMove, isDragging]);
 
     function renderBody() {
         switch (type) {
@@ -90,12 +92,12 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
 
     return (
         <>
-            <div 
-                className={windowIndex === activeIndex ? "window-active" : "window"} 
-                style={style} 
+            <div
+                className={windowIndex === activeIndex ? "window-active" : "window"}
+                style={style}
                 onClick={() => !isDragging && changeActive(windowIndex)}
             >
-                <div 
+                <div
                     className="top-bar"
                     onMouseDown={handleMouseDown}
                 >
@@ -108,7 +110,7 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
                             <button className={"window-button"}><img className={"window-button-icon"} src={minimize} alt={"minimize icon"} /></button>
                             <button className={"window-button"}><img className={"window-button-icon"} src={maximize} alt={"maximize icon"} /></button>
                         </div>
-                        <button className={"window-button"}><img className={"window-button-icon"} src={cross} alt={"close icon"} /></button>
+                        <button className={"window-button"}><img className={"window-button-icon"} src={cross} alt={"close icon"} onClick={() => closeWindow(windowIndex)} /></button>
                     </div>
                 </div>
                 <div className={"body"}>
