@@ -5,11 +5,13 @@ import { useState } from "react";
 function ListWindow({ 
     reports, 
     changeCurrentReport, 
-    updateReports 
+    updateReports,
+    changeEditing
 }: { 
     reports: Report[], 
     changeCurrentReport: (reportId: number) => void,
-    updateReports: (reports: Report[]) => void 
+    updateReports: (reports: Report[]) => void,
+    changeEditing: (editing: boolean) => void
 }) {
     const [selected, setSelected] = useState(0);
 
@@ -33,6 +35,16 @@ function ListWindow({
         updateReports([...reports, newReport]);
     }
 
+    function handleEdit(reportID: number) {
+        changeCurrentReport(reportID);
+        changeEditing(true);
+    }
+
+    function handleOpen(reportID: number) {
+        changeCurrentReport(reportID);
+        changeEditing(false);
+    }
+
     function deleteReport() {
         if (selected >= 0) {
             const updatedReports = reports.filter(report => report.id !== selected);
@@ -45,8 +57,8 @@ function ListWindow({
         <>
             <div className="list-window-buttons">
                 <button onClick={addNewReport}>New</button>
-                <button onClick={() => {changeCurrentReport(selected)}}>Open</button>
-                <button>Edit</button>
+                <button onClick={() => {handleOpen(selected)}}>Open</button>
+                <button onClick={() => {handleEdit(selected)}}>Edit</button>
                 <button onClick={deleteReport}>Delete</button>
             </div>
             <div>
