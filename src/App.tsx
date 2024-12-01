@@ -3,8 +3,8 @@ import './css/App.css'
 import Taskbar from './Taskbar'
 import Window from './Window'
 import mapIcon from './assets/map-icon.png'
-import reportIcon from './assets/report-icon.png'
-import listIcon from './assets/list-icon.png'
+import reportIcon from './assets/report.png'
+import listIcon from './assets/list.png'
 import {windowTypes} from "./data/enums.ts";
 import {useEffect, useState} from 'react';
 import {Report} from './data/reportType';
