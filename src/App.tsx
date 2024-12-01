@@ -45,12 +45,19 @@ function App() {
         <>
             <div id={"windowsBody"}>
                 {windows.map((type, index) => (
-                    <Window width={800} height={700} type={type} windowIndex={index}
-                            activeIndex={activeWindow} changeActive={changeActiveWindow}
-                            currentReport={currentReport} changeCurrentReport={changeCurrentReport}
-                            reports={reports}
-                            updateReports={updateReports}
-                            closeWindow={closeWindow}
+                    <Window 
+                    key={index}
+                    width={800}
+                    height={700} 
+                    type={type} 
+                    windowIndex={index}
+                    activeIndex={activeWindow} 
+                    changeActive={changeActiveWindow}
+                    currentReport={currentReport} 
+                    changeCurrentReport={changeCurrentReport}
+                    reports={reports}
+                    updateReports={updateReports}
+                    closeWindow={closeWindow}
                     />
                 ))}
             </div>

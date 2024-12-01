@@ -27,6 +27,10 @@ function Taskbar({openWindow}: { openWindow: (type: windowTypes) => void }) {
                 </a>
                 <div className={"embossed-bar"}></div>
                 <div className={"extruding-bar"}></div>
+                <button className={"normal-tab"} onClick={() => openWindow(windowTypes.LOGIN)}>
+                    <img src={wondows} alt={"🏠"}></img>
+                    <h1>Sign-In</h1>
+                </button>
                 <button className={"normal-tab"} onClick={() => openWindow(windowTypes.MAP)}>
                     <img src={wondows} alt={"🏠"}></img>
                     <h1>Map</h1>

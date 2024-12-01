@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import hash from "./APIs/md5hash";
 
-const signIn: React.FC = () => {
+export const useSignIn = () => {
     const [passcode, setPasscode] = useState("");
     const [error, setError] = useState("");
     
@@ -15,12 +15,15 @@ const signIn: React.FC = () => {
 
     const handleSignIn = async () => {
         try {
-            const hashedPassword = await hash(passcode);
-            const storedHash = "atFLqZhuNhVCPfyiVtBOPw==";
+            const hashedResult: any = await hash(passcode);
+            const hashedPassword = hashedResult.Digest;
+            // password is "user123"
+            const storedHash = "6ad14ba9986e3615423dfca256d04e3f";
 
             if (hashedPassword === storedHash) {
                 alert("Authentication successful!");
-                window.close();
+                errorHandle("");
+                
                 // continue writing authentication process
                 // implement authorized editing of reports
             }
@@ -32,23 +35,14 @@ const signIn: React.FC = () => {
         }
     }
 
-    return(
-        <div style={{textAlign: "center"}}>
-            <h1>Admin Sign-In</h1>
-            <input type="text"
-                placeholder="Please enter admin password"
-                value={passcode}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={handleSignIn}>Submit</button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-        </div>
-    )
-
+    return {
+        passcode,
+        setPassword,
+        error,
+        handleSignIn
+    }
 }
 
-export default signIn;
 
-//function signIn({input}){
+
     
-//}

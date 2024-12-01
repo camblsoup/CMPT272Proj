@@ -9,6 +9,7 @@ import ReportWindow from './windowtypes/Report.tsx'
 import { windowTypes } from "./data/enums.ts"
 import { Report } from "./data/reportType"
 import { useState, MouseEvent, useEffect } from 'react'
+import SignInTab from './windowtypes/login.tsx'
 
 // Window Element Specification
 function Window({ width, height, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports, closeWindow }: { width: number, height: number, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void, closeWindow: (index: number) => void } ) {
@@ -16,7 +17,7 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
-    const style = {
+    const style: React.CSSProperties ={
         width: width,
         height: height,
         position: 'absolute',
@@ -75,6 +76,8 @@ function Window({ width, height, type, windowIndex, activeIndex, changeActive, c
         switch (type) {
             case windowTypes.MAP:
                 return <MapWindow />;
+            case windowTypes.LOGIN:
+                return <SignInTab />;
             case windowTypes.LIST:
                 return <ListWindow
                     reports={reports}
