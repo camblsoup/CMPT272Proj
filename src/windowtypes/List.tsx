@@ -77,7 +77,14 @@ function ListWindow({
             <div className="list-window-buttons">
                 <button onClick={handleAdd}>New</button>
                 <button onClick={() => {handleOpen(selected)}}>Open</button>
-                <button onClick={() => {handleEdit(selected)}}>Edit</button>
+                <button onClick={() => {
+                    if (bypass === true) {
+                        handleEdit(selected);
+                    }
+                    else {
+                        openWindow(windowTypes.LOGIN);
+                    }
+                }}>Edit</button>
                 <button onClick={() => {
                     if (bypass === true) {
                         deleteReport();

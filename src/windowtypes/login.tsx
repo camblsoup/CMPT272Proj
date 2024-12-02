@@ -18,7 +18,7 @@ function SignInTab({ signedInCheck, bypass }: { signedInCheck: React.Dispatch<Re
     return (
         <div style={{textAlign: "center"}}>
             <h1>Admin Sign-In</h1>
-            <input type="text"
+            <input type="password"
                 placeholder="Please enter admin password"
                 value={passcode}
                 onChange={(e) => {setPassword(e.target.value)}}
