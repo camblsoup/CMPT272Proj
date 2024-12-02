@@ -9,7 +9,14 @@ import {windowTypes} from "./data/enums.ts";
 import {useEffect, useState} from 'react';
 import {Report} from './data/reportType';
 
+
 function App() {
+    const [signedInCheck, setSignedIn] = useState(false);
+
+    useEffect(() => {
+        console.log("signedIn state changed:", signedInCheck);
+    }, [signedInCheck]);
+
     const [reports, setReports] = useState<Report[]>(() => {
         const savedReports = localStorage.getItem('reports');
         return savedReports ? JSON.parse(savedReports) : [];
@@ -23,6 +30,10 @@ function App() {
     useEffect(() => {
         localStorage.setItem('reports', JSON.stringify(reports));
     }, [reports]);
+
+    function setLogin(login: boolean)  {
+        return setSignedIn(login);
+    }
 
     function updateReports(newReports: Report[]) {
         setReports(newReports);
@@ -65,6 +76,14 @@ function App() {
             }
         }
 
+        if (type === windowTypes.LOGIN) {
+            const existingListWindow = windows.find((currType) => currType === type);
+            if (existingListWindow) {
+                const listWindowIndex = windows.indexOf(existingListWindow)
+                changeActiveWindow(listWindowIndex);
+                return;
+            }
+        }
 
         setWindows((prevWindows) => [
             ...prevWindows, type
@@ -121,6 +140,9 @@ function App() {
                                 minimizeWindow={minimizeWindow}
                                 isEditing={isEditingReport}
                                 changeEditing={changeEditingReport}
+                                openWindow={openWindow}
+                                signedInCheck={setSignedIn}
+                                bypass={signedInCheck}
                         /> : type === windowTypes.LIST ?
                             <Window key={index}
                                     initWidth={600}
@@ -137,6 +159,9 @@ function App() {
                                     minimizeWindow={minimizeWindow}
                                     isEditing={isEditingReport}
                                     changeEditing={changeEditingReport}
+                                    openWindow={openWindow}
+                                    signedInCheck={setSignedIn}
+                                    bypass={signedInCheck}
                             /> :
                             <Window key={index}
                                     initWidth={800}
@@ -153,7 +178,11 @@ function App() {
                                     minimizeWindow={minimizeWindow}
                                     isEditing={isEditingReport}
                                     changeEditing={changeEditingReport}
-                            />
+                                    openWindow={openWindow}
+                                    signedInCheck={setSignedIn}
+                                    bypass={signedInCheck}
+                            /> 
+
 
 
                     ))}

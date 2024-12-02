@@ -1,18 +1,29 @@
 import { Report } from "../data/reportType.ts";
 import ListItem from "./ListItem.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {windowTypes} from "../data/enums.ts";
 
 function ListWindow({ 
     reports, 
     changeCurrentReport, 
     updateReports,
-    changeEditing
+    changeEditing,
+    openWindow,
+    signedInCheck,
+    bypass
 }: { 
     reports: Report[], 
     changeCurrentReport: (reportId: number) => void,
     updateReports: (reports: Report[]) => void,
-    changeEditing: (editing: boolean) => void
+    changeEditing: (editing: boolean) => void,
+    openWindow: (type: windowTypes) => void,
+    signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
+    bypass: boolean;
 }) {
+    useEffect(() => {
+        console.log("signedInCheck updated:", signedInCheck);
+    }, [signedInCheck]);
+
     const [selected, setSelected] = useState(0);
 
     function changeSelected(reportId: number) {
@@ -67,7 +78,20 @@ function ListWindow({
                 <button onClick={handleAdd}>New</button>
                 <button onClick={() => {handleOpen(selected)}}>Open</button>
                 <button onClick={() => {handleEdit(selected)}}>Edit</button>
-                <button onClick={deleteReport}>Delete</button>
+
+                <button onClick={deleteReport}>Delete</button> 
+
+                <button onClick={() => {
+                    if (bypass === true) {
+                        deleteReport();
+                    }
+                    else {
+                        openWindow(windowTypes.LOGIN);
+                    }
+                }}>Delete</button>
+
+
+
             </div>
             <div>
                 <h1>Incidents</h1>
