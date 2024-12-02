@@ -27,6 +27,8 @@ function ReportWindow({
             wit_name: formData.get('wit_name') as string,
             wit_phone: formData.get('wit_phone') as string,
             location: formData.get('location') as string,
+            lat: parseFloat(formData.get('lat') as string),
+            lon: parseFloat(formData.get('lon') as string),
             comments: formData.get('comments') as string,
             date: formData.get('date') as string,
             picture: formData.get('picture') as string
@@ -56,6 +58,8 @@ function ReportWindow({
                         <p>{report.wit_name}</p>
                         <p>{report.wit_phone}</p>
                         <p>{report.location}</p>
+                        <p>{report.lat}</p>
+                        <p>{report.lon}</p>
                         <img src={report.picture} alt="Report Picture" />
                         <p>{report.comments}</p>
                         <p>{report.date}</p>
@@ -92,6 +96,8 @@ function ReportWindow({
                             <div>
                                 <label>Location:</label>
                                 <input type="text" name="location" defaultValue={report.location} />
+                                <input type="text" name="lat" defaultValue={report.lat} />
+                                <input type="text" name="lon" defaultValue={report.lon} />
                             </div>
                             <div>
                                 <label>Comments:</label>

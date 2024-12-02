@@ -38,6 +38,8 @@ function ListWindow({
             wit_name: "",
             wit_phone: "",
             location: "",
+            lat: 0,
+            lon: 0,
             picture: "",
             comments: "",
             date: new Date().toLocaleDateString(),
