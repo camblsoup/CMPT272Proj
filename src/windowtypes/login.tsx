@@ -1,31 +1,36 @@
 import { useSignIn } from "../SignIn.ts";
 import '../css/Login.css'
 
-function SignInTab({ signedInCheck, bypass }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, bypass: boolean}) {
+function SignInTab({ signedInCheck, closeWindow, windowIndex }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, bypass: boolean, closeWindow: (index: number) => void, windowIndex: number}) {
     const {passcode, setPassword, error, handleSignIn} = useSignIn();
 
     const handleLogin = async ()=> {
         const success = await handleSignIn();
         if (success) {
             signedInCheck(true);
-            bypass = true;
         }
         else {
             signedInCheck(false);
-            bypass = false;
         }
     }
 
     return (
-        <div style={{textAlign: "center"}}>
-            <h1>Admin Sign-In</h1>
-            <input type="password"
-                placeholder="Please enter admin password"
-                value={passcode}
-                onChange={(e) => {setPassword(e.target.value)}}
-            />
+        <div id={"signin"} style={{textAlign: "center"}}>
+            <div id={"signin-form"}>
+                <p>Type a password to edit a report.</p>
+                <label style={{marginRight: 20}}><u>P</u>assword:</label>
+                <input type="password"
+                       value={passcode}
+                       onChange={(e) => {
+                           setPassword(e.target.value)
+                       }}
+                />
+                <p style={{color: "red", height: 21, marginTop: 15}}>{error}</p>
+            </div>
+            <div id={"signin-buttons"}>
             <button onClick={handleLogin}>Submit</button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+                <button onClick={() => closeWindow(windowIndex)}>Cancel</button>
+            </div>
         </div>
     )
 }

@@ -177,7 +177,7 @@ function App() {
                                 /> :
                                 <Window key={index}
                                         initWidth={600}
-                                        initHeight={150}
+                                        initHeight={170}
                                         initPos={{x: 25, y: 25}}
                                         type={type}
                                         windowIndex={index}

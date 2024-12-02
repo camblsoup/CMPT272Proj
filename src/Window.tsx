@@ -128,7 +128,7 @@ function Window({
             case windowTypes.MAP:
                 return <MapWindow reports={reports} />;
             case windowTypes.LOGIN:
-                return <SignInTab bypass={bypass} signedInCheck={signedInCheck}/>;
+                return <SignInTab bypass={bypass} signedInCheck={signedInCheck} closeWindow={closeWindow} windowIndex={windowIndex}/>;
             case windowTypes.LIST:
                 return <ListWindow
                     reports={reports}
@@ -177,7 +177,7 @@ function Window({
                     className="top-bar"
                     onMouseDown={handleMouseDown}
                 >
-                    <div className={"title"}>
+                    <div className={"title"} style={{color: "white"}}>
                         <img
                             src={type === windowTypes.MAP ? mapIcon : type === windowTypes.LIST ? listIcon : type === windowTypes.REPORT ? reportIcon : signinIcon}
                             alt={"map icon"}/>
@@ -197,7 +197,7 @@ function Window({
                 <div className={"body"}>
                     {renderBody()}
                 </div>
-                <div className={"info"}>
+                <div className={type === windowTypes.LOGIN ? "hidden" : "info"}>
                     <p>{reports.length} Report(s)</p>
                 </div>
             </div>
