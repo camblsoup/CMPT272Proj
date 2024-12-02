@@ -1,3 +1,48 @@
-input {
+#signin {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    justify-content: space-between;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 15px;
+    align-items: start;
+}
 
+#signin input {
+    background: white;
+    border: 2px solid #555555;
+    border-right-color: lightgray;
+    border-bottom-color: lightgray;
+    width: 120px;
+    margin-top: 30px;
+}
+
+#signin button {
+    color: black;
+    background: #C0C0C0;
+    border: 1px double white;
+    border-right-color: #444444;
+    border-bottom-color: #444444;
+    outline: black solid 1px;
+    filter: drop-shadow(1px 1px black);
+    padding: 2px;
+    min-width: 80px;
+}
+
+#signin button:active {
+    filter: none;
+    border-color: #7F787F;
+    outline-color: black;
+}
+
+#signin-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#signin-form {
+    text-align: start;
 }
