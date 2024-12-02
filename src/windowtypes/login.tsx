@@ -1,4 +1,4 @@
-import { useSignIn } from "../SignIn";
+import { useSignIn } from "../SignIn.ts";
 
 function SignInTab({ signedInCheck, bypass }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, bypass: boolean}) {
     const {passcode, setPassword, error, handleSignIn} = useSignIn();

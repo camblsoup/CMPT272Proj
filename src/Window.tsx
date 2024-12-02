@@ -12,7 +12,7 @@ import ReportWindow from './windowtypes/Report.tsx'
 import {windowTypes} from "./data/enums.ts"
 import {Report} from "./data/reportType"
 import React, {MouseEvent, useEffect, useState} from 'react'
-import SignInTab from './windowtypes/Login.tsx'
+import SignInTab from './windowtypes/login.tsx'
 
 // Window Element Specification
 function Window({
