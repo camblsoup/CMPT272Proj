@@ -4,6 +4,7 @@ import '../css/Map.css'
 import L from "leaflet";
 import { Report } from '../data/reportType';
 import { useState } from 'react';
+import { windowTypes } from '../data/enums';
 
 const icon = L.icon({
     iconUrl: markerIcon,
@@ -19,18 +20,30 @@ function SetViewOnClick() {
     return null
 }
 
-function MapWindow({reports}:{reports: Report[]}) {
+function MapWindow({reports, openWindow, changeCurrentReport, changeActiveWindow, map, changeMap}:{reports: Report[], openWindow: (type: windowTypes) => void, changeCurrentReport: (reportId: number) => void, changeActiveWindow: (index: number) => void, map: L.Map | null, changeMap: (map: L.Map) => void}) {
 
-    const [map, setMap] = useState(null);
-    const markers = reports.map(report =>
+    function zoomToReport(report: Report) {
+        map?.setView([report.lat, report.lon], map.getZoom());
+    }
+
+    //const [map, setMap] = useState<L.Map | null>(null);
+    
+    const markers = reports.filter(report => 
+        typeof report.lat === 'number' && 
+        typeof report.lon === 'number'
+    ).map(report =>
         <Marker 
-            position={[report.lat, report.lon]} 
+            key={report.id}
+            position={[report.lat, report.lon]}
             icon={icon}
             eventHandlers={{
                 click: (e) => {
-                    map.setView([report.lat, report.lon], map.getZoom());
+                    map?.setView([report.lat, report.lon], map.getZoom());
+                    openWindow(windowTypes.REPORT);
+                    changeCurrentReport(report.id);
                 }
-            }}>
+            }}
+        >
             <Popup>
                 <h1>{report.location}</h1>
                 <p>Type: {report.type}</p>
@@ -40,7 +53,7 @@ function MapWindow({reports}:{reports: Report[]}) {
 
     return (
         <>
-            <MapContainer center={[49.279677,-122.92596]} zoom={13} scrollWheelZoom={true} id={'map'} ref={setMap}>
+            <MapContainer center={[49.279677,-122.92596]} zoom={13} scrollWheelZoom={true} id={'map'} ref={changeMap}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

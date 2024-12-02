@@ -9,6 +9,8 @@ import {windowTypes} from "./data/enums.ts";
 import {useEffect, useState} from 'react';
 import {Report} from './data/reportType';
 
+import L from "leaflet";
+
 function App() {
     const [signedInCheck, setSignedIn] = useState(false);
 
@@ -25,6 +27,8 @@ function App() {
     const [currentReport, setCurrentReport] = useState(0);
     const [windows, setWindows] = useState<windowTypes[]>([]);
     const [isEditingReport, setIsEditingReport] = useState(false);
+
+    const [map, setMap] = useState<L.Map | null>(null);
 
     useEffect(() => {
         localStorage.setItem('reports', JSON.stringify(reports));
@@ -45,6 +49,13 @@ function App() {
 
     function changeEditingReport(editing: boolean) {
         setIsEditingReport(editing);
+    }
+
+    function zoomToReport(report: Report) {
+        // check if report lat and lon are numbers
+        if (typeof report.lat === 'number' && typeof report.lon === 'number') {
+            map?.setView([report.lat, report.lon], map.getZoom());
+        }
     }
 
     function openWindow(type: windowTypes) {
@@ -135,6 +146,10 @@ function App() {
                                 changeEditing={changeEditingReport}
                                 openWindow={openWindow}
                                 signedInCheck={setSignedIn}
+                                windows={windows}
+                                map={map}
+                                changeMap={setMap}
+                                zoomToReport={zoomToReport}
                                 signedIn={signedInCheck}
                         /> : type === windowTypes.LIST ?
                             <Window key={index}
@@ -155,6 +170,10 @@ function App() {
                                     openWindow={openWindow}
                                     signedInCheck={setSignedIn}
                                     signedIn={signedInCheck}
+                                    windows={windows}
+                                    map={map}
+                                    changeMap={setMap}
+                                    zoomToReport={zoomToReport}
                             /> : type === windowTypes.REPORT ?
                                 <Window key={index}
                                         initWidth={800}
@@ -174,6 +193,10 @@ function App() {
                                         openWindow={openWindow}
                                         signedInCheck={setSignedIn}
                                         signedIn={signedInCheck}
+                                        windows={windows}
+                                        map={map}
+                                        changeMap={setMap}
+                                        zoomToReport={zoomToReport}
                                 /> :
                                 <Window key={index}
                                         initWidth={600}
@@ -193,6 +216,10 @@ function App() {
                                         openWindow={openWindow}
                                         signedInCheck={setSignedIn}
                                         signedIn={signedInCheck}
+                                        windows={windows}
+                                        map={map}
+                                        changeMap={setMap}
+                                        zoomToReport={zoomToReport}
                                 />
                 ))}
             </div>

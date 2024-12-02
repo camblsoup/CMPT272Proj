@@ -1,23 +1,24 @@
 import {Report} from "../data/reportType.ts";
 import ListItem from "./ListItem.tsx";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {windowTypes} from "../data/enums.ts";
 
-function ListWindow({ 
-    reports, 
-    changeCurrentReport, 
-    updateReports,
-    changeEditing,
-    openWindow,
-    signedInCheck,
-    signedIn,
-
-}: {
-    reports: Report[], 
+function ListWindow({
+                        reports,
+                        changeCurrentReport,
+                        updateReports,
+                        changeEditing,
+                        openWindow,
+                        signedInCheck,
+                        signedIn,
+                        zoomToReport
+                    }: {
+    reports: Report[],
     changeCurrentReport: (reportId: number) => void,
     updateReports: (reports: Report[]) => void,
     changeEditing: (editing: boolean) => void,
     openWindow: (type: windowTypes) => void,
+    zoomToReport: (report: Report) => void
     signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
     signedIn: boolean,
 }) {
@@ -29,6 +30,7 @@ function ListWindow({
 
     function changeSelected(reportId: number) {
         setSelected(reportId);
+        zoomToReport(reports.find(report => report.id === reportId) as Report);
     }
 
     function addNewReport() {
@@ -44,6 +46,7 @@ function ListWindow({
             picture: "",
             comments: "",
             date: new Date().toLocaleDateString(),
+            time: new Date().getTime().toString(),
             status: "Open"
         };
         updateReports([...reports, newReport]);
@@ -52,6 +55,7 @@ function ListWindow({
     }
 
     function handleEdit(reportID: number) {
+        openWindow(windowTypes.REPORT);
         changeCurrentReport(reportID);
         changeEditing(true);
     }
@@ -81,46 +85,49 @@ function ListWindow({
         <>
             <div className="list-window-buttons">
                 <button onClick={handleAdd}>New</button>
-                <button onClick={() => {handleOpen(selected)}}>Open</button>
+                <button onClick={() => {
+                    handleOpen(selected)
+                }}>Open
+                </button>
                 <button onClick={() => {
                     if (signedIn) {
                         handleEdit(selected);
-                    }
-                    else {
+                    } else {
                         openWindow(windowTypes.LOGIN);
                     }
-                }}>Edit</button>
+                }}>Edit
+                </button>
                 <button onClick={() => {
                     if (signedIn) {
                         deleteReport();
-                    }
-                    else {
+                    } else {
                         openWindow(windowTypes.LOGIN);
                     }
-                }}>Delete</button>
+                }}>Delete
+                </button>
 
             </div>
             <div>
                 <h1>Incidents</h1>
                 <table style={{"width": "100%"}}>
                     <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Location</th>
-                            <th>Date</th>
+                    <tr>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Location</th>
+                        <th>Date</th>
                             <th>Time</th>
-                        </tr>
+                    </tr>
                     </thead>
                     <tbody>
-                        {reports.map((report: Report) => (
-                            <ListItem 
-                                report={report} 
-                                key={report.id} 
-                                selectedItem={selected} 
-                                setSelectedItem={changeSelected} 
-                            />
-                        ))}
+                    {reports.map((report: Report) => (
+                        <ListItem
+                            report={report}
+                            key={report.id}
+                            selectedItem={selected}
+                            setSelectedItem={changeSelected}
+                        />
+                    ))}
                     </tbody>
                 </table>
             </div>

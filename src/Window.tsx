@@ -35,6 +35,10 @@ function Window({
                     openWindow,
                     signedInCheck,
                     signedIn,
+                    windows,
+                    map,
+                    changeMap,
+                    zoomToReport
                 }: {
     initWidth: number,
     initHeight: number,
@@ -55,6 +59,10 @@ function Window({
     openWindow: (type: windowTypes) => void
     signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
     signedIn: boolean,
+    windows: windowTypes[],
+    map: L.Map | null,
+    changeMap: (map: L.Map) => void,
+    zoomToReport: (report: Report) => void
 }) {
 
     const [regularPosition, setRegularPosition] = useState(initPos);
@@ -126,10 +134,21 @@ function Window({
     function renderBody() {
         switch (type) {
             case windowTypes.MAP:
-                return <MapWindow reports={reports}/>;
+                return <MapWindow
+                    reports={reports}
+                    openWindow={openWindow}
+                    changeCurrentReport={changeCurrentReport}
+                    changeActiveWindow={changeActive}
+                    map={map}
+                    changeMap={changeMap}
+                />;
             case windowTypes.LOGIN:
-                return <SignInTab signedInCheck={signedInCheck} closeWindow={closeWindow}
-                                  windowIndex={windowIndex}/>;
+                return <SignInTab
+                    signedInCheck={signedInCheck}
+                    closeWindow={closeWindow}
+                    windowIndex={windowIndex}
+                    windows={windows}
+                />;
             case windowTypes.LIST:
                 return <ListWindow
                     reports={reports}
@@ -139,6 +158,7 @@ function Window({
                     openWindow={openWindow}
                     signedInCheck={signedInCheck}
                     signedIn={signedIn}
+                    zoomToReport={zoomToReport}
                 />;
             case windowTypes.REPORT:
                 return <ReportWindow
@@ -157,8 +177,8 @@ function Window({
         setMaximized(true);
         setRegularSize(size);
         setRegularPosition(position);
-        setSize({width: window.innerWidth - 8, height: window.innerHeight - 48})
-        setPosition({x: 0, y: 0});
+        setSize({ width: window.innerWidth - 8, height: window.innerHeight - 48 })
+        setPosition({ x: 0, y: 0 });
     }
 
     function unmaximizeWindow() {

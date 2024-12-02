@@ -1,13 +1,15 @@
 import { useSignIn } from "../SignIn.ts";
 import '../css/Login.css'
+import { windowTypes } from "../data/enums.ts";
 
-function SignInTab({ signedInCheck, closeWindow, windowIndex }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, closeWindow: (index: number) => void, windowIndex: number}) {
+function SignInTab({ signedInCheck, closeWindow, windowIndex, windows }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, closeWindow: (index: number) => void, windowIndex: number, windows: windowTypes[]}) {
     const {passcode, setPassword, error, handleSignIn} = useSignIn();
 
     const handleLogin = async ()=> {
         const success = await handleSignIn();
         if (success) {
             signedInCheck(true);
+            closeWindow(windows.length - 1);
         }
         else {
             signedInCheck(false);
