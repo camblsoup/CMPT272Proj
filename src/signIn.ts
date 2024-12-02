@@ -11,7 +11,6 @@ interface HashResponse {
 export const useSignIn = () => {
     const [passcode, setPasscode] = useState("");
     const [error, setError] = useState("");
-    const [authenticated, setAuthenticated] = useState(false);
     
     const setPassword = (input: string) => {
         return setPasscode(input);
@@ -21,11 +20,7 @@ export const useSignIn = () => {
         return setError(input);
     }
 
-    const checkAuthentication = ()=> {
-        return authenticated;
-    }
-
-    const handleSignIn = async () => {
+    const handleSignIn = async (): Promise<boolean> => {
         try {
             const hashedResult: HashResponse = await hash(passcode);
             const hashedPassword = hashedResult.Digest;
@@ -34,18 +29,16 @@ export const useSignIn = () => {
             const storedHash = "6ad14ba9986e3615423dfca256d04e3f";
 
             if (hashedPassword === storedHash) {
-                setAuthenticated(true);
+                alert("Authentication successful!");
                 errorHandle("");
-                console.log("authenticated");
-                
-                // continue writing authentication process
-                // implement authorized editing of reports
-            }
-            else {
+                return true;
+            } else {
                 errorHandle("Incorrect password or username. Please try again");
+                return false;
             }
         } catch (error) {
             errorHandle("An error has occured: " + error);
+            return false;
         }
     }
 
@@ -53,8 +46,7 @@ export const useSignIn = () => {
         passcode,
         setPassword,
         error,
-        handleSignIn,
-        checkAuthentication
+        handleSignIn
     }
 }
 

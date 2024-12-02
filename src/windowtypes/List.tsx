@@ -1,6 +1,6 @@
 import {Report} from "../data/reportType.ts";
 import ListItem from "./ListItem.tsx";
-import {useState} from "react";
+import { useEffect, useState } from "react";
 import {windowTypes} from "../data/enums.ts";
 import {useSignIn} from "../signIn.ts";
 
@@ -9,16 +9,23 @@ function ListWindow({
     changeCurrentReport, 
     updateReports,
     changeEditing,
-    openWindow
-}: { 
+    openWindow,
+    signedInCheck,
+    bypass
+}: {
     reports: Report[], 
     changeCurrentReport: (reportId: number) => void,
     updateReports: (reports: Report[]) => void,
-    changeEditing: (editing: boolean) => void
-    openWindow: (type: windowTypes) => void
+    changeEditing: (editing: boolean) => void,
+    openWindow: (type: windowTypes) => void,
+    signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
+    bypass: boolean;
 }) {
+    useEffect(() => {
+        console.log("signedInCheck updated:", signedInCheck);
+    }, [signedInCheck]);
+
     const [selected, setSelected] = useState(0);
-    const { checkAuthentication } = useSignIn();
 
     function changeSelected(reportId: number) {
         setSelected(reportId);
@@ -43,12 +50,8 @@ function ListWindow({
     }
 
     function handleEdit(reportID: number) {
-        if (checkAuthentication()) {
-            changeCurrentReport(reportID);
-            changeEditing(true);
-        } else {
-            openWindow(windowTypes.LOGIN);
-        }
+        changeCurrentReport(reportID);
+        changeEditing(true);
     }
 
     function handleOpen(reportID: number) {
@@ -76,8 +79,23 @@ function ListWindow({
             <div className="list-window-buttons">
                 <button onClick={handleAdd}>New</button>
                 <button onClick={() => {handleOpen(selected)}}>Open</button>
-                <button onClick={() => {handleEdit(selected)}}>Edit</button>
-                <button onClick={deleteReport}>Delete</button>
+                <button onClick={() => {
+                    if (bypass === true) {
+                        handleEdit(selected);
+                    }
+                    else {
+                        openWindow(windowTypes.LOGIN);
+                    }
+                }}>Edit</button>
+                <button onClick={() => {
+                    if (bypass === true) {
+                        deleteReport();
+                    }
+                    else {
+                        openWindow(windowTypes.LOGIN);
+                    }
+                }}>Delete</button>
+
             </div>
             <div>
                 <h1>Incidents</h1>
