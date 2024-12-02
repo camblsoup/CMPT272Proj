@@ -138,7 +138,6 @@ function Window({
                     reports={reports}
                     openWindow={openWindow}
                     changeCurrentReport={changeCurrentReport}
-                    changeActiveWindow={changeActive}
                     map={map}
                     changeMap={changeMap}
                 />;

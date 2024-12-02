@@ -1,9 +1,8 @@
-import { MapContainer, Marker, TileLayer, Popup, useMapEvent, useMap } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, Popup, useMapEvent } from 'react-leaflet';
 import markerIcon from "../assets/marker.png";
 import '../css/Map.css'
 import L from "leaflet";
 import { Report } from '../data/reportType';
-import { useState } from 'react';
 import { windowTypes } from '../data/enums';
 
 const icon = L.icon({
@@ -20,11 +19,7 @@ function SetViewOnClick() {
     return null
 }
 
-function MapWindow({reports, openWindow, changeCurrentReport, changeActiveWindow, map, changeMap}:{reports: Report[], openWindow: (type: windowTypes) => void, changeCurrentReport: (reportId: number) => void, changeActiveWindow: (index: number) => void, map: L.Map | null, changeMap: (map: L.Map) => void}) {
-
-    function zoomToReport(report: Report) {
-        map?.setView([report.lat, report.lon], map.getZoom());
-    }
+function MapWindow({reports, openWindow, changeCurrentReport, map, changeMap}:{reports: Report[], openWindow: (type: windowTypes) => void, changeCurrentReport: (reportId: number) => void, map: L.Map | null, changeMap: (map: L.Map) => void}) {
 
     //const [map, setMap] = useState<L.Map | null>(null);
     
@@ -37,7 +32,7 @@ function MapWindow({reports, openWindow, changeCurrentReport, changeActiveWindow
             position={[report.lat, report.lon]}
             icon={icon}
             eventHandlers={{
-                click: (e) => {
+                click: () => {
                     map?.setView([report.lat, report.lon], map.getZoom());
                     openWindow(windowTypes.REPORT);
                     changeCurrentReport(report.id);
