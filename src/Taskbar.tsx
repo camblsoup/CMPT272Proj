@@ -23,7 +23,7 @@ function Taskbar({ activeIndex, windows, unminimizeWindow }: { activeIndex: numb
             <div className={"taskbar-apps"}>
                 <a className={"normal-tab"} href="">
                     <img src={wondows} alt={"🏠"}></img>
-                    <h1>Home</h1>
+                    <h1>Start</h1>
                 </a>
                 <div className={"embossed-bar"}></div>
                 <div className={"extruding-bar"}></div>

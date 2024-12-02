@@ -5,9 +5,9 @@ function ListItem({ report, selectedItem, setSelectedItem }: { report: Report, s
         <tr key={report.id} onClick={() => setSelectedItem(report.id)} className={selectedItem === report.id ? 'selected' : ''}>
             <td>{selectedItem === report.id ? " - " + report.type : report.type}</td>
             <td>{report.status}</td>
-            <td>{report.wit_name}</td>
             <td>{report.location}</td>
             <td>{report.date}</td>
+            <td>{report.time}</td>
         </tr>
     )
 }

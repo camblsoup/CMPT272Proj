@@ -135,7 +135,7 @@ function App() {
                                 changeEditing={changeEditingReport}
                                 openWindow={openWindow}
                                 signedInCheck={setSignedIn}
-                                bypass={signedInCheck}
+                                signedIn={signedInCheck}
                         /> : type === windowTypes.LIST ?
                             <Window key={index}
                                     initWidth={600}
@@ -154,7 +154,7 @@ function App() {
                                     changeEditing={changeEditingReport}
                                     openWindow={openWindow}
                                     signedInCheck={setSignedIn}
-                                    bypass={signedInCheck}
+                                    signedIn={signedInCheck}
                             /> : type === windowTypes.REPORT ?
                                 <Window key={index}
                                         initWidth={800}
@@ -173,7 +173,7 @@ function App() {
                                         changeEditing={changeEditingReport}
                                         openWindow={openWindow}
                                         signedInCheck={setSignedIn}
-                                        bypass={signedInCheck}
+                                        signedIn={signedInCheck}
                                 /> :
                                 <Window key={index}
                                         initWidth={600}
@@ -192,7 +192,7 @@ function App() {
                                         changeEditing={changeEditingReport}
                                         openWindow={openWindow}
                                         signedInCheck={setSignedIn}
-                                        bypass={signedInCheck}
+                                        signedIn={signedInCheck}
                                 />
                 ))}
             </div>

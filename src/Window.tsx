@@ -16,46 +16,46 @@ import SignInTab from './windowtypes/login.tsx'
 
 // Window Element Specification
 function Window({
-        initWidth,
-        initHeight,
-        initPos,
-        type,
-        windowIndex,
-        activeIndex,
-        changeActive,
-        currentReport,
-        changeCurrentReport,
-        reports,
-        updateReports,
-        closeWindow,
-        isMinimized,
-        minimizeWindow,
-        isEditing,
-        changeEditing,
-        openWindow,
-        signedInCheck,
-        bypass
-    }: {
-        initWidth: number,
-        initHeight: number,
-        initPos: { x: number, y: number },
-        type: windowTypes,
-        windowIndex: number,
-        activeIndex: number,
-        changeActive: (index: number) => void,
-        currentReport: number,
-        changeCurrentReport: (reportId: number) => void,
-        reports: Report[],
-        updateReports: (reports: Report[]) => void,
-        closeWindow: (index: number) => void,
-        isMinimized: (index: number) => boolean,
-        minimizeWindow: (index: number) => void,
-        isEditing: boolean,
-        changeEditing: (editing: boolean) => void,
-        openWindow: (type: windowTypes) => void
-        signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
-        bypass: boolean;
-     }) {
+                    initWidth,
+                    initHeight,
+                    initPos,
+                    type,
+                    windowIndex,
+                    activeIndex,
+                    changeActive,
+                    currentReport,
+                    changeCurrentReport,
+                    reports,
+                    updateReports,
+                    closeWindow,
+                    isMinimized,
+                    minimizeWindow,
+                    isEditing,
+                    changeEditing,
+                    openWindow,
+                    signedInCheck,
+                    signedIn,
+                }: {
+    initWidth: number,
+    initHeight: number,
+    initPos: { x: number, y: number },
+    type: windowTypes,
+    windowIndex: number,
+    activeIndex: number,
+    changeActive: (index: number) => void,
+    currentReport: number,
+    changeCurrentReport: (reportId: number) => void,
+    reports: Report[],
+    updateReports: (reports: Report[]) => void,
+    closeWindow: (index: number) => void,
+    isMinimized: (index: number) => boolean,
+    minimizeWindow: (index: number) => void,
+    isEditing: boolean,
+    changeEditing: (editing: boolean) => void,
+    openWindow: (type: windowTypes) => void
+    signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
+    signedIn: boolean,
+}) {
 
     const [regularPosition, setRegularPosition] = useState(initPos);
     const [isDragging, setIsDragging] = useState(false);
@@ -126,9 +126,10 @@ function Window({
     function renderBody() {
         switch (type) {
             case windowTypes.MAP:
-                return <MapWindow reports={reports} />;
+                return <MapWindow reports={reports}/>;
             case windowTypes.LOGIN:
-                return <SignInTab bypass={bypass} signedInCheck={signedInCheck} closeWindow={closeWindow} windowIndex={windowIndex}/>;
+                return <SignInTab signedInCheck={signedInCheck} closeWindow={closeWindow}
+                                  windowIndex={windowIndex}/>;
             case windowTypes.LIST:
                 return <ListWindow
                     reports={reports}
@@ -137,7 +138,7 @@ function Window({
                     changeEditing={changeEditing}
                     openWindow={openWindow}
                     signedInCheck={signedInCheck}
-                    bypass={bypass}
+                    signedIn={signedIn}
                 />;
             case windowTypes.REPORT:
                 return <ReportWindow
@@ -156,8 +157,8 @@ function Window({
         setMaximized(true);
         setRegularSize(size);
         setRegularPosition(position);
-        setSize({ width: window.innerWidth - 8, height: window.innerHeight - 48 })
-        setPosition({ x: 0, y: 0 });
+        setSize({width: window.innerWidth - 8, height: window.innerHeight - 48})
+        setPosition({x: 0, y: 0});
     }
 
     function unmaximizeWindow() {
@@ -187,7 +188,8 @@ function Window({
                         <div className={"window-size-buttons"}>
                             <button className={"window-button"} onClick={() => minimizeWindow(windowIndex)}><img
                                 className={"window-button-icon"} src={minimize} alt={"minimize icon"}/></button>
-                            <button className={type === windowTypes.LOGIN ? "hidden" : "window-button"} onClick={maximized ? unmaximizeWindow : maximizeWindow}>
+                            <button className={type === windowTypes.LOGIN ? "hidden" : "window-button"}
+                                    onClick={maximized ? unmaximizeWindow : maximizeWindow}>
                                 <img className={"window-button-icon"} src={maximize} alt={"maximize icon"}/></button>
                         </div>
                         <button className={"window-button"} onClick={() => closeWindow(windowIndex)}><img

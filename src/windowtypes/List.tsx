@@ -10,7 +10,8 @@ function ListWindow({
     changeEditing,
     openWindow,
     signedInCheck,
-    bypass
+    signedIn,
+
 }: {
     reports: Report[], 
     changeCurrentReport: (reportId: number) => void,
@@ -18,7 +19,7 @@ function ListWindow({
     changeEditing: (editing: boolean) => void,
     openWindow: (type: windowTypes) => void,
     signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
-    bypass: boolean;
+    signedIn: boolean,
 }) {
     useEffect(() => {
         console.log("signedInCheck updated:", signedInCheck);
@@ -82,7 +83,7 @@ function ListWindow({
                 <button onClick={handleAdd}>New</button>
                 <button onClick={() => {handleOpen(selected)}}>Open</button>
                 <button onClick={() => {
-                    if (bypass === true) {
+                    if (signedIn) {
                         handleEdit(selected);
                     }
                     else {
@@ -90,7 +91,7 @@ function ListWindow({
                     }
                 }}>Edit</button>
                 <button onClick={() => {
-                    if (bypass === true) {
+                    if (signedIn) {
                         deleteReport();
                     }
                     else {
@@ -106,9 +107,9 @@ function ListWindow({
                         <tr>
                             <th>Type</th>
                             <th>Status</th>
-                            <th>Witness</th>
                             <th>Location</th>
                             <th>Date</th>
+                            <th>Time</th>
                         </tr>
                     </thead>
                     <tbody>
