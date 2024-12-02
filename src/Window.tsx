@@ -126,7 +126,7 @@ function Window({
     function renderBody() {
         switch (type) {
             case windowTypes.MAP:
-                return <MapWindow />;
+                return <MapWindow reports={reports} />;
             case windowTypes.LOGIN:
                 return <SignInTab bypass={bypass} signedInCheck={signedInCheck}/>;
             case windowTypes.LIST:
