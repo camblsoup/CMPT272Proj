@@ -11,7 +11,7 @@ function SignInTab({ signedInCheck, bypass }: { signedInCheck: React.Dispatch<Re
         }
         else {
             signedInCheck(false);
-            bypass = true;
+            bypass = false;
         }
     }
 
