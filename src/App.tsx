@@ -30,9 +30,6 @@ function App() {
         localStorage.setItem('reports', JSON.stringify(reports));
     }, [reports]);
 
-    function setLogin(login: boolean)  {
-        return setSignedIn(login);
-    }
 
     function updateReports(newReports: Report[]) {
         setReports(newReports);
