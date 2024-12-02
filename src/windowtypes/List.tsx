@@ -70,6 +70,7 @@ function ListWindow({
     }
 
     function handleAdd() {
+        openWindow(windowTypes.REPORT);
         const report = addNewReport();
         changeCurrentReport(report);
         changeEditing(true);
