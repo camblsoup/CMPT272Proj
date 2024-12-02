@@ -29,7 +29,6 @@ export const useSignIn = () => {
             const storedHash = "6ad14ba9986e3615423dfca256d04e3f";
 
             if (hashedPassword === storedHash) {
-                alert("Authentication successful!");
                 errorHandle("");
                 return true;
             } else {

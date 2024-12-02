@@ -1,7 +1,8 @@
 import { useSignIn } from "../SignIn.ts";
 import '../css/Login.css'
+import { windowTypes } from "../data/enums.ts";
 
-function SignInTab({ signedInCheck, bypass }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, bypass: boolean}) {
+function SignInTab({ signedInCheck, bypass, closeWindow, windows }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, bypass: boolean, closeWindow: (index: number) => void, windows: windowTypes[] }) {
     const {passcode, setPassword, error, handleSignIn} = useSignIn();
 
     const handleLogin = async ()=> {
@@ -9,6 +10,7 @@ function SignInTab({ signedInCheck, bypass }: { signedInCheck: React.Dispatch<Re
         if (success) {
             signedInCheck(true);
             bypass = true;
+            closeWindow(windows.length - 1);
         }
         else {
             signedInCheck(false);

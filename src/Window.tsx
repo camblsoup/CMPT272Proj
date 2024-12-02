@@ -34,7 +34,11 @@ function Window({
         changeEditing,
         openWindow,
         signedInCheck,
-        bypass
+        bypass,
+        windows,
+        map,
+        changeMap,
+        zoomToReport
     }: {
         initWidth: number,
         initHeight: number,
@@ -52,9 +56,13 @@ function Window({
         minimizeWindow: (index: number) => void,
         isEditing: boolean,
         changeEditing: (editing: boolean) => void,
-        openWindow: (type: windowTypes) => void
-        signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
-        bypass: boolean;
+        openWindow: (type: windowTypes) => void,
+        signedInCheck: React.Dispatch<React.SetStateAction<boolean>>,
+        bypass: boolean,
+        windows: windowTypes[],
+        map: L.Map | null,
+        changeMap: (map: L.Map) => void,
+        zoomToReport: (report: Report) => void
      }) {
 
     const [regularPosition, setRegularPosition] = useState(initPos);
@@ -126,9 +134,21 @@ function Window({
     function renderBody() {
         switch (type) {
             case windowTypes.MAP:
-                return <MapWindow reports={reports} />;
+                return <MapWindow 
+                    reports={reports} 
+                    openWindow={openWindow} 
+                    changeCurrentReport={changeCurrentReport}
+                    changeActiveWindow={changeActive} 
+                    map={map}
+                    changeMap={changeMap}
+                />;
             case windowTypes.LOGIN:
-                return <SignInTab bypass={bypass} signedInCheck={signedInCheck}/>;
+                return <SignInTab 
+                    bypass={bypass} 
+                    signedInCheck={signedInCheck}
+                    closeWindow={closeWindow}
+                    windows={windows}
+                />;
             case windowTypes.LIST:
                 return <ListWindow
                     reports={reports}
@@ -138,6 +158,7 @@ function Window({
                     openWindow={openWindow}
                     signedInCheck={signedInCheck}
                     bypass={bypass}
+                    zoomToReport={zoomToReport}
                 />;
             case windowTypes.REPORT:
                 return <ReportWindow

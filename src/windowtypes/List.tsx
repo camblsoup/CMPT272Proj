@@ -10,15 +10,17 @@ function ListWindow({
     changeEditing,
     openWindow,
     signedInCheck,
-    bypass
+    bypass,
+    zoomToReport
 }: {
     reports: Report[], 
     changeCurrentReport: (reportId: number) => void,
     updateReports: (reports: Report[]) => void,
     changeEditing: (editing: boolean) => void,
     openWindow: (type: windowTypes) => void,
-    signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
-    bypass: boolean;
+    signedInCheck: React.Dispatch<React.SetStateAction<boolean>>,
+    bypass: boolean,
+    zoomToReport: (report: Report) => void
 }) {
     useEffect(() => {
         console.log("signedInCheck updated:", signedInCheck);
@@ -28,6 +30,7 @@ function ListWindow({
 
     function changeSelected(reportId: number) {
         setSelected(reportId);
+        zoomToReport(reports.find(report => report.id === reportId) as Report);
     }
 
     function addNewReport() {
@@ -51,6 +54,7 @@ function ListWindow({
     }
 
     function handleEdit(reportID: number) {
+        openWindow(windowTypes.REPORT);
         changeCurrentReport(reportID);
         changeEditing(true);
     }
