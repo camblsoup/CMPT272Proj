@@ -8,15 +8,10 @@ function SignInTab({ signedInCheck, bypass }: { signedInCheck: React.Dispatch<Re
         if (success) {
             signedInCheck(true);
             bypass = true;
-            console.log(signedInCheck);
-            console.log(bypass);
         }
         else {
             signedInCheck(false);
-            //signedInCheck = false;
             bypass = true;
-            console.log(bypass);
-            console.log(signedInCheck);
         }
     }
 

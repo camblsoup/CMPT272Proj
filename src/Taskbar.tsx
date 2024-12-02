@@ -26,10 +26,10 @@ function Taskbar({ activeIndex, windows, unminimizeWindow, openWindow }: { activ
                 </a>
                 <div className={"embossed-bar"}></div>
                 <div className={"extruding-bar"}></div>
-                <button className={"normal-tab"} onClick={() => openWindow(windowTypes.LOGIN)}>
+                {/*<button className={"normal-tab"} onClick={() => openWindow(windowTypes.LOGIN)}>
                     <img src={wondows} alt={"🏠"}></img>
                     <h1>Sign-In</h1>
-                </button>
+                </button>*/}
                 <div className={"active-apps"}>
                     {windows.map((type, index) => (
                         <button key={index} className={ activeIndex === index ? "focused-window" : "unfocused-window" } onClick={() => unminimizeWindow(index)}>

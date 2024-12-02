@@ -78,9 +78,6 @@ function ListWindow({
                 <button onClick={handleAdd}>New</button>
                 <button onClick={() => {handleOpen(selected)}}>Open</button>
                 <button onClick={() => {handleEdit(selected)}}>Edit</button>
-
-                <button onClick={deleteReport}>Delete</button> 
-
                 <button onClick={() => {
                     if (bypass === true) {
                         deleteReport();
@@ -89,8 +86,6 @@ function ListWindow({
                         openWindow(windowTypes.LOGIN);
                     }
                 }}>Delete</button>
-
-
 
             </div>
             <div>
