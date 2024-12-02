@@ -148,3 +148,7 @@ img {
     border-bottom: solid 1px white;
     border-right: solid 1px #AAAAAA;
 }
+
+.hidden {
+    display: none;
+}

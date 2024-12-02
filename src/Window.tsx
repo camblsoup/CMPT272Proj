@@ -187,7 +187,7 @@ function Window({
                         <div className={"window-size-buttons"}>
                             <button className={"window-button"} onClick={() => minimizeWindow(windowIndex)}><img
                                 className={"window-button-icon"} src={minimize} alt={"minimize icon"}/></button>
-                            <button className={"window-button"} onClick={maximized ? unmaximizeWindow : maximizeWindow}>
+                            <button className={type === windowTypes.LOGIN ? "hidden" : "window-button"} onClick={maximized ? unmaximizeWindow : maximizeWindow}>
                                 <img className={"window-button-icon"} src={maximize} alt={"maximize icon"}/></button>
                         </div>
                         <button className={"window-button"} onClick={() => closeWindow(windowIndex)}><img
