@@ -3,6 +3,13 @@
  * USES HASHIFY.NET API
  */
 
+interface HashResponse {
+    Digest: string
+    DigestEnc: string
+    Type: string
+    Key: string
+}
+
 //using this function:
 //      hash("anystring").then(result => {
 //              let hashed = result["Digest"]
@@ -11,7 +18,7 @@
 //
 //@param {string} toHash - string to be hashed
 //@return {Promise} - returns a promise object
-function hash(toHash: string) {
+function hash(toHash: string): Promise<HashResponse> {
     const requestOptions = {
         method: 'POST',
         body: toHash,

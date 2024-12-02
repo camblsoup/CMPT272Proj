@@ -3,15 +3,22 @@
 }
 
 #desktop {
+    box-sizing: content-box;
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     top: 5px;
     left: 5px;
 }
 
 #desktop .app {
     box-sizing: border-box;
+    width: 58px;
+    height: 78px;
     background: none;
     border: none;
+    padding: 0;
 }
 
 #desktop .app:hover {

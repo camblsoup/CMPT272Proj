@@ -69,6 +69,7 @@ function App() {
         setWindows((prevWindows) => [
             ...prevWindows, type
         ]);
+        changeActiveWindow(windows.length - 1);
     }
 
     function isMinimized(index: number) {
@@ -89,10 +90,6 @@ function App() {
             setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex && prevWindows[index] !== windowTypes.MAP));
         } else {
             setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex));
-        }
-
-        if (windowIndex === activeWindow) {
-            setActiveWindow(-1);
         }
     }
 
@@ -121,6 +118,7 @@ function App() {
                                 minimizeWindow={minimizeWindow}
                                 isEditing={isEditingReport}
                                 changeEditing={changeEditingReport}
+                                openWindow={openWindow}
                         /> : type === windowTypes.LIST ?
                             <Window key={index}
                                     initWidth={600}
@@ -137,26 +135,43 @@ function App() {
                                     minimizeWindow={minimizeWindow}
                                     isEditing={isEditingReport}
                                     changeEditing={changeEditingReport}
-                            /> :
-                            <Window key={index}
-                                    initWidth={800}
-                                    initHeight={700}
-                                    initPos={{x: 25, y: 25}}
-                                    type={type}
-                                    windowIndex={index}
-                                    activeIndex={activeWindow} changeActive={changeActiveWindow}
-                                    currentReport={currentReport} changeCurrentReport={changeCurrentReport}
-                                    reports={reports}
-                                    updateReports={updateReports}
-                                    closeWindow={closeWindow}
-                                    isMinimized={isMinimized}
-                                    minimizeWindow={minimizeWindow}
-                                    isEditing={isEditingReport}
-                                    changeEditing={changeEditingReport}
-                            />
-
-
-                    ))}
+                                    openWindow={openWindow}
+                            /> : type === windowTypes.REPORT ?
+                                <Window key={index}
+                                        initWidth={800}
+                                        initHeight={700}
+                                        initPos={{x: 25, y: 25}}
+                                        type={type}
+                                        windowIndex={index}
+                                        activeIndex={activeWindow} changeActive={changeActiveWindow}
+                                        currentReport={currentReport} changeCurrentReport={changeCurrentReport}
+                                        reports={reports}
+                                        updateReports={updateReports}
+                                        closeWindow={closeWindow}
+                                        isMinimized={isMinimized}
+                                        minimizeWindow={minimizeWindow}
+                                        isEditing={isEditingReport}
+                                        changeEditing={changeEditingReport}
+                                        openWindow={openWindow}
+                                /> :
+                                <Window key={index}
+                                        initWidth={600}
+                                        initHeight={150}
+                                        initPos={{x: 25, y: 25}}
+                                        type={type}
+                                        windowIndex={index}
+                                        activeIndex={activeWindow} changeActive={changeActiveWindow}
+                                        currentReport={currentReport} changeCurrentReport={changeCurrentReport}
+                                        reports={reports}
+                                        updateReports={updateReports}
+                                        closeWindow={closeWindow}
+                                        isMinimized={isMinimized}
+                                        minimizeWindow={minimizeWindow}
+                                        isEditing={isEditingReport}
+                                        changeEditing={changeEditingReport}
+                                        openWindow={openWindow}
+                                />
+                ))}
             </div>
             <div id={"desktop"}>
                 <button className={"app"} onDoubleClick={() => openWindow(windowTypes.MAP)}>
@@ -172,7 +187,8 @@ function App() {
                     <p>Details</p>
                 </button>
             </div>
-            <Taskbar activeIndex={activeWindow} windows={windows} unminimizeWindow={unminimizeWindow} openWindow={openWindow}/>
+            <Taskbar activeIndex={activeWindow} windows={windows} unminimizeWindow={unminimizeWindow}
+                     openWindow={openWindow}/>
         </>
     )
 }

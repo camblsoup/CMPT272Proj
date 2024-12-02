@@ -1,9 +1,17 @@
 import { useState } from "react";
 import hash from "./APIs/md5hash";
 
+interface HashResponse {
+    Digest: string
+    DigestEnc: string
+    Type: string
+    Key: string
+}
+
 export const useSignIn = () => {
     const [passcode, setPasscode] = useState("");
     const [error, setError] = useState("");
+    const [authenticated, setAuthenticated] = useState(false);
     
     const setPassword = (input: string) => {
         return setPasscode(input);
@@ -13,16 +21,22 @@ export const useSignIn = () => {
         return setError(input);
     }
 
+    const checkAuthentication = ()=> {
+        return authenticated;
+    }
+
     const handleSignIn = async () => {
         try {
-            const hashedResult: any = await hash(passcode);
+            const hashedResult: HashResponse = await hash(passcode);
             const hashedPassword = hashedResult.Digest;
+
             // password is "user123"
             const storedHash = "6ad14ba9986e3615423dfca256d04e3f";
 
             if (hashedPassword === storedHash) {
-                alert("Authentication successful!");
+                setAuthenticated(true);
                 errorHandle("");
+                console.log("authenticated");
                 
                 // continue writing authentication process
                 // implement authorized editing of reports
@@ -31,7 +45,7 @@ export const useSignIn = () => {
                 errorHandle("Incorrect password or username. Please try again");
             }
         } catch (error) {
-            errorHandle("Please try again");
+            errorHandle("An error has occured: " + error);
         }
     }
 
@@ -39,10 +53,10 @@ export const useSignIn = () => {
         passcode,
         setPassword,
         error,
-        handleSignIn
+        handleSignIn,
+        checkAuthentication
     }
 }
-
 
 
     

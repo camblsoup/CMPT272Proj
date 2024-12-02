@@ -1,19 +1,24 @@
-import { Report } from "../data/reportType.ts";
+import {Report} from "../data/reportType.ts";
 import ListItem from "./ListItem.tsx";
-import { useState } from "react";
+import {useState} from "react";
+import {windowTypes} from "../data/enums.ts";
+import {useSignIn} from "../signIn.ts";
 
 function ListWindow({ 
     reports, 
     changeCurrentReport, 
     updateReports,
-    changeEditing
+    changeEditing,
+    openWindow
 }: { 
     reports: Report[], 
     changeCurrentReport: (reportId: number) => void,
     updateReports: (reports: Report[]) => void,
     changeEditing: (editing: boolean) => void
+    openWindow: (type: windowTypes) => void
 }) {
     const [selected, setSelected] = useState(0);
+    const { checkAuthentication } = useSignIn();
 
     function changeSelected(reportId: number) {
         setSelected(reportId);
@@ -38,11 +43,16 @@ function ListWindow({
     }
 
     function handleEdit(reportID: number) {
-        changeCurrentReport(reportID);
-        changeEditing(true);
+        if (checkAuthentication()) {
+            changeCurrentReport(reportID);
+            changeEditing(true);
+        } else {
+            openWindow(windowTypes.LOGIN);
+        }
     }
 
     function handleOpen(reportID: number) {
+        openWindow(windowTypes.REPORT);
         changeCurrentReport(reportID);
         changeEditing(false);
     }
@@ -56,7 +66,7 @@ function ListWindow({
     }
 
     function handleAdd() {
-        let report = addNewReport();
+        const report = addNewReport();
         changeCurrentReport(report);
         changeEditing(true);
     }

@@ -1,4 +1,4 @@
-import { useSignIn } from "../signIn";
+import { useSignIn } from "../signIn.ts";
 
 function SignInTab() {
     const {passcode, setPassword, error, handleSignIn} = useSignIn();

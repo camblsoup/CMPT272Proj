@@ -2,24 +2,61 @@ import './css/Window.css'
 import mapIcon from './assets/map-icon.png'
 import listIcon from './assets/list.png'
 import reportIcon from './assets/report.png'
+import signinIcon from './assets/sign-in.png'
 import minimize from './assets/minimize.png'
 import maximize from './assets/maximize.png'
 import cross from './assets/cross.png'
 import MapWindow from './windowtypes/Map.tsx'
 import ListWindow from './windowtypes/List.tsx'
 import ReportWindow from './windowtypes/Report.tsx'
-import { windowTypes } from "./data/enums.ts"
-import { Report } from "./data/reportType"
-import { useState, MouseEvent, useEffect } from 'react'
+import {windowTypes} from "./data/enums.ts"
+import {Report} from "./data/reportType"
+import React, {MouseEvent, useEffect, useState} from 'react'
 import SignInTab from './windowtypes/login.tsx'
 
 // Window Element Specification
-function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex, changeActive, currentReport, changeCurrentReport, reports, updateReports, closeWindow, isMinimized, minimizeWindow, isEditing, changeEditing }: { initWidth: number, initHeight: number, initPos: { x: number, y: number }, type: windowTypes, windowIndex: number, activeIndex: number, changeActive: (index: number) => void, currentReport: number, changeCurrentReport: (reportId: number) => void, reports: Report[], updateReports: (reports: Report[]) => void, closeWindow: (index: number) => void, isMinimized: (index: number) => boolean, minimizeWindow: (index: number) => void, isEditing: boolean, changeEditing: (editing: boolean) => void }) {
+function Window({
+                    initWidth,
+                    initHeight,
+                    initPos,
+                    type,
+                    windowIndex,
+                    activeIndex,
+                    changeActive,
+                    currentReport,
+                    changeCurrentReport,
+                    reports,
+                    updateReports,
+                    closeWindow,
+                    isMinimized,
+                    minimizeWindow,
+                    isEditing,
+                    changeEditing,
+                    openWindow
+                }: {
+    initWidth: number,
+    initHeight: number,
+    initPos: { x: number, y: number },
+    type: windowTypes,
+    windowIndex: number,
+    activeIndex: number,
+    changeActive: (index: number) => void,
+    currentReport: number,
+    changeCurrentReport: (reportId: number) => void,
+    reports: Report[],
+    updateReports: (reports: Report[]) => void,
+    closeWindow: (index: number) => void,
+    isMinimized: (index: number) => boolean,
+    minimizeWindow: (index: number) => void,
+    isEditing: boolean,
+    changeEditing: (editing: boolean) => void
+    openWindow: (type: windowTypes) => void
+}) {
     const [regularPosition, setRegularPosition] = useState(initPos);
     const [isDragging, setIsDragging] = useState(false);
-    const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-    const [regularSize, setRegularSize] = useState({ width: initWidth, height: initHeight });
-    const [size, setSize] = useState({ width: initWidth, height: initHeight });
+    const [dragOffset, setDragOffset] = useState({x: 0, y: 0});
+    const [regularSize, setRegularSize] = useState({width: initWidth, height: initHeight});
+    const [size, setSize] = useState({width: initWidth, height: initHeight});
     const [position, setPosition] = useState(initPos);
     const [maximized, setMaximized] = useState<boolean>(false);
 
@@ -84,15 +121,16 @@ function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex
     function renderBody() {
         switch (type) {
             case windowTypes.MAP:
-                return <MapWindow />;
+                return <MapWindow/>;
             case windowTypes.LOGIN:
-                return <SignInTab />;
+                return <SignInTab/>;
             case windowTypes.LIST:
                 return <ListWindow
                     reports={reports}
                     changeCurrentReport={changeCurrentReport}
                     updateReports={updateReports}
                     changeEditing={changeEditing}
+                    openWindow={openWindow}
                 />;
             case windowTypes.REPORT:
                 return <ReportWindow
@@ -111,8 +149,8 @@ function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex
         setMaximized(true);
         setRegularSize(size);
         setRegularPosition(position);
-        setSize({ width: window.innerWidth - 8, height: window.innerHeight - 48 })
-        setPosition({ x: 0, y: 0 });
+        setSize({width: window.innerWidth - 8, height: window.innerHeight - 48})
+        setPosition({x: 0, y: 0});
     }
 
     function unmaximizeWindow() {
@@ -133,19 +171,21 @@ function Window({ initWidth, initHeight, initPos, type, windowIndex, activeIndex
                     onMouseDown={handleMouseDown}
                 >
                     <div className={"title"}>
-                        <img src={type === windowTypes.MAP ? mapIcon : type === windowTypes.LIST ? listIcon : reportIcon} alt={"map icon"} />
+                        <img
+                            src={type === windowTypes.MAP ? mapIcon : type === windowTypes.LIST ? listIcon : type === windowTypes.REPORT ? reportIcon : signinIcon}
+                            alt={"map icon"}/>
                         <h1>{type}</h1>
                     </div>
                     <div className={"window-buttons"}>
                         <div className={"window-size-buttons"}>
-                            <button className={"window-button"} onClick={() => minimizeWindow(windowIndex)}><img className={"window-button-icon"} src={minimize} alt={"minimize icon"} /></button>
-                            <button className={"window-button"} onClick={maximized ? unmaximizeWindow : maximizeWindow}><img className={"window-button-icon"} src={maximize} alt={"maximize icon"} /></button>
+                            <button className={"window-button"} onClick={() => minimizeWindow(windowIndex)}><img
+                                className={"window-button-icon"} src={minimize} alt={"minimize icon"}/></button>
+                            <button className={"window-button"} onClick={maximized ? unmaximizeWindow : maximizeWindow}>
+                                <img className={"window-button-icon"} src={maximize} alt={"maximize icon"}/></button>
                         </div>
-                        <button className={"window-button"} onClick={() => closeWindow(windowIndex)}><img className={"window-button-icon"} src={cross} alt={"close icon"} /></button>
+                        <button className={"window-button"} onClick={() => closeWindow(windowIndex)}><img
+                            className={"window-button-icon"} src={cross} alt={"close icon"}/></button>
                     </div>
-                </div>
-                <div className={"tools"} style={type === windowTypes.MAP ? { display: "none" } : { display: "block" }}>
-
                 </div>
                 <div className={"body"}>
                     {renderBody()}
