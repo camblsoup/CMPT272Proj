@@ -45,11 +45,6 @@ const Geocoder = ({ onCoordsRetrieved }) => {
     );
 };
 
-const handleCoordinatesRetrieved = (coordinates) => {
-    console.log("Coordinates received:", coordinates);
-    alert(`Latitude: ${coordinates.lat}, Longitude: ${coordinates.lon}`);
-};
-
 function ReportWindow({ 
     report, 
     isEditing,

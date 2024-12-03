@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@paraboly/react-osm-geocoding": "^1.0.2",
     "leaflet": "^1.9.4",
     "leaflet-geosearch": "^4.0.0",
     "react": "^18.3.1",
