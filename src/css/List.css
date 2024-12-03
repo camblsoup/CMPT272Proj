@@ -70,7 +70,6 @@ table {
     border-spacing: 0;
     background: white;
     flex-grow: 1;
-    height: 100%;
 }
 
 tbody {
@@ -86,6 +85,6 @@ tbody {
 }
 
 tbody div {
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 100%;
 }

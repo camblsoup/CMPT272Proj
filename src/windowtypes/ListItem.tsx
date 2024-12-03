@@ -6,7 +6,7 @@ function ListItem({ report, selectedItem, setSelectedItem }: { report: Report, s
             <td style={{width: "180px"}}><p className={(selectedItem === report.id ? "highlighted" : "") + " report-name"}>{report.type}</p></td>
             <td style={{width: "80px"}}>{report.status}</td>
             <td style={{width: "150px"}}>{report.location}</td>
-            <td>{report.date}</td>
+            <td style={{width: "90px"}}>{report.date}</td>
             <td>{report.time}</td>
         </tr>
     )

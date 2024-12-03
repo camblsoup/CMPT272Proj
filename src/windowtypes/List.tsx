@@ -209,13 +209,13 @@ function ListWindow({
                     </select>
                 </div>
                 <div className={"table-container"} onClick={() => updateLastClicked(-1)}>
-                    <table style={{"width": "100%"}}>
+                    <table style={{width: "100%", height: "100%"}}>
                         <thead>
                         <tr>
                             <th style={{width: "170px"}}>Type</th>
                             <th style={{width: "70px"}}>Status</th>
                             <th style={{width: "140px"}}>Location</th>
-                            <th>Date</th>
+                            <th style={{width: "80px"}}>Date</th>
                             <th>Time</th>
                         </tr>
                         </thead>
