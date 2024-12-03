@@ -140,6 +140,7 @@ function Window({
                     changeCurrentReport={changeCurrentReport}
                     map={map}
                     changeMap={changeMap}
+                    changeActiveWindow={changeActive}
                 />;
             case windowTypes.LOGIN:
                 return <SignInTab

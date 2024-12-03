@@ -1,18 +1,19 @@
-import {Report} from "../data/reportType.ts";
+import { Report } from "../data/reportType.ts";
 import ListItem from "./ListItem.tsx";
-import {useEffect, useState} from "react";
-import {windowTypes} from "../data/enums.ts";
+import { useEffect, useState } from "react";
+import { windowTypes } from "../data/enums.ts";
+import "../css/List.css";
 
 function ListWindow({
-                        reports,
-                        changeCurrentReport,
-                        updateReports,
-                        changeEditing,
-                        openWindow,
-                        signedInCheck,
-                        signedIn,
-                        zoomToReport
-                    }: {
+    reports,
+    changeCurrentReport,
+    updateReports,
+    changeEditing,
+    openWindow,
+    signedInCheck,
+    signedIn,
+    zoomToReport
+}: {
     reports: Report[],
     changeCurrentReport: (reportId: number) => void,
     updateReports: (reports: Report[]) => void,
@@ -32,6 +33,27 @@ function ListWindow({
         setSelected(reportId);
         zoomToReport(reports.find(report => report.id === reportId) as Report);
     }
+
+    const [sortMethod, setSortMethod] = useState('id');
+
+    const sortReports = (reports: Report[]): Report[] => {
+        return [...reports].sort((a, b) => {
+            switch (sortMethod) {
+                case 'id':
+                    return a.id - b.id;
+                case 'type':
+                    return a.type.localeCompare(b.type);
+                case 'status':
+                    return a.status.localeCompare(b.status);
+                case 'date':
+                    return new Date(a.date).getTime() - new Date(b.date).getTime();
+                case 'location':
+                    return a.location.localeCompare(b.location);
+                default:
+                    return a.id - b.id;
+            }
+        });
+    };
 
     function addNewReport() {
         const maxId = Math.max(...reports.map(r => r.id), -1);
@@ -107,27 +129,41 @@ function ListWindow({
                 </button>
 
             </div>
+            <div className="list-window-sort">
+                <label htmlFor="sort-select">Sort by: </label>
+                <select
+                    id="sort-select"
+                    value={sortMethod}
+                    onChange={(e) => setSortMethod(e.target.value)}
+                >
+                    <option value="id">ID</option>
+                    <option value="type">Type</option>
+                    <option value="status">Status</option>
+                    <option value="date">Date</option>
+                    <option value="location">Location</option>
+                </select>
+            </div>
             <div>
                 <h1>Incidents</h1>
-                <table style={{"width": "100%"}}>
+                <table style={{ "width": "100%" }}>
                     <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Status</th>
-                        <th>Location</th>
-                        <th>Date</th>
+                        <tr>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                            <th>Date</th>
                             <th>Time</th>
-                    </tr>
+                        </tr>
                     </thead>
                     <tbody>
-                    {reports.map((report: Report) => (
-                        <ListItem
-                            report={report}
-                            key={report.id}
-                            selectedItem={selected}
-                            setSelectedItem={changeSelected}
-                        />
-                    ))}
+                        {sortReports(reports).map((report: Report) => (
+                            <ListItem
+                                report={report}
+                                key={report.id}
+                                selectedItem={selected}
+                                setSelectedItem={changeSelected}
+                            />
+                        ))}
                     </tbody>
                 </table>
             </div>
