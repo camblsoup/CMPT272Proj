@@ -201,7 +201,7 @@ function ListWindow({
                         value={sortMethod}
                         onChange={(e) => setSortMethod(e.target.value)}
                     >
-                        <option value="id">ID</option>
+                        <option value="id">Date Created</option>
                         <option value="type">Type</option>
                         <option value="status">Status</option>
                         <option value="date">Date</option>
