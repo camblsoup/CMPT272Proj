@@ -13,14 +13,11 @@ import {windowTypes} from "./data/enums.ts"
 import {Report} from "./data/reportType"
 import React, {MouseEvent, useEffect, useState} from 'react'
 import SignInTab from './windowtypes/login.tsx'
+import {windowData} from './data/windowType.ts'
 
 // Window Element Specification
 function Window({
-                    initWidth,
-                    initHeight,
-                    initPos,
-                    type,
-                    windowIndex,
+                    data,
                     activeIndex,
                     changeActive,
                     currentReport,
@@ -40,11 +37,7 @@ function Window({
                     changeMap,
                     zoomToReport
                 }: {
-    initWidth: number,
-    initHeight: number,
-    initPos: { x: number, y: number },
-    type: windowTypes,
-    windowIndex: number,
+    data: windowData,
     activeIndex: number,
     changeActive: (index: number) => void,
     currentReport: number,
@@ -59,18 +52,18 @@ function Window({
     openWindow: (type: windowTypes) => void
     signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
     signedIn: boolean,
-    windows: windowTypes[],
+    windows: windowData[],
     map: L.Map | null,
     changeMap: (map: L.Map) => void,
     zoomToReport: (report: Report) => void
 }) {
 
-    const [regularPosition, setRegularPosition] = useState(initPos);
+    const [regularPosition, setRegularPosition] = useState(data.position);
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState({x: 0, y: 0});
-    const [regularSize, setRegularSize] = useState({width: initWidth, height: initHeight});
-    const [size, setSize] = useState({width: initWidth, height: initHeight});
-    const [position, setPosition] = useState(initPos);
+    const [regularSize, setRegularSize] = useState(data.size);
+    const [size, setSize] = useState(data.size);
+    const [position, setPosition] = useState(data.position);
     const [maximized, setMaximized] = useState<boolean>(false);
     const [reportToDisplay, setReportToDisplay] = useState(-1);
 
@@ -88,7 +81,7 @@ function Window({
             x: e.clientX - position.x,
             y: e.clientY - position.y,
         });
-        changeActive(windowIndex);
+        changeActive(data.id);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -136,7 +129,7 @@ function Window({
         if(reportToDisplay < 0){
             setReportToDisplay(currentReport);
         }
-        switch (type) {
+        switch (data.type) {
             case windowTypes.MAP:
                 return <MapWindow
                     reports={reports}
@@ -150,7 +143,7 @@ function Window({
                 return <SignInTab
                     signedInCheck={signedInCheck}
                     closeWindow={closeWindow}
-                    windowIndex={windowIndex}
+                    windowIndex={data.index}
                     windows={windows}
                 />;
             case windowTypes.LIST:
@@ -195,9 +188,9 @@ function Window({
     return (
         <>
             <div
-                className={isMinimized(windowIndex) ? "window-hidden" : activeIndex === windowIndex ? "window-active" : "window"}
+                className={isMinimized(data.id) ? "window-hidden" : activeIndex === data.id ? "window-active" : "window"}
                 style={style}
-                onClick={() => !isDragging && changeActive(windowIndex)}
+                onClick={() => !isDragging && changeActive(data.id)}
             >
                 <div
                     className="top-bar"
@@ -205,26 +198,26 @@ function Window({
                 >
                     <div className={"title"} style={{color: "white"}}>
                         <img
-                            src={type === windowTypes.MAP ? mapIcon : type === windowTypes.LIST ? listIcon : type === windowTypes.REPORT ? reportIcon : signinIcon}
+                            src={data.type === windowTypes.MAP ? mapIcon : data.type === windowTypes.LIST ? listIcon : data.type === windowTypes.REPORT ? reportIcon : signinIcon}
                             alt={"map icon"}/>
-                        <h1>{type}</h1>
+                        <h1>{data.type}</h1>
                     </div>
                     <div className={"window-buttons"}>
                         <div className={"window-size-buttons"}>
-                            <button className={"window-button"} onClick={() => minimizeWindow(windowIndex)}><img
+                            <button className={"window-button"} onClick={() => minimizeWindow(data.id)}><img
                                 className={"window-button-icon"} src={minimize} alt={"minimize icon"}/></button>
-                            <button className={type === windowTypes.LOGIN ? "hidden" : "window-button"}
+                            <button className={data.type === windowTypes.LOGIN ? "hidden" : "window-button"}
                                     onClick={maximized ? unmaximizeWindow : maximizeWindow}>
                                 <img className={"window-button-icon"} src={maximize} alt={"maximize icon"}/></button>
                         </div>
-                        <button className={"window-button"} onClick={() => closeWindow(windowIndex)}><img
+                        <button className={"window-button"} onClick={() => closeWindow(data.id)}><img
                             className={"window-button-icon"} src={cross} alt={"close icon"}/></button>
                     </div>
                 </div>
                 <div className={"body"}>
                     {renderBody()}
                 </div>
-                <div className={type === windowTypes.LOGIN ? "hidden" : "info"}>
+                <div className={data.type === windowTypes.LOGIN ? "hidden" : "info"}>
                     <p>{reports.length} Report(s)</p>
                 </div>
             </div>

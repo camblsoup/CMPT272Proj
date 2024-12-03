@@ -13,8 +13,8 @@
   background-color: #00787F;
 
   font-synthesis: none;
-  text-rendering: optimizeSpeed;
-  -webkit-font-smoothing: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   overflow: hidden;

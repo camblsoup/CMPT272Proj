@@ -58,6 +58,24 @@ function ListWindow({
         });
     };
 
+    const [, forceUpdate] = useState({});
+    useEffect(() => {
+        if (!map) return;
+    
+        const updateOnMapChange = () => {
+            // force rerender to update list
+            forceUpdate({});
+        };
+    
+        map.on('move', updateOnMapChange);
+        map.on('zoom', updateOnMapChange);
+    
+        return () => {
+            map.off('move', updateOnMapChange);
+            map.off('zoom', updateOnMapChange);
+        };
+    }, [map]);
+
     const isMarkerInBounds = (report: Report): boolean => {
         if (!map || typeof report.lat !== 'number' || typeof report.lon !== 'number') {
             return false;
@@ -83,7 +101,11 @@ function ListWindow({
             picture: "",
             comments: "",
             date: new Date().toLocaleDateString(),
-            time: new Date().getTime().toString(),
+            time: new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
+            }).format(new Date()),
             status: "Open"
         };
         updateReports([...reports, newReport]);
@@ -135,79 +157,92 @@ function ListWindow({
 
     return (
         <>
-            <div id="buttons" className="list-window-buttons">
-                <button onClick={() => {
-                    handleAdd()
-                    updateLastClicked(0)
-                }}>New</button>
-                <button onClick={() => {
-                    handleOpen(selected)
-                    updateLastClicked(1)
-                }}>Open
-                </button>
-                <button onClick={() => {
-                    if (signedIn) {
-                        handleEdit(selected);
-                    } else {
-                        openWindow(windowTypes.LOGIN);
-                    }
-                    updateLastClicked(2)
-                }}>Edit
-                </button>
-                <button onClick={() => {
-                    if (signedIn) {
-                        deleteReport();
-                    } else {
-                        openWindow(windowTypes.LOGIN);
-                    }
-                    updateLastClicked(3)
-                }}>Delete
-                </button>
-                <button onClick={() => {
-                    setShowOnlyVisible(!showOnlyVisible);
-                    updateLastClicked(4)
-                }}>
-                    {showOnlyVisible ? 'Show All' : 'Show Visible Only'}
-                </button>
-            </div>
-            <div className="list-window-sort" onClick={() => updateLastClicked(-1)}>
-                <label htmlFor="sort-select">Sort by: </label>
-                <select
-                    id="sort-select"
-                    value={sortMethod}
-                    onChange={(e) => setSortMethod(e.target.value)}
-                >
-                    <option value="id">ID</option>
-                    <option value="type">Type</option>
-                    <option value="status">Status</option>
-                    <option value="date">Date</option>
-                    <option value="location">Location</option>
-                </select>
-            </div>
-            <div onClick={() => updateLastClicked(-1)}>
-                <h1>Incidents</h1>
-                <table style={{ "width": "100%" }}>
-                    <thead>
+            <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
+                <div id="buttons" className="list-window-buttons">
+                    <button onClick={() => {
+                        handleAdd()
+                        updateLastClicked(0)
+                    }}>New
+                    </button>
+                    <button onClick={() => {
+                        handleOpen(selected)
+                        updateLastClicked(1)
+                    }}>Open
+                    </button>
+                    <button onClick={() => {
+                        if (signedIn) {
+                            handleEdit(selected);
+                        } else {
+                            openWindow(windowTypes.LOGIN);
+                        }
+                        updateLastClicked(2)
+                    }}>Edit
+                    </button>
+                    <button onClick={() => {
+                        if (signedIn) {
+                            deleteReport();
+                        } else {
+                            openWindow(windowTypes.LOGIN);
+                        }
+                        updateLastClicked(3)
+                    }}>Delete
+                    </button>
+                    <button onClick={() => {
+                        setShowOnlyVisible(!showOnlyVisible);
+                        updateLastClicked(4)
+                    }}>
+                        {showOnlyVisible ? 'Show All' : 'Show Visible Only'}
+                    </button>
+                </div>
+                <div className="list-window-sort" onClick={() => updateLastClicked(-1)}>
+                    <label htmlFor="sort-select">Sort by: </label>
+                    <select
+                        id="sort-select"
+                        value={sortMethod}
+                        onChange={(e) => setSortMethod(e.target.value)}
+                    >
+                        <option value="id">ID</option>
+                        <option value="type">Type</option>
+                        <option value="status">Status</option>
+                        <option value="date">Date</option>
+                        <option value="location">Location</option>
+                    </select>
+                </div>
+                <div className={"table-container"} onClick={() => updateLastClicked(-1)}>
+                    <table style={{width: "100%", height: "100%"}}>
+                        <thead>
                         <tr>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Location</th>
-                            <th>Date</th>
+                            <th style={{width: "170px", maxWidth: "170px"}}>Type</th>
+                            <th style={{width: "70px", maxWidth: "70px"}}>Status</th>
+                            <th style={{width: "140px", maxWidth: "140px"}}>Location</th>
+                            <th style={{width: "80px", maxWidth: "80px"}}>Date</th>
                             <th>Time</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {sortReports(filteredReports).map((report: Report) => (
-                            <ListItem
-                                report={report}
-                                key={report.id}
-                                selectedItem={selected}
-                                setSelectedItem={changeSelected}
-                            />
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style={{padding: "0"}} colSpan={5}>
+                                <div>
+                                    <table>
+                                        {sortReports(filteredReports).map((report: Report) => (
+                                            <ListItem
+                                                report={report}
+                                                key={report.id}
+                                                selectedItem={selected}
+                                                setSelectedItem={changeSelected}
+                                            />
+                                        ))}
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </>
     );
 }

@@ -10,6 +10,7 @@ import {useEffect, useState} from 'react';
 import {Report} from './data/reportType';
 
 import L from "leaflet";
+import {windowData} from "./data/windowType.ts";
 
 function App() {
     const [signedInCheck, setSignedIn] = useState(false);
@@ -25,7 +26,7 @@ function App() {
     const [activeWindow, setActiveWindow] = useState(0);
     const [minimizedWindows, setMinimizedWindows] = useState<number[]>([]);
     const [currentReport, setCurrentReport] = useState(0);
-    const [windows, setWindows] = useState<windowTypes[]>([]);
+    const [windows, setWindows] = useState<windowData[]>([]);
     const [isEditingReport, setIsEditingReport] = useState(false);
 
     const [map, setMap] = useState<L.Map | null>(null);
@@ -39,8 +40,8 @@ function App() {
         setReports(newReports);
     }
 
-    function changeActiveWindow(index: number) {
-        setActiveWindow(index);
+    function changeActiveWindow(id: number) {
+        setActiveWindow(id);
     }
 
     function changeCurrentReport(reportId: number) {
@@ -53,174 +54,143 @@ function App() {
 
     function zoomToReport(report: Report) {
         // check if report lat and lon are numbers
-        if (typeof report.lat === 'number' && typeof report.lon === 'number') {
-            map?.setView([report.lat, report.lon], map.getZoom());
-        }
+        map?.setView([report.lat, report.lon], map.getZoom());
     }
 
     function openWindow(type: windowTypes) {
+        const data = getData(type);
         if (type === windowTypes.MAP) {
-            const existingMapWindow = windows.find((currType) => currType === type);
+            const existingMapWindow = windows.find((curData) => curData.type === type);
             if (existingMapWindow) {
-                const mapWindowIndex = windows.indexOf(existingMapWindow)
-                changeActiveWindow(mapWindowIndex);
+                changeActiveWindow(existingMapWindow.id);
                 return;
             }
             setWindows((prevWindows) => [
-                ...prevWindows, type
+                ...prevWindows, data
             ]);
+            const listData = getData(windowTypes.LIST);
+            listData.id += 1;
             setWindows((prevWindows) => [
-                ...prevWindows, windowTypes.LIST
+                ...prevWindows, listData
             ]);
+            changeActiveWindow(data.id);
             return;
         }
         if (type === windowTypes.LIST) {
-            const existingListWindow = windows.find((currType) => currType === type);
+            const existingListWindow = windows.find((curData) => curData.type === type);
             if (existingListWindow) {
-                const listWindowIndex = windows.indexOf(existingListWindow)
-                changeActiveWindow(listWindowIndex);
+                changeActiveWindow(existingListWindow.id);
                 return;
             }
         }
 
         if (type === windowTypes.LOGIN) {
-            const existingListWindow = windows.find((currType) => currType === type);
+            const existingListWindow = windows.find((curData) => curData.type === type);
             if (existingListWindow) {
-                const listWindowIndex = windows.indexOf(existingListWindow)
-                changeActiveWindow(listWindowIndex);
+                changeActiveWindow(existingListWindow.id);
                 return;
             }
         }
 
         setWindows((prevWindows) => [
-            ...prevWindows, type
+            ...prevWindows, data
         ]);
-        changeActiveWindow(windows.length - 1);
+        changeActiveWindow(data.id);
     }
 
-    function isMinimized(index: number) {
-        return minimizedWindows.includes(index);
+    function isMinimized(id: number) {
+        return minimizedWindows.includes(id);
     }
 
-    function minimizeWindow(index: number) {
-        setMinimizedWindows(prevWindows => [...prevWindows, index]);
-        setActiveWindow(-2);
+    function minimizeWindow(id: number) {
+        setMinimizedWindows(prevWindows => [...prevWindows, id]);
+        setActiveWindow(-1);
     }
 
-    function closeWindow(windowIndex: number) {
-        const windowToClose = windows[windowIndex];
+    function unminimizeWindow(windowId: number) {
+        setMinimizedWindows(prevWindows => prevWindows.filter((id) => id !== windowId));
+        changeActiveWindow(windowId);
+    }
 
-        if (windowToClose === windowTypes.MAP) {
-            setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex && prevWindows[index] !== windowTypes.LIST));
-        } else if (windowToClose === windowTypes.LIST) {
-            setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex && prevWindows[index] !== windowTypes.MAP));
+    function closeWindow(windowId: number) {
+        const windowToClose = windows.find((data) => data.id === windowId);
+
+        if (!windowToClose) {
+            return;
+        }
+
+        if (windowToClose.type === windowTypes.MAP) {
+            setWindows(prevWindows => prevWindows.filter((data) => data.id !== windowId && data.type !== windowTypes.LIST));
+        } else if (windowToClose.type === windowTypes.LIST) {
+            setWindows(prevWindows => prevWindows.filter((data) => data.id !== windowId && data.type !== windowTypes.MAP));
         } else {
-            setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex));
+            setWindows(prevWindows => prevWindows.filter((data) => data.id !== windowId));
         }
     }
 
-    function unminimizeWindow(windowIndex: number) {
-        setMinimizedWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex));
-        changeActiveWindow(windowIndex);
+    function getData(type: windowTypes, report?: number) {
+        const data: windowData = {
+            id: Date.now(),
+            type: type,
+            position: {x: 0, y: 0},
+            size: {width: 0, height: 0},
+            index: -1,
+        };
+        data.type = type;
+        switch (type) {
+            case windowTypes.MAP:
+                data.size = {width: 800, height: 700};
+                data.position = {x: 80, y: 5};
+                break;
+            case windowTypes.LIST:
+                data.size = {width: 600, height: 700};
+                data.position = {x: 700, y: 50};
+                break;
+            case windowTypes.REPORT:
+                data.size = {width: 600, height: 700};
+                data.position = {x: 5, y: 5};
+                if (report) {
+                    data.reportIndex = report;
+                }
+                break;
+            case windowTypes.LOGIN:
+                data.size = {width: 700, height: 170};
+                data.position = {x: 5, y: 5};
+                break;
+            default:
+                break;
+        }
+        return data
+    }
+
+    function renderWindow(data: windowData, index: number) {
+        data.index = index;
+        return <Window data={data}
+                       activeIndex={activeWindow}
+                       changeActive={changeActiveWindow}
+                       currentReport={currentReport}
+                       changeCurrentReport={changeCurrentReport}
+                       reports={reports}
+                       updateReports={updateReports}
+                       closeWindow={closeWindow}
+                       isMinimized={isMinimized}
+                       minimizeWindow={minimizeWindow}
+                       isEditing={isEditingReport}
+                       changeEditing={changeEditingReport}
+                       openWindow={openWindow}
+                       signedInCheck={setSignedIn}
+                       windows={windows}
+                       map={map}
+                       changeMap={setMap}
+                       zoomToReport={zoomToReport}
+                       signedIn={signedInCheck}/>;
     }
 
     return (
         <>
             <div id={"windowsBody"}>
                 {windows.map((type, index) => (
-                    type === windowTypes.MAP ?
-                        <Window key={index}
-                                initWidth={800}
-                                initHeight={700}
-                                initPos={{x: 100, y: 5}}
-                                type={type}
-                                windowIndex={index}
-                                activeIndex={activeWindow} changeActive={changeActiveWindow}
-                                currentReport={currentReport} changeCurrentReport={changeCurrentReport}
-                                reports={reports}
-                                updateReports={updateReports}
-                                closeWindow={closeWindow}
-                                isMinimized={isMinimized}
-                                minimizeWindow={minimizeWindow}
-                                isEditing={isEditingReport}
-                                changeEditing={changeEditingReport}
-                                openWindow={openWindow}
-                                signedInCheck={setSignedIn}
-                                windows={windows}
-                                map={map}
-                                changeMap={setMap}
-                                zoomToReport={zoomToReport}
-                                signedIn={signedInCheck}
-                        /> : type === windowTypes.LIST ?
-                            <Window key={index}
-                                    initWidth={600}
-                                    initHeight={700}
-                                    initPos={{x: 700, y: 100}}
-                                    type={type}
-                                    windowIndex={index}
-                                    activeIndex={activeWindow} changeActive={changeActiveWindow}
-                                    currentReport={currentReport} changeCurrentReport={changeCurrentReport}
-                                    reports={reports}
-                                    updateReports={updateReports}
-                                    closeWindow={closeWindow}
-                                    isMinimized={isMinimized}
-                                    minimizeWindow={minimizeWindow}
-                                    isEditing={isEditingReport}
-                                    changeEditing={changeEditingReport}
-                                    openWindow={openWindow}
-                                    signedInCheck={setSignedIn}
-                                    signedIn={signedInCheck}
-                                    windows={windows}
-                                    map={map}
-                                    changeMap={setMap}
-                                    zoomToReport={zoomToReport}
-                            /> : type === windowTypes.REPORT ?
-                                <Window key={index}
-                                        initWidth={800}
-                                        initHeight={700}
-                                        initPos={{x: 25, y: 25}}
-                                        type={type}
-                                        windowIndex={index}
-                                        activeIndex={activeWindow} changeActive={changeActiveWindow}
-                                        currentReport={currentReport} changeCurrentReport={changeCurrentReport}
-                                        reports={reports}
-                                        updateReports={updateReports}
-                                        closeWindow={closeWindow}
-                                        isMinimized={isMinimized}
-                                        minimizeWindow={minimizeWindow}
-                                        isEditing={isEditingReport}
-                                        changeEditing={changeEditingReport}
-                                        openWindow={openWindow}
-                                        signedInCheck={setSignedIn}
-                                        signedIn={signedInCheck}
-                                        windows={windows}
-                                        map={map}
-                                        changeMap={setMap}
-                                        zoomToReport={zoomToReport}
-                                /> :
-                                <Window key={index}
-                                        initWidth={600}
-                                        initHeight={170}
-                                        initPos={{x: 25, y: 25}}
-                                        type={type}
-                                        windowIndex={index}
-                                        activeIndex={activeWindow} changeActive={changeActiveWindow}
-                                        currentReport={currentReport} changeCurrentReport={changeCurrentReport}
-                                        reports={reports}
-                                        updateReports={updateReports}
-                                        closeWindow={closeWindow}
-                                        isMinimized={isMinimized}
-                                        minimizeWindow={minimizeWindow}
-                                        isEditing={isEditingReport}
-                                        changeEditing={changeEditingReport}
-                                        openWindow={openWindow}
-                                        signedInCheck={setSignedIn}
-                                        signedIn={signedInCheck}
-                                        windows={windows}
-                                        map={map}
-                                        changeMap={setMap}
-                                        zoomToReport={zoomToReport}
-                                />
+                    renderWindow(type, index)
                 ))}
             </div>
             <div id={"desktop"}>
