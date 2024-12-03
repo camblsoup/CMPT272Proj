@@ -1,6 +1,7 @@
-import { useSignIn } from "../SignIn.ts";
+import {useSignIn} from "../SignIn.ts";
 import '../css/Login.css'
 import {windowData} from "../data/windowType.ts";
+import {windowTypes} from "../data/enums.ts";
 
 function SignInTab({ signedInCheck, closeWindow, windowIndex, windows }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, closeWindow: (index: number) => void, windowIndex: number, windows: windowData[]}) {
     const {passcode, setPassword, error, handleSignIn} = useSignIn();
@@ -9,21 +10,26 @@ function SignInTab({ signedInCheck, closeWindow, windowIndex, windows }: { signe
         const success = await handleSignIn();
         if (success) {
             signedInCheck(true);
-            closeWindow(windows.length - 1);
+            const window = windows.find((data) => data.type === windowTypes.LOGIN);
+            if (window) {
+                closeWindow(window.id);
+            }
         }
         else {
             signedInCheck(false);
         }
         // @ts-ignore
-        let button = document.getElementById("signin-buttons").children.item(0);
-        // @ts-ignore
-        button.id = "click";
+        const button = document.getElementById("signin-buttons").children.item(0);
+
+        if (button) {
+            button.id = "click";
+        }
     }
 
     return (
         <div id={"signin"} style={{textAlign: "center"}} onClick={() => {
             // @ts-ignore
-            let button = document.getElementById("signin-buttons").children.item(0);
+            const button = document.getElementById("signin-buttons").children.item(0);
             // @ts-ignore
             button.id = "";
         }}>
