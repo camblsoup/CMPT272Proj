@@ -1,4 +1,54 @@
+import { useState } from "react";
 import { Report } from "../data/reportType.ts";
+
+const Geocoder = ({ onCoordsRetrieved }) => {
+    const [address, setAddress] = useState("");
+    const [error, setError] = useState("");
+    const handleSearch = async () => {
+        if (!address) {
+            setError("Please enter an address.");
+            return;
+        }
+        setError("");
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1&limit=1&countrycodes=CA`
+            );
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json();
+            if (data.length === 0) {
+                setError("No results found");
+                return;
+            }
+            const { lat, lon } = data[0];
+            if (onCoordsRetrieved) {
+                onCoordsRetrieved({ lat, lon });
+            }
+        } catch (err) {
+            setError("An error occurred while fetching data. Please try again.");
+        }
+    };
+  
+    return (
+        <>
+            <input
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter an address..."
+            />
+            <input type="button" onClick={handleSearch} value="Search" />
+            {error && <p style={{ color: "red" }}>{error}</p>}
+        </>
+    );
+};
+
+const handleCoordinatesRetrieved = (coordinates) => {
+    console.log("Coordinates received:", coordinates);
+    alert(`Latitude: ${coordinates.lat}, Longitude: ${coordinates.lon}`);
+};
 
 function ReportWindow({ 
     report, 
@@ -95,9 +145,18 @@ function ReportWindow({
                             </div>
                             <div>
                                 <label>Location:</label>
-                                <input type="text" name="location" defaultValue={report.location} />
-                                <input type="text" name="lat" defaultValue={report.lat} />
-                                <input type="text" name="lon" defaultValue={report.lon} />
+                                <input type="text" name="location" defaultValue={report.location} placeholder="Descriptive Name"/>
+                                <br />
+                                <input type="text" name="lat" defaultValue={report.lat} id="lat"/>
+                                <input type="text" name="lon" defaultValue={report.lon} id="lon"/>
+                                <br />
+                                <Geocoder onCoordsRetrieved={
+                                    (coords) => {
+                                        console.log(coords);
+                                        document.getElementById("lat").value = coords.lat;
+                                        document.getElementById("lon").value = coords.lon;
+                                    }
+                                } />
                             </div>
                             <div>
                                 <label>Comments:</label>
