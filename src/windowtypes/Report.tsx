@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Report } from "../data/reportType.ts";
-import { GeocoderProps, Coordinates } from "../data/geoData.ts";
+import { GeocoderProps, Location } from "../data/geoData.ts";
 import "../css/Report.css";
 
 function focusButton(flag: number){
@@ -24,19 +24,18 @@ const Geocoder: React.FC<GeocoderProps> = ({ onCoordsRetrieved }) => {
         setError("");
         try {
             const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1&limit=1&countrycodes=CA`
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1&limit=3&countrycodes=CA`
             );
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
             }
-            const data = await response.json();
+            const data: Location[] = await response.json();
             if (data.length === 0) {
                 setError("No results found");
                 return;
             }
-            const { lat, lon } = data[0];
             if (onCoordsRetrieved) {
-                onCoordsRetrieved({lat, lon});
+                onCoordsRetrieved(data);
             }
         } catch (err) {
             setError("An error occurred while fetching data. Please try again.");
@@ -113,10 +112,10 @@ function ReportWindow({
     const [lat, setLat] = useState<number | null>(null);
     const [lon, setLon] = useState<number | null>(null);
     const [err, setErr] = useState<string | null>(null);
-    const handleCoordsRetrieved = (coords: Coordinates) => {
+    const [locations, setLocations] = useState<Location[] | null>(null);
+    const handleCoordsRetrieved = (coords: Location[]) => {
         console.log(coords);
-        setLat(coords.lat);
-        setLon(coords.lon);
+        setLocations(coords);
     };
 
     if (!isEditing) {
@@ -168,10 +167,28 @@ function ReportWindow({
                                 <label>Location:</label>
                                 <input type="text" name="location" defaultValue={report.location} placeholder="Descriptive Name"/>
                                 <br />
-                                <input type="text" name="lat" defaultValue={report.lat} value={lat || ""}/>
-                                <input type="text" name="lon" defaultValue={report.lon} value={lon || ""}/>
+                                <input type="text" name="lat" defaultValue={report.lat} value={lat || report.lat}/>
+                                <input type="text" name="lon" defaultValue={report.lon} value={lon || report.lon}/>
                                 <br />
                                 <Geocoder onCoordsRetrieved={handleCoordsRetrieved} />
+                                {locations && (
+                                    <div>
+                                        <table>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Latitiude</th>
+                                                <th>Longitude</th>
+                                            </tr>
+                                            {locations.map((location, index) => (
+                                                <tr>
+                                                    <td style={{width: "350px", maxWidth: "350px"}}>{location.display_name}</td>
+                                                    <td style={{width: "100px", maxWidth: "100px"}}>{location.lat}</td>
+                                                    <td>{location.lon}</td>
+                                                </tr>
+                                            ))}
+                                        </table>
+                                    </div>
+                                )}
                             </div>
                             <div onClick={()=>focusButton(0)}>
                                 <label>Comments:</label>

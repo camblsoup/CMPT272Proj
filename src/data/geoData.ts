@@ -1,8 +1,10 @@
 export interface GeocoderProps {
-    onCoordsRetrieved: (coordinates: Coordinates) => void;
+    onCoordsRetrieved: (coordinates: Location[]) => void;
 }
 
-export interface Coordinates {
+export interface Location {
+    display_name: string;
     lat: number;
     lon: number;
 }
+
