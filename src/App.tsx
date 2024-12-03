@@ -162,7 +162,8 @@ function App() {
 
     function renderWindow(data: windowData, index: number) {
         data.index = index;
-        return <Window data={data}
+        return <Window key={data.id}
+                       data={data}
                        activeIndex={activeWindow}
                        changeActive={changeActiveWindow}
                        currentReport={currentReport}

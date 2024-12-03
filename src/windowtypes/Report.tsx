@@ -115,8 +115,8 @@ function ReportWindow({
         changeEditing(false);
     }
 
-    const [lat, setLat] = useState<number | null>(null);
-    const [lon, setLon] = useState<number | null>(null);
+    const [lat, setLat] = useState<number>(report.lat);
+    const [lon, setLon] = useState<number>(report.lon);
     const [err, setErr] = useState<string | null>(null);
     const [locations, setLocations] = useState<Location[]>([]);
     const handleCoordsRetrieved = (coords: Location[]) => {
@@ -180,9 +180,9 @@ function ReportWindow({
                                 <Geocoder onCoordsRetrieved={handleCoordsRetrieved}/>
                                 <p>{locations.length > 0 ? "Address: " : ""}{locations.length > 0 ? locations[0].display_name : ""}</p>
                                 <label>Latitude:</label>
-                                <input type="text" name="lat" defaultValue={report.lat} value={lat || report.lat}/>
+                                <input type="text" name="lat" onChange={(event) => setLat(parseInt(event.target.value))} value={lat}/>
                                 <label> Longitude:</label>
-                                <input type="text" name="lon" defaultValue={report.lon} value={lon || report.lon}/>
+                                <input type="text" name="lon" onChange={(event) => setLon(parseInt(event.target.value))} value={lon}/>
                                 <br/>
                             </div>
                             <div onClick={() => focusButton(0)}>

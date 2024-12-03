@@ -1,20 +1,20 @@
-import { Report } from "../data/reportType.ts";
+import {Report} from "../data/reportType.ts";
 import ListItem from "./ListItem.tsx";
-import { useEffect, useState } from "react";
-import { windowTypes } from "../data/enums.ts";
+import {useEffect, useState} from "react";
+import {windowTypes} from "../data/enums.ts";
 import "../css/List.css";
 
 function ListWindow({
-    reports,
-    changeCurrentReport,
-    updateReports,
-    changeEditing,
-    openWindow,
-    signedInCheck,
-    signedIn,
-    zoomToReport,
-    map
-}: {
+                        reports,
+                        changeCurrentReport,
+                        updateReports,
+                        changeEditing,
+                        openWindow,
+                        signedInCheck,
+                        signedIn,
+                        zoomToReport,
+                        map
+                    }: {
     reports: Report[],
     changeCurrentReport: (reportId: number) => void,
     updateReports: (reports: Report[]) => void,
@@ -61,15 +61,15 @@ function ListWindow({
     const [, forceUpdate] = useState({});
     useEffect(() => {
         if (!map) return;
-    
+
         const updateOnMapChange = () => {
             // force rerender to update list
             forceUpdate({});
         };
-    
+
         map.on('move', updateOnMapChange);
         map.on('zoom', updateOnMapChange);
-    
+
         return () => {
             map.off('move', updateOnMapChange);
             map.off('zoom', updateOnMapChange);
@@ -84,7 +84,7 @@ function ListWindow({
         return bounds.contains([report.lat, report.lon]);
     };
 
-    const filteredReports = showOnlyVisible 
+    const filteredReports = showOnlyVisible
         ? reports.filter(report => isMarkerInBounds(report))
         : reports;
 
@@ -95,6 +95,7 @@ function ListWindow({
             type: "New Incident - " + (maxId + 1),
             wit_name: "",
             wit_phone: "",
+            address: "",
             location: "",
             lat: 0,
             lon: 0,
@@ -140,11 +141,11 @@ function ListWindow({
         changeEditing(true);
     }
 
-    function updateLastClicked(idx: number){
+    function updateLastClicked(idx: number) {
         // @ts-ignore
         let buttons = document.getElementById("buttons").children;
-        for(let i = 0; i < buttons.length; i++){
-            if(i === idx){
+        for (let i = 0; i < buttons.length; i++) {
+            if (i === idx) {
                 // @ts-ignore
                 buttons.item(i).id = "lastClicked";
                 continue;
@@ -224,6 +225,7 @@ function ListWindow({
                             <td style={{padding: "0"}} colSpan={5}>
                                 <div>
                                     <table>
+                                        <tbody>
                                         {sortReports(filteredReports).map((report: Report) => (
                                             <ListItem
                                                 report={report}
@@ -232,6 +234,8 @@ function ListWindow({
                                                 setSelectedItem={changeSelected}
                                             />
                                         ))}
+                                        </tbody>
+
                                     </table>
                                 </div>
                             </td>
