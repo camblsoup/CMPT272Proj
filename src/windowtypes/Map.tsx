@@ -28,10 +28,8 @@ function MapWindow({reports, openWindow, changeCurrentReport, changeActiveWindow
         const bounds = map.getBounds();
         return bounds.contains([report.lat, report.lon]);
     };
-
-    const visibleReports = reports.filter(report => isMarkerInBounds(report));
     
-    const markers = visibleReports.filter(report => 
+    const markers = reports.filter(report => 
         typeof report.lat === 'number' && 
         typeof report.lon === 'number'
     ).map(report =>
