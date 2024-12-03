@@ -154,7 +154,7 @@ function App() {
                 }
                 break;
             case windowTypes.LOGIN:
-                data.size = {width: 170, height: 700};
+                data.size = {width: 700, height: 170};
                 data.position = {x: 5, y: 5};
                 break;
             default:
