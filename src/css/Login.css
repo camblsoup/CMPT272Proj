@@ -10,8 +10,13 @@
     align-items: start;
 }
 
+input[type="password"] {
+    font-family: MS-sans-serif, MS, sans-serif;
+}
+
 #signin input {
     background: white;
+    color: black;
     border: 2px solid #555555;
     border-right-color: lightgray;
     border-bottom-color: lightgray;
