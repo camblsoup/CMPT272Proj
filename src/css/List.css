@@ -15,6 +15,16 @@
     background: #B0B0B0;
 }
 
-.list-window-sort {
+.list-window-sort select{
     font-family: MS-sans-serif, MS, sans-serif;
+    color: #000;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 32px;
+    background-image: url("../assets/button-down.svg");
+    background-color: #fff;
+    background-position: top 0 right 0;
+    background-repeat: no-repeat;
+    border-radius: 0;
 }
