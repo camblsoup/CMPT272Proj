@@ -15,7 +15,7 @@
 #desktop .app {
     box-sizing: border-box;
     width: 65px;
-    height: 78px;
+    min-height: 78px;
     background: none;
     border: none;
     padding: 0;

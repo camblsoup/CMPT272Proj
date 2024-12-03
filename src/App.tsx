@@ -3,8 +3,8 @@ import './css/App.css'
 import Taskbar from './Taskbar'
 import Window from './Window'
 import mapIcon from './assets/map-icon.png'
-import reportIcon from './assets/report.png'
 import listIcon from './assets/list.png'
+import reportIcon from './assets/report.png'
 import {windowTypes} from "./data/enums.ts";
 import {useEffect, useState} from 'react';
 import {Report} from './data/reportType';
@@ -68,11 +68,7 @@ function App() {
             setWindows((prevWindows) => [
                 ...prevWindows, data
             ]);
-            const listData = getData(windowTypes.LIST);
-            listData.id += 1;
-            setWindows((prevWindows) => [
-                ...prevWindows, listData
-            ]);
+            openWindow(windowTypes.LIST);
             changeActiveWindow(data.id);
             return;
         }
@@ -200,11 +196,11 @@ function App() {
                 </button>
                 <button className={"app"} onDoubleClick={() => openWindow(windowTypes.LIST)}>
                     <img src={listIcon} alt={"list desktop icon"}/>
-                    <p>Reports</p>
+                    <p>List of reports</p>
                 </button>
-                <button className={"app"} onDoubleClick={() => openWindow(windowTypes.REPORT)}>
+                <button className={"app"} onDoubleClick={() => openWindow(windowTypes.MAP)}>
                     <img src={reportIcon} alt={"report desktop icon"}/>
-                    <p>Details</p>
+                    <p>Report</p>
                 </button>
             </div>
             <Taskbar activeIndex={activeWindow} windows={windows} unminimizeWindow={unminimizeWindow}/>
