@@ -1,11 +1,12 @@
 .list-window-buttons button{
+    padding: 2px 10px 2px 10px;
     background: #C0C0C0;
     border-top: 2px solid white;
     border-left: 2px solid white;
     border-bottom: 2px solid #7F787F;
     border-right: 2px solid #7F787F;
-    outline: outset 2px black;
-    margin: 3px;
+    outline: outset 1px black;
+    margin: 5px;
     color: #000;
     font-family: MS-sans-serif, MS, sans-serif;
 }
