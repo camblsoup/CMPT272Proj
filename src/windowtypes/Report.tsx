@@ -29,8 +29,9 @@ const Geocoder: React.FC<GeocoderProps> = ({ onCoordsRetrieved }) => {
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
             }
-            const data: Location[] = await response.json();
+            let data: Location[] = await response.json();
             if (data.length === 0) {
+                onCoordsRetrieved(data);
                 setError("No results found");
                 return;
             }
@@ -90,6 +91,11 @@ function ReportWindow({
             date: formData.get('date') as string,
             picture: formData.get('picture') as string
         };
+
+        if (locations[0]) {
+            updatedReport.address = locations[0].display_name;
+        }
+
         if(isNaN(updatedReport.lat) || isNaN(updatedReport.lon)) {
             setErr("Please enter a location.");
             return;
@@ -112,10 +118,12 @@ function ReportWindow({
     const [lat, setLat] = useState<number | null>(null);
     const [lon, setLon] = useState<number | null>(null);
     const [err, setErr] = useState<string | null>(null);
-    const [locations, setLocations] = useState<Location[] | null>(null);
+    const [locations, setLocations] = useState<Location[]>([]);
     const handleCoordsRetrieved = (coords: Location[]) => {
         console.log(coords);
         setLocations(coords);
+        setLat(coords[0].lat);
+        setLon(coords[0].lon)
     };
 
     if (!isEditing) {
@@ -129,6 +137,7 @@ function ReportWindow({
                         <p><u>{report.wit_name ? "W" : ""}</u>{report.wit_name ? "itness: " : ""}{report.wit_name}</p>
                         <p><u>{report.wit_phone ? "W" : ""}</u>{report.wit_phone ? "itness Contact: " : ""}{report.wit_phone}</p>
                         <p><u>{report.location ? "L" : ""}</u>{report.location ? "ocation: " : ""}{report.location}</p>
+                        <p><u>{report.address ? "A" : ""}</u>{report.address ? "ddress: " : ""}{report.address}</p>
                         <p><u>{report.lat ? "L" : ""}</u>{report.lat ? "atitude: " : ""}{report.lat}</p>
                         <p><u>{report.lon ? "L" : ""}</u>{report.lon ? "ongitude: " : ""}{report.lon}</p>
                         <p><u>{report.comments ? "C" : ""}</u>{report.comments ? "omments: " : ""}{report.comments}</p>
@@ -165,34 +174,20 @@ function ReportWindow({
                             </div>
                             <div>
                                 <label>Location:</label>
-                                <input type="text" name="location" defaultValue={report.location} placeholder="Descriptive Name"/>
-                                <br />
+                                <input type="text" name="location" defaultValue={report.location}
+                                       placeholder="Descriptive Name"/>
+                                <br/>
+                                <Geocoder onCoordsRetrieved={handleCoordsRetrieved}/>
+                                <p>{locations.length > 0 ? "Address: " : ""}{locations.length > 0 ? locations[0].display_name : ""}</p>
+                                <label>Latitude:</label>
                                 <input type="text" name="lat" defaultValue={report.lat} value={lat || report.lat}/>
+                                <label> Longitude:</label>
                                 <input type="text" name="lon" defaultValue={report.lon} value={lon || report.lon}/>
-                                <br />
-                                <Geocoder onCoordsRetrieved={handleCoordsRetrieved} />
-                                {locations && (
-                                    <div>
-                                        <table>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Latitiude</th>
-                                                <th>Longitude</th>
-                                            </tr>
-                                            {locations.map((location, index) => (
-                                                <tr>
-                                                    <td style={{width: "350px", maxWidth: "350px"}}>{location.display_name}</td>
-                                                    <td style={{width: "100px", maxWidth: "100px"}}>{location.lat}</td>
-                                                    <td>{location.lon}</td>
-                                                </tr>
-                                            ))}
-                                        </table>
-                                    </div>
-                                )}
+                                <br/>
                             </div>
-                            <div onClick={()=>focusButton(0)}>
+                            <div onClick={() => focusButton(0)}>
                                 <label>Comments:</label>
-                                <textarea 
+                                <textarea
                                     name="comments"
                                     defaultValue={report.comments}
                                     rows={1}

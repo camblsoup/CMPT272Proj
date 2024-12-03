@@ -5,6 +5,14 @@
     overflow-x: hidden;
 }
 
+.report-edit p {
+    font-size: 16px;
+}
+
+.report-edit table {
+    width: 599px;
+}
+
 .report-edit input {
     font-family: MS-sans-serif, MS, sans-serif;
     color: black;

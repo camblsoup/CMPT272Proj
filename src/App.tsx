@@ -78,6 +78,7 @@ function App() {
                 changeActiveWindow(existingListWindow.id);
                 return;
             }
+            data.id++;
         }
 
         if (type === windowTypes.LOGIN) {
@@ -198,7 +199,7 @@ function App() {
                     <img src={listIcon} alt={"list desktop icon"}/>
                     <p>List of reports</p>
                 </button>
-                <button className={"app"} onDoubleClick={() => openWindow(windowTypes.MAP)}>
+                <button className={"app"} onDoubleClick={() => openWindow(windowTypes.REPORT)}>
                     <img src={reportIcon} alt={"report desktop icon"}/>
                     <p>Report</p>
                 </button>

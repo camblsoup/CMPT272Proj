@@ -4,6 +4,7 @@ interface Report {
     wit_name: string;
     wit_phone: string;
     location: string;
+    address: string;
     lat: number;
     lon: number;
     picture: string;
