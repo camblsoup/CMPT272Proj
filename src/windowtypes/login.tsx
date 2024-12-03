@@ -39,7 +39,7 @@ function SignInTab({ signedInCheck, closeWindow, windowIndex, windows }: { signe
                 <p style={{color: "red", height: 21, marginTop: 15}}>{error}</p>
             </div>
             <div id={"signin-buttons"}>
-                <button onClick={handleLogin}>Submit</button>
+                <button onClick={handleLogin}>Ok</button>
                 <button onClick={() => closeWindow(windowIndex)}>Cancel</button>
             </div>
         </div>
