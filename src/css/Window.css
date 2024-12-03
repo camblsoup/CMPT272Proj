@@ -31,7 +31,7 @@
 }
 
 .window-active .top-bar {
-    background: #000080;
+    background-image: linear-gradient(to right, #000080, #1084d0);
 }
 
 .top-bar {
