@@ -70,6 +70,7 @@ function ReportWindow({
     changeEditing: (editing: boolean) => void,
     reports: Report[]
 }) {
+
     function handleSave(e: React.FormEvent) {
         e.preventDefault(); // Prevent form submission
         const form = e.currentTarget as HTMLFormElement;
@@ -122,7 +123,8 @@ function ReportWindow({
         return (
             <>
                 {report &&
-                    <div>
+                    <div className={"report"}>
+                        <img className={report.picture ? "report-image" : ""} src={report.picture} alt={report.picture ? "Report Picture" : "No image"}/>
                         <h1>{report.type}</h1>
                         <p>{report.status}</p>
                         <p>{report.wit_name}</p>
@@ -130,7 +132,6 @@ function ReportWindow({
                         <p>{report.location}</p>
                         <p>{report.lat}</p>
                         <p>{report.lon}</p>
-                        <img src={report.picture} alt="Report Picture" />
                         <p>{report.comments}</p>
                         <p>{report.date}</p>
                     </div>
