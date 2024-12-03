@@ -12,16 +12,18 @@ function ListWindow({
     openWindow,
     signedInCheck,
     signedIn,
-    zoomToReport
+    zoomToReport,
+    map
 }: {
     reports: Report[],
     changeCurrentReport: (reportId: number) => void,
     updateReports: (reports: Report[]) => void,
     changeEditing: (editing: boolean) => void,
     openWindow: (type: windowTypes) => void,
-    zoomToReport: (report: Report) => void
+    zoomToReport: (report: Report) => void,
     signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
     signedIn: boolean,
+    map: L.Map | null
 }) {
     useEffect(() => {
         console.log("signedInCheck updated:", signedInCheck);
@@ -35,6 +37,7 @@ function ListWindow({
     }
 
     const [sortMethod, setSortMethod] = useState('id');
+    const [showOnlyVisible, setShowOnlyVisible] = useState(false);
 
     const sortReports = (reports: Report[]): Report[] => {
         return [...reports].sort((a, b) => {
@@ -54,6 +57,18 @@ function ListWindow({
             }
         });
     };
+
+    const isMarkerInBounds = (report: Report): boolean => {
+        if (!map || typeof report.lat !== 'number' || typeof report.lon !== 'number') {
+            return false;
+        }
+        const bounds = map.getBounds();
+        return bounds.contains([report.lat, report.lon]);
+    };
+
+    const filteredReports = showOnlyVisible 
+        ? reports.filter(report => isMarkerInBounds(report))
+        : reports;
 
     function addNewReport() {
         const maxId = Math.max(...reports.map(r => r.id), -1);
@@ -127,7 +142,9 @@ function ListWindow({
                     }
                 }}>Delete
                 </button>
-
+                <button onClick={() => setShowOnlyVisible(!showOnlyVisible)}>
+                    {showOnlyVisible ? 'Show All' : 'Show Visible Only'}
+                </button>
             </div>
             <div className="list-window-sort">
                 <label htmlFor="sort-select">Sort by: </label>
@@ -156,7 +173,7 @@ function ListWindow({
                         </tr>
                     </thead>
                     <tbody>
-                        {sortReports(reports).map((report: Report) => (
+                        {sortReports(filteredReports).map((report: Report) => (
                             <ListItem
                                 report={report}
                                 key={report.id}

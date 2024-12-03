@@ -159,6 +159,7 @@ function Window({
                     signedInCheck={signedInCheck}
                     signedIn={signedIn}
                     zoomToReport={zoomToReport}
+                    map={map}
                 />;
             case windowTypes.REPORT:
                 return <ReportWindow
