@@ -20,14 +20,6 @@ function SetViewOnClick() {
 }
 
 function MapWindow({reports, openWindow, changeCurrentReport, changeActiveWindow, map, changeMap}:{reports: Report[], openWindow: (type: windowTypes) => void, changeCurrentReport: (reportId: number) => void, changeActiveWindow: (index: number) => void, map: L.Map | null, changeMap: (map: L.Map) => void}) {
-
-    const isMarkerInBounds = (report: Report): boolean => {
-        if (!map || typeof report.lat !== 'number' || typeof report.lon !== 'number') {
-            return false;
-        }
-        const bounds = map.getBounds();
-        return bounds.contains([report.lat, report.lon]);
-    };
     
     const markers = reports.filter(report => 
         typeof report.lat === 'number' && 
