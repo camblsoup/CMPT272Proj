@@ -65,6 +65,7 @@ function Window({
     const [size, setSize] = useState(data.size);
     const [position, setPosition] = useState(data.position);
     const [maximized, setMaximized] = useState<boolean>(false);
+    const [reportToDisplay, setReportToDisplay] = useState(-1);
 
     const style: React.CSSProperties = {
         width: size.width,
@@ -125,6 +126,9 @@ function Window({
     }, [handleMouseMove, isDragging]);
 
     function renderBody() {
+        if(reportToDisplay < 0){
+            setReportToDisplay(currentReport);
+        }
         switch (data.type) {
             case windowTypes.MAP:
                 return <MapWindow
@@ -157,7 +161,7 @@ function Window({
             case windowTypes.REPORT:
                 return <ReportWindow
                     reports={reports}
-                    report={reports.find(r => r.id === currentReport) || reports[0]}
+                    report={reports.find(r => r.id === reportToDisplay) || reports[0]}
                     isEditing={isEditing}
                     updateReports={updateReports}
                     changeEditing={changeEditing}
