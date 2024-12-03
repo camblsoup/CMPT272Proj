@@ -11,14 +11,14 @@
     font-family: MS-sans-serif, MS, sans-serif;
 }
 
-.list-window-buttons button:active {
-    outline: dashed black 1px;
-    outline-offset: -5px;
-}
-
 .list-window-buttons button:hover {
     cursor: pointer;
     background: #B0B0B0;
+}
+
+#lastClicked {
+    outline: 1px black dashed;
+    outline-offset: -5px;
 }
 
 .list-window-sort select{

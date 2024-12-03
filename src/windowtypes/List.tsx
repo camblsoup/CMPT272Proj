@@ -118,12 +118,31 @@ function ListWindow({
         changeEditing(true);
     }
 
+    function updateLastClicked(idx: number){
+        // @ts-ignore
+        let buttons = document.getElementById("buttons").children;
+        for(let i = 0; i < buttons.length; i++){
+            if(i === idx){
+                // @ts-ignore
+                buttons.item(i).id = "lastClicked";
+                continue;
+            }
+            // @ts-ignore
+            buttons.item(i).id = "";
+        }
+
+    }
+
     return (
         <>
-            <div className="list-window-buttons">
-                <button onClick={handleAdd}>New</button>
+            <div id="buttons" className="list-window-buttons">
+                <button onClick={() => {
+                    handleAdd()
+                    updateLastClicked(0)
+                }}>New</button>
                 <button onClick={() => {
                     handleOpen(selected)
+                    updateLastClicked(1)
                 }}>Open
                 </button>
                 <button onClick={() => {
@@ -132,6 +151,7 @@ function ListWindow({
                     } else {
                         openWindow(windowTypes.LOGIN);
                     }
+                    updateLastClicked(2)
                 }}>Edit
                 </button>
                 <button onClick={() => {
@@ -140,13 +160,17 @@ function ListWindow({
                     } else {
                         openWindow(windowTypes.LOGIN);
                     }
+                    updateLastClicked(3)
                 }}>Delete
                 </button>
-                <button onClick={() => setShowOnlyVisible(!showOnlyVisible)}>
+                <button onClick={() => {
+                    setShowOnlyVisible(!showOnlyVisible);
+                    updateLastClicked(4)
+                }}>
                     {showOnlyVisible ? 'Show All' : 'Show Visible Only'}
                 </button>
             </div>
-            <div className="list-window-sort">
+            <div className="list-window-sort" onClick={() => updateLastClicked(-1)}>
                 <label htmlFor="sort-select">Sort by: </label>
                 <select
                     id="sort-select"
@@ -160,7 +184,7 @@ function ListWindow({
                     <option value="location">Location</option>
                 </select>
             </div>
-            <div>
+            <div onClick={() => updateLastClicked(-1)}>
                 <h1>Incidents</h1>
                 <table style={{ "width": "100%" }}>
                     <thead>
