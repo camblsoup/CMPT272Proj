@@ -1,11 +1,9 @@
-import { MapContainer, Marker, TileLayer, Popup, useMapEvent, useMap } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, Popup, useMapEvent } from 'react-leaflet';
 import markerIcon from "../assets/marker.png";
 import '../css/Map.css'
 import L from "leaflet";
 import { Report } from '../data/reportType';
 import { windowTypes } from '../data/enums';
-import { ReactOsmGeocoding } from '@paraboly/react-osm-geocoding'
-import { useState } from 'react';
 
 
 const icon = L.icon({
