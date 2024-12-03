@@ -1,5 +1,10 @@
+@font-face {
+  font-family: "MS-sans-serif";
+  src: url("../assets/MSSansSerif.ttf");
+}
+
 :root {
-  font-family: MS, sans-serif;
+  font-family: "MS-sans-serif", MS, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
