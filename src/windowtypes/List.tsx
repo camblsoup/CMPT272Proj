@@ -212,10 +212,10 @@ function ListWindow({
                     <table style={{width: "100%", height: "100%"}}>
                         <thead>
                         <tr>
-                            <th style={{width: "170px"}}>Type</th>
-                            <th style={{width: "70px"}}>Status</th>
-                            <th style={{width: "140px"}}>Location</th>
-                            <th style={{width: "80px"}}>Date</th>
+                            <th style={{width: "170px", maxWidth: "170px"}}>Type</th>
+                            <th style={{width: "70px", maxWidth: "70px"}}>Status</th>
+                            <th style={{width: "140px", maxWidth: "140px"}}>Location</th>
+                            <th style={{width: "80px", maxWidth: "80px"}}>Date</th>
                             <th>Time</th>
                         </tr>
                         </thead>

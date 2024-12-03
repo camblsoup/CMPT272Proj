@@ -54,7 +54,9 @@ td {
     box-sizing: border-box;
     height: 28px;
     padding: 0 0 0 8px;
-    overflow-x: hidden;
+    overflow: clip;
+    white-space: nowrap;
+
 }
 
 th {
@@ -67,6 +69,8 @@ th {
 }
 
 table {
+    table-layout: fixed;
+    white-space: nowrap;
     border-spacing: 0;
     background: white;
     flex-grow: 1;
@@ -86,5 +90,6 @@ tbody {
 
 tbody div {
     overflow-y: auto;
+    overflow-x: hidden;
     height: 100%;
 }
