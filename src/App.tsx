@@ -59,6 +59,9 @@ function App() {
 
     function openWindow(type: windowTypes) {
         const data = getData(type);
+        if (type === windowTypes.LIST) {
+            data.id++;
+        }
         if (type === windowTypes.MAP) {
             const existingMapWindow = windows.find((curData) => curData.type === type);
             if (existingMapWindow) {
