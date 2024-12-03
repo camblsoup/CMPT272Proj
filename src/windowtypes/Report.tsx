@@ -90,6 +90,10 @@ function ReportWindow({
             date: formData.get('date') as string,
             picture: formData.get('picture') as string
         };
+        if(isNaN(updatedReport.lat) || isNaN(updatedReport.lon)) {
+            setErr("Please enter a location.");
+            return;
+        }
         console.log('Updated report:', updatedReport);
         
         console.log('Reports:', reports);
@@ -107,6 +111,7 @@ function ReportWindow({
 
     const [lat, setLat] = useState<number | null>(null);
     const [lon, setLon] = useState<number | null>(null);
+    const [err, setErr] = useState<string | null>(null);
     const handleCoordsRetrieved = (coords: Coordinates) => {
         console.log(coords);
         setLat(coords.lat);
@@ -182,6 +187,9 @@ function ReportWindow({
                             <div onClick={()=>focusButton(0)}>
                                 <label>Picture:</label>
                                 <input type="text" name="picture" defaultValue={report.picture} />
+                            </div>
+                            <div>
+                                {err && <p style={{color: "red"}}>{err}</p>}
                             </div>
                             <div onClick={()=>focusButton(0)}>
                                 <button type="submit">Save</button>
