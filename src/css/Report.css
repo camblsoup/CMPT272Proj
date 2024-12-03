@@ -1,3 +1,10 @@
+.report-edit {
+    height: fit-content;
+    max-height: 650px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .report-edit input {
     font-family: MS-sans-serif, MS, sans-serif;
     color: black;

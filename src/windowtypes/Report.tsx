@@ -178,7 +178,9 @@ function ReportWindow({
                                 <textarea 
                                     name="comments"
                                     defaultValue={report.comments}
-                                    rows={4}
+                                    rows={1}
+                                    cols={18}
+                                    style={{verticalAlign: "top", maxWidth: "490px"}}
                                 />
                             </div>
                             <div onClick={()=>focusButton(0)}>
@@ -187,7 +189,7 @@ function ReportWindow({
                             </div>
                             <div onClick={()=>focusButton(0)}>
                                 <label>Picture:</label>
-                                <input type="text" name="picture" defaultValue={report.picture} />
+                                <input type="url" name="picture" defaultValue={report.picture} placeholder={"Enter a URL"}/>
                             </div>
                             <div>
                                 {err && <p style={{color: "red"}}>{err}</p>}
@@ -197,7 +199,6 @@ function ReportWindow({
                                 <button type="button" onClick={handleCancel}>Cancel</button>
                             </div>
                         </form>
-                        <div className="after" onClick={()=>focusButton(0)}></div>
                     </div>
                 }
             </>
