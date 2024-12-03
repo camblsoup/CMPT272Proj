@@ -44,7 +44,7 @@ function Window({
     changeCurrentReport: (reportId: number) => void,
     reports: Report[],
     updateReports: (reports: Report[]) => void,
-    closeWindow: (index: number) => void,
+    closeWindow: (id: number) => void,
     isMinimized: (index: number) => boolean,
     minimizeWindow: (index: number) => void,
     isEditing: boolean,
@@ -143,7 +143,7 @@ function Window({
                 return <SignInTab
                     signedInCheck={signedInCheck}
                     closeWindow={closeWindow}
-                    windowIndex={data.index}
+                    window={data}
                     windows={windows}
                 />;
             case windowTypes.LIST:

@@ -3,7 +3,7 @@ import '../css/Login.css'
 import {windowData} from "../data/windowType.ts";
 import {windowTypes} from "../data/enums.ts";
 
-function SignInTab({ signedInCheck, closeWindow, windowIndex, windows }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, closeWindow: (index: number) => void, windowIndex: number, windows: windowData[]}) {
+function SignInTab({ signedInCheck, closeWindow, window, windows }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, closeWindow: (id: number) => void, window: windowData, windows: windowData[]}) {
     const {passcode, setPassword, error, handleSignIn} = useSignIn();
 
     const handleLogin = async ()=> {
@@ -46,7 +46,7 @@ function SignInTab({ signedInCheck, closeWindow, windowIndex, windows }: { signe
             </div>
             <div id={"signin-buttons"}>
                 <button onClick={handleLogin}>Ok</button>
-                <button onClick={() => closeWindow(windowIndex)}>Cancel</button>
+                <button onClick={() => closeWindow(window.id)}>Cancel</button>
             </div>
         </div>
     )
