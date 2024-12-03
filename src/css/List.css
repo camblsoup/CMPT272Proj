@@ -1,0 +1,20 @@
+.list-window-buttons button{
+    background: #C0C0C0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-bottom: 2px solid #7F787F;
+    border-right: 2px solid #7F787F;
+    outline: outset 2px black;
+    margin: 3px;
+    color: #000;
+    font-family: MS-sans-serif, MS, sans-serif;
+}
+
+.list-window-buttons button:hover {
+    cursor: pointer;
+    background: #B0B0B0;
+}
+
+.list-window-sort {
+    font-family: MS-sans-serif, MS, sans-serif;
+}
