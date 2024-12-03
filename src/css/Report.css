@@ -1,0 +1,53 @@
+.report-edit input {
+    font-family: MS-sans-serif, MS, sans-serif;
+    color: black;
+    background-color: white;
+}
+
+.report-edit textarea {
+    font-family: MS-sans-serif, MS, sans-serif;
+    color: black;
+    background-color: white;
+}
+
+.report-edit button{
+    padding: 2px 10px 2px 10px;
+    background: #C0C0C0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-bottom: 2px solid #7F787F;
+    border-right: 2px solid #7F787F;
+    outline: outset 1px black;
+    margin: 5px;
+    color: #000;
+    font-family: MS-sans-serif, MS, sans-serif;
+}
+
+.report-edit button:hover {
+    cursor: pointer;
+    background: #B0B0B0;
+}
+
+#focused{
+    outline: 1px black dashed;
+    outline-offset: -5px;
+}
+
+.report-edit select{
+    font-family: MS-sans-serif, MS, sans-serif;
+    color: #000;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 32px;
+    background-image: url("../assets/button-down.svg");
+    background-color: #fff;
+    background-position: top 0 right 0;
+    background-repeat: no-repeat;
+    border-radius: 0;
+}
+
+.after{
+    width: 600px;
+    height: 310px;
+}

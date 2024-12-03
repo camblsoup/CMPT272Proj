@@ -1,11 +1,22 @@
 import { useState } from "react";
 import { Report } from "../data/reportType.ts";
 import { GeocoderProps, Coordinates } from "../data/geoData.ts";
+import "../css/Report.css";
+
+function focusButton(flag: number){
+    if(flag){
+        document.getElementsByClassName("search")[0].id = "focused";
+    }
+    else{
+        document.getElementsByClassName("search")[0].id = "";
+    }
+}
 
 const Geocoder: React.FC<GeocoderProps> = ({ onCoordsRetrieved }) => {
     const [address, setAddress] = useState("");
     const [error, setError] = useState("");
     const handleSearch = async () => {
+        focusButton(1);
         if (!address) {
             setError("Please enter an address.");
             return;
@@ -40,7 +51,7 @@ const Geocoder: React.FC<GeocoderProps> = ({ onCoordsRetrieved }) => {
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Enter an address..."
             />
-            <input type="button" onClick={handleSearch} value="Search" />
+            <button type="button" className="search" onClick={handleSearch}>Search</button>
             {error && <p style={{ color: "red" }}>{error}</p>}
         </>
     );
@@ -125,13 +136,13 @@ function ReportWindow({
         return (
             <>
                 {report &&
-                    <div>
+                    <div className="report-edit">
                         <form onSubmit={handleSave}>
-                            <div>
+                            <div onClick={()=>focusButton(0)}>
                                 <label>Report Type:</label>
                                 <input type="text" name="type" defaultValue={report.type} />
                             </div>
-                            <div>
+                            <div onClick={()=>focusButton(0)}>
                                 <label>Status:</label>
                                 <select name="status" defaultValue={report.status}>
                                     <option value="Open">Open</option>
@@ -139,11 +150,11 @@ function ReportWindow({
                                     <option value="Pending">Pending</option>
                                 </select>
                             </div>
-                            <div>
+                            <div onClick={()=>focusButton(0)}>
                                 <label>Witness Name:</label>
                                 <input type="text" name="wit_name" defaultValue={report.wit_name} />
                             </div>
-                            <div>
+                            <div onClick={()=>focusButton(0)}>
                                 <label>Witness Phone:</label>
                                 <input type="text" name="wit_phone" defaultValue={report.wit_phone} />
                             </div>
@@ -156,7 +167,7 @@ function ReportWindow({
                                 <br />
                                 <Geocoder onCoordsRetrieved={handleCoordsRetrieved} />
                             </div>
-                            <div>
+                            <div onClick={()=>focusButton(0)}>
                                 <label>Comments:</label>
                                 <textarea 
                                     name="comments"
@@ -164,19 +175,20 @@ function ReportWindow({
                                     rows={4}
                                 />
                             </div>
-                            <div>
+                            <div onClick={()=>focusButton(0)}>
                                 <label>Date:</label>
                                 <input type="text" name="date" defaultValue={report.date} />
                             </div>
-                            <div>
+                            <div onClick={()=>focusButton(0)}>
                                 <label>Picture:</label>
                                 <input type="text" name="picture" defaultValue={report.picture} />
                             </div>
-                            <div>
+                            <div onClick={()=>focusButton(0)}>
                                 <button type="submit">Save</button>
                                 <button type="button" onClick={handleCancel}>Cancel</button>
                             </div>
                         </form>
+                        <div className="after" onClick={()=>focusButton(0)}></div>
                     </div>
                 }
             </>
