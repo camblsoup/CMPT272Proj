@@ -58,6 +58,24 @@ function ListWindow({
         });
     };
 
+    const [, forceUpdate] = useState({});
+    useEffect(() => {
+        if (!map) return;
+    
+        const updateOnMapChange = () => {
+            // force rerender to update list
+            forceUpdate({});
+        };
+    
+        map.on('move', updateOnMapChange);
+        map.on('zoom', updateOnMapChange);
+    
+        return () => {
+            map.off('move', updateOnMapChange);
+            map.off('zoom', updateOnMapChange);
+        };
+    }, [map]);
+
     const isMarkerInBounds = (report: Report): boolean => {
         if (!map || typeof report.lat !== 'number' || typeof report.lon !== 'number') {
             return false;
