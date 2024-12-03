@@ -10,8 +10,13 @@
     align-items: start;
 }
 
+input[type="password"] {
+    font-family: MS-sans-serif, MS, sans-serif;
+}
+
 #signin input {
     background: white;
+    color: black;
     border: 2px solid #555555;
     border-right-color: lightgray;
     border-bottom-color: lightgray;
@@ -20,15 +25,28 @@
 }
 
 #signin button {
-    color: black;
+    padding: 2px 10px 2px 10px;
     background: #C0C0C0;
-    border: 1px double white;
-    border-right-color: #444444;
-    border-bottom-color: #444444;
-    outline: black solid 1px;
-    filter: drop-shadow(1px 1px black);
-    padding: 2px;
-    min-width: 80px;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-bottom: 2px solid #7F787F;
+    border-right: 2px solid #7F787F;
+    outline: outset 1px black;
+    margin: 5px;
+    font-size: 16px;
+    min-width: 100px;
+    color: #000;
+    font-family: MS-sans-serif, MS, sans-serif;
+}
+
+#signin button:hover {
+    cursor: pointer;
+    background: #B0B0B0;
+}
+
+#click{
+    outline: dashed 1px black;
+    outline-offset: -5px;
 }
 
 #signin button:active {
@@ -40,7 +58,7 @@
 #signin-buttons {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
 }
 
 #signin-form {

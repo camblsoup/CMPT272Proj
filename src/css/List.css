@@ -1,0 +1,91 @@
+.list-window-buttons button{
+    padding: 2px 10px 2px 10px;
+    background: #C0C0C0;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-bottom: 2px solid #7F787F;
+    border-right: 2px solid #7F787F;
+    outline: outset 1px black;
+    margin: 5px;
+    color: #000;
+    font-family: MS-sans-serif, MS, sans-serif;
+}
+
+.list-window-buttons button:hover {
+    cursor: pointer;
+    background: #B0B0B0;
+}
+
+#lastClicked {
+    outline: 1px black dashed;
+    outline-offset: -5px;
+}
+
+.list-window-sort select{
+    font-family: MS-sans-serif, MS, sans-serif;
+    color: #000;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 32px;
+    background-image: url("../assets/button-down.svg");
+    background-color: #fff;
+    background-position: top 0 right 0;
+    background-repeat: no-repeat;
+    border-radius: 0;
+}
+
+.highlighted {
+    box-sizing: border-box;
+    border: dotted 2px white;
+    background: #000080;
+    color: white;
+    width: fit-content;
+    margin-left: -3px;
+    padding-left: 2px;
+    padding-right: 5px;
+}
+
+.report-name {
+    font-size: 16px;
+}
+
+td {
+    box-sizing: border-box;
+    height: 28px;
+    padding: 0 0 0 8px;
+    overflow-x: hidden;
+}
+
+th {
+    padding-left: 5px;
+    text-align: start;
+    background: #C0C0C0;
+    border: 2px solid white;
+    border-right-color: #7f787f;
+    border-bottom-color: #7f787f;
+}
+
+table {
+    border-spacing: 0;
+    background: white;
+    flex-grow: 1;
+    height: 100%;
+}
+
+tbody {
+    height: 95%;
+}
+
+.table-container {
+    background: white;
+    border: 2px solid #7f787f;
+    border-right-color: lightgrey;
+    border-bottom-color: lightgrey;
+    flex-grow: 1;
+}
+
+tbody div {
+    overflow-y: scroll;
+    height: 100%;
+}

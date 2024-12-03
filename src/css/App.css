@@ -32,5 +32,6 @@
 }
 
 #desktop .app p {
+    font-family: MS-sans-serif, MS, sans-serif;
     margin: 0;
 }

@@ -1,5 +1,10 @@
+@font-face {
+  font-family: "MS-sans-serif";
+  src: url("../assets/MS-Sans-Serif.ttf");
+}
+
 :root {
-  font-family: MS, sans-serif;
+  font-family: "MS-sans-serif", MS, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -8,8 +13,8 @@
   background-color: #00787F;
 
   font-synthesis: none;
-  text-rendering: optimizeSpeed;
-  -webkit-font-smoothing: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   overflow: hidden;
