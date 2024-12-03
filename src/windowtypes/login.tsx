@@ -1,8 +1,8 @@
 import { useSignIn } from "../SignIn.ts";
 import '../css/Login.css'
-import { windowTypes } from "../data/enums.ts";
+import {windowData} from "../data/windowType.ts";
 
-function SignInTab({ signedInCheck, closeWindow, windowIndex, windows }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, closeWindow: (index: number) => void, windowIndex: number, windows: windowTypes[]}) {
+function SignInTab({ signedInCheck, closeWindow, windowIndex, windows }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, closeWindow: (index: number) => void, windowIndex: number, windows: windowData[]}) {
     const {passcode, setPassword, error, handleSignIn} = useSignIn();
 
     const handleLogin = async ()=> {
