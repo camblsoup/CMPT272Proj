@@ -125,15 +125,15 @@ function ReportWindow({
                 {report &&
                     <div className={"report"}>
                         <img className={report.picture ? "report-image" : ""} src={report.picture} alt={report.picture ? "Report Picture" : "No image"}/>
-                        <h1>Report Type: {report.type}</h1>
-                        <p>Status: {report.status}</p>
-                        <p>{report.wit_name ? "Witness: " : ""}{report.wit_name}</p>
-                        <p>{report.wit_phone ? "Witness Contact: " : ""}{report.wit_phone}</p>
-                        <p>{report.location ? "Location: " : ""}{report.location}</p>
-                        <p>{report.lat ? "Latitude: " : ""}{report.lat}</p>
-                        <p>{report.lon ? "Longitude: " : ""}{report.lon}</p>
-                        <p>{report.comments ? "Comments: " : ""}{report.comments}</p>
-                        <p>{report.date}</p>
+                        <h1><u>R</u>eport <u>T</u>ype: {report.type}</h1>
+                        <p><u>S</u>tatus: {report.status}</p>
+                        <p><u>{report.wit_name ? "W" : ""}</u>{report.wit_name ? "itness: " : ""}{report.wit_name}</p>
+                        <p><u>{report.wit_phone ? "W" : ""}</u>{report.wit_phone ? "itness Contact: " : ""}{report.wit_phone}</p>
+                        <p><u>{report.location ? "L" : ""}</u>{report.location ? "ocation: " : ""}{report.location}</p>
+                        <p><u>{report.lat ? "L" : ""}</u>{report.lat ? "atitude: " : ""}{report.lat}</p>
+                        <p><u>{report.lon ? "L" : ""}</u>{report.lon ? "ongitude: " : ""}{report.lon}</p>
+                        <p><u>{report.comments ? "C" : ""}</u>{report.comments ? "omments: " : ""}{report.comments}</p>
+                        <p><u>D</u>ate: {report.date}</p>
                     </div>
                 }
             </>
