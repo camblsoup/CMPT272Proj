@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Report } from "../data/reportType.ts";
+import { GeocoderProps, Coordinates } from "../data/geoData.ts";
 
-const Geocoder = ({ onCoordsRetrieved }) => {
+const Geocoder: React.FC<GeocoderProps> = ({ onCoordsRetrieved }) => {
     const [address, setAddress] = useState("");
     const [error, setError] = useState("");
     const handleSearch = async () => {
@@ -24,7 +25,7 @@ const Geocoder = ({ onCoordsRetrieved }) => {
             }
             const { lat, lon } = data[0];
             if (onCoordsRetrieved) {
-                onCoordsRetrieved({ lat, lon });
+                onCoordsRetrieved({lat, lon});
             }
         } catch (err) {
             setError("An error occurred while fetching data. Please try again.");
@@ -93,6 +94,14 @@ function ReportWindow({
         changeEditing(false);
     }
 
+    const [lat, setLat] = useState<number | null>(null);
+    const [lon, setLon] = useState<number | null>(null);
+    const handleCoordsRetrieved = (coords: Coordinates) => {
+        console.log(coords);
+        setLat(coords.lat);
+        setLon(coords.lon);
+    };
+
     if (!isEditing) {
         return (
             <>
@@ -142,16 +151,10 @@ function ReportWindow({
                                 <label>Location:</label>
                                 <input type="text" name="location" defaultValue={report.location} placeholder="Descriptive Name"/>
                                 <br />
-                                <input type="text" name="lat" defaultValue={report.lat} id="lat"/>
-                                <input type="text" name="lon" defaultValue={report.lon} id="lon"/>
+                                <input type="text" name="lat" defaultValue={report.lat} value={lat || ""}/>
+                                <input type="text" name="lon" defaultValue={report.lon} value={lon || ""}/>
                                 <br />
-                                <Geocoder onCoordsRetrieved={
-                                    (coords) => {
-                                        console.log(coords);
-                                        document.getElementById("lat").value = coords.lat;
-                                        document.getElementById("lon").value = coords.lon;
-                                    }
-                                } />
+                                <Geocoder onCoordsRetrieved={handleCoordsRetrieved} />
                             </div>
                             <div>
                                 <label>Comments:</label>
