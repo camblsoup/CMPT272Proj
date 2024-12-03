@@ -81,7 +81,7 @@ function Window({
             x: e.clientX - position.x,
             y: e.clientY - position.y,
         });
-        changeActive(data.index);
+        changeActive(data.id);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -188,9 +188,9 @@ function Window({
     return (
         <>
             <div
-                className={isMinimized(data.index) ? "window-hidden" : activeIndex === data.index ? "window-active" : "window"}
+                className={isMinimized(data.id) ? "window-hidden" : activeIndex === data.id ? "window-active" : "window"}
                 style={style}
-                onClick={() => !isDragging && changeActive(data.index)}
+                onClick={() => !isDragging && changeActive(data.id)}
             >
                 <div
                     className="top-bar"
@@ -204,13 +204,13 @@ function Window({
                     </div>
                     <div className={"window-buttons"}>
                         <div className={"window-size-buttons"}>
-                            <button className={"window-button"} onClick={() => minimizeWindow(data.index)}><img
+                            <button className={"window-button"} onClick={() => minimizeWindow(data.id)}><img
                                 className={"window-button-icon"} src={minimize} alt={"minimize icon"}/></button>
                             <button className={data.type === windowTypes.LOGIN ? "hidden" : "window-button"}
                                     onClick={maximized ? unmaximizeWindow : maximizeWindow}>
                                 <img className={"window-button-icon"} src={maximize} alt={"maximize icon"}/></button>
                         </div>
-                        <button className={"window-button"} onClick={() => closeWindow(data.index)}><img
+                        <button className={"window-button"} onClick={() => closeWindow(data.id)}><img
                             className={"window-button-icon"} src={cross} alt={"close icon"}/></button>
                     </div>
                 </div>

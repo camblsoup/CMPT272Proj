@@ -6,8 +6,9 @@ import {windowTypes} from "./data/enums.ts";
 import listIcon from "./assets/list.png";
 import reportIcon from "./assets/report.png";
 import signinIcon from "./assets/sign-in.png";
+import {windowData} from "./data/windowType.ts";
 
-function Taskbar({ activeIndex, windows, unminimizeWindow }: { activeIndex: number, windows: windowTypes[], unminimizeWindow: (index: number ) => void }) {
+function Taskbar({ activeIndex, windows, unminimizeWindow }: { activeIndex: number, windows: windowData[], unminimizeWindow: (index: number ) => void }) {
     const [time, setTime] = useState(new Date())
 
     useEffect(() => {
@@ -28,10 +29,10 @@ function Taskbar({ activeIndex, windows, unminimizeWindow }: { activeIndex: numb
                 <div className={"embossed-bar"}></div>
                 <div className={"extruding-bar"}></div>
                 <div className={"active-apps"}>
-                    {windows.map((type, index) => (
-                        <button key={index} className={ activeIndex === index ? "focused-window" : "unfocused-window" } onClick={() => unminimizeWindow(index)}>
-                            <img src={type === windowTypes.MAP ? mapIcon : type === windowTypes.LIST ? listIcon : type === windowTypes.REPORT ? reportIcon : signinIcon } alt={"app icon"}/>
-                            <h1>{type} {type === windowTypes.REPORT ? (windows.filter((type) => type === windowTypes.REPORT).length > 1 ? (index - 1) : "")  : ""}</h1>
+                    {windows.map((data, index) => (
+                        <button key={index} className={ activeIndex === data.id ? "focused-window" : "unfocused-window" } onClick={() => unminimizeWindow(data.id)}>
+                            <img src={data.type === windowTypes.MAP ? mapIcon : data.type === windowTypes.LIST ? listIcon : data.type === windowTypes.REPORT ? reportIcon : signinIcon } alt={"app icon"}/>
+                            <h1>{data.type} {data.type === windowTypes.REPORT ? (windows.filter((data) => data.type === windowTypes.REPORT).length > 1 ? (index - 1) : "")  : ""}</h1>
                         </button>
                     ))}
                 </div>

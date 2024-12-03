@@ -40,8 +40,8 @@ function App() {
         setReports(newReports);
     }
 
-    function changeActiveWindow(index: number) {
-        setActiveWindow(index);
+    function changeActiveWindow(id: number) {
+        setActiveWindow(id);
     }
 
     function changeCurrentReport(reportId: number) {
@@ -54,9 +54,7 @@ function App() {
 
     function zoomToReport(report: Report) {
         // check if report lat and lon are numbers
-        if (typeof report.lat === 'number' && typeof report.lon === 'number') {
-            map?.setView([report.lat, report.lon], map.getZoom());
-        }
+        map?.setView([report.lat, report.lon], map.getZoom());
     }
 
     function openWindow(type: windowTypes) {
@@ -64,23 +62,24 @@ function App() {
         if (type === windowTypes.MAP) {
             const existingMapWindow = windows.find((curData) => curData.type === type);
             if (existingMapWindow) {
-                const mapWindowIndex = windows.indexOf(existingMapWindow)
-                changeActiveWindow(mapWindowIndex);
+                changeActiveWindow(existingMapWindow.id);
                 return;
             }
             setWindows((prevWindows) => [
                 ...prevWindows, data
             ]);
+            const listData = getData(windowTypes.LIST);
+            listData.id += 1;
             setWindows((prevWindows) => [
-                ...prevWindows, getData(windowTypes.LIST)
+                ...prevWindows, listData
             ]);
+            changeActiveWindow(data.id);
             return;
         }
         if (type === windowTypes.LIST) {
             const existingListWindow = windows.find((curData) => curData.type === type);
             if (existingListWindow) {
-                const listWindowIndex = windows.indexOf(existingListWindow)
-                changeActiveWindow(listWindowIndex);
+                changeActiveWindow(existingListWindow.id);
                 return;
             }
         }
@@ -88,8 +87,7 @@ function App() {
         if (type === windowTypes.LOGIN) {
             const existingListWindow = windows.find((curData) => curData.type === type);
             if (existingListWindow) {
-                const listWindowIndex = windows.indexOf(existingListWindow)
-                changeActiveWindow(listWindowIndex);
+                changeActiveWindow(existingListWindow.id);
                 return;
             }
         }
@@ -97,33 +95,37 @@ function App() {
         setWindows((prevWindows) => [
             ...prevWindows, data
         ]);
-        changeActiveWindow(windows.length - 1);
+        changeActiveWindow(data.id);
     }
 
-    function isMinimized(index: number) {
-        return minimizedWindows.includes(index);
+    function isMinimized(id: number) {
+        return minimizedWindows.includes(id);
     }
 
-    function minimizeWindow(index: number) {
-        setMinimizedWindows(prevWindows => [...prevWindows, index]);
-        setActiveWindow(-2);
+    function minimizeWindow(id: number) {
+        setMinimizedWindows(prevWindows => [...prevWindows, id]);
+        setActiveWindow(-1);
     }
 
-    function closeWindow(windowIndex: number) {
-        const windowToClose = windows[windowIndex];
+    function unminimizeWindow(windowId: number) {
+        setMinimizedWindows(prevWindows => prevWindows.filter((id) => id !== windowId));
+        changeActiveWindow(windowId);
+    }
+
+    function closeWindow(windowId: number) {
+        const windowToClose = windows.find((data) => data.id === windowId);
+
+        if (!windowToClose) {
+            return;
+        }
 
         if (windowToClose.type === windowTypes.MAP) {
-            setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex && prevWindows[index].type !== windowTypes.LIST));
+            setWindows(prevWindows => prevWindows.filter((data) => data.id !== windowId && data.type !== windowTypes.LIST));
         } else if (windowToClose.type === windowTypes.LIST) {
-            setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex && prevWindows[index].type !== windowTypes.MAP));
+            setWindows(prevWindows => prevWindows.filter((data) => data.id !== windowId && data.type !== windowTypes.MAP));
         } else {
-            setWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex));
+            setWindows(prevWindows => prevWindows.filter((data) => data.id !== windowId));
         }
-    }
-
-    function unminimizeWindow(windowIndex: number) {
-        setMinimizedWindows(prevWindows => prevWindows.filter((_, index) => index !== windowIndex));
-        changeActiveWindow(windowIndex);
     }
 
     function getData(type: windowTypes, report?: number) {
@@ -138,11 +140,11 @@ function App() {
         switch (type) {
             case windowTypes.MAP:
                 data.size = {width: 800, height: 700};
-                data.position = {x: 5, y: 5};
+                data.position = {x: 80, y: 5};
                 break;
             case windowTypes.LIST:
                 data.size = {width: 600, height: 700};
-                data.position = {x: 5, y: 5};
+                data.position = {x: 700, y: 50};
                 break;
             case windowTypes.REPORT:
                 data.size = {width: 600, height: 700};
