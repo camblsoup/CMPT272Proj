@@ -95,7 +95,7 @@ function ReportWindow({
         }
 
         if (isNaN(updatedReport.lat) || isNaN(updatedReport.lon)) {
-            setErr("Please enter a location.");
+            setErr("Please enter a latitude and longitude.");
             return;
         }
         console.log('Updated report:', updatedReport);
