@@ -115,6 +115,7 @@ function ReportWindow({
 
     const [lat, setLat] = useState<number>(report.lat);
     const [lon, setLon] = useState<number>(report.lon);
+    const [address, setAddress] = useState<string>(report.address)
     const [err, setErr] = useState<string | null>(null);
     const [locations, setLocations] = useState<Location[]>([]);
     const handleCoordsRetrieved = (coords: Location[]) => {
@@ -123,6 +124,7 @@ function ReportWindow({
         if (coords[0]) {
             setLat(coords[0].lat);
             setLon(coords[0].lon);
+            setAddress(coords[0].display_name);
         }
     };
 
@@ -198,7 +200,7 @@ function ReportWindow({
                                        placeholder="Descriptive Name"/>
                                 <br/>
                                 <Geocoder onCoordsRetrieved={handleCoordsRetrieved}/>
-                                <p style={locations.length > 0 ? {color: "black"} : {color: "red"}}>{locations.length > 0 ? "Address: " : err}{locations.length > 0 ? locations[0].display_name : ""}</p>
+                                <p style={address ? {color: "black"} : {color: "red"}}>{address ? "Address: " : err}{address ? address : ""}</p>
                                 <label>Latitude:</label>
                                 <input type="number" step={"any"} min={-90} max={90} name="lat"
                                        onChange={(event) => handleLatChange(event)}
