@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import {Report} from "../data/reportType.ts";
 import {GeocoderProps, Location} from "../data/geoData.ts";
 import "../css/Report.css";
@@ -124,6 +124,23 @@ function ReportWindow({
         setLon(coords[0].lon)
     };
 
+    function handleLonChange(event: ChangeEvent<HTMLInputElement>) {
+        if (event.target.value != null) {
+            setLon(parseInt(event.target.value));
+        } else {
+            setLon(0);
+        }
+    }
+
+    function handleLatChange(event: ChangeEvent<HTMLInputElement>) {
+
+        if (event.target.value != null) {
+            setLat(parseInt(event.target.value));
+        } else {
+            setLat(0);
+        }
+    }
+
     if (isEditing != report.id) {
         return (
             <>
@@ -181,10 +198,12 @@ function ReportWindow({
                                 <Geocoder onCoordsRetrieved={handleCoordsRetrieved}/>
                                 <p>{locations.length > 0 ? "Address: " : ""}{locations.length > 0 ? locations[0].display_name : ""}</p>
                                 <label>Latitude:</label>
-                                <input type="text" name="lat" onChange={(event) => setLat(parseInt(event.target.value))}
+                                <input type="number" min={-90} max={90} name="lat"
+                                       onChange={(event) => handleLatChange(event)}
                                        value={lat}/>
                                 <label> Longitude:</label>
-                                <input type="text" name="lon" onChange={(event) => setLon(parseInt(event.target.value))}
+                                <input type="number" min={-180} max={180} name="lon"
+                                       onChange={(event) => handleLonChange(event)}
                                        value={lon}/>
                                 <br/>
                             </div>

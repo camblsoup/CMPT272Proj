@@ -25,7 +25,7 @@
     background-color: white;
 }
 
-.report-edit button{
+.report-edit button {
     padding: 2px 10px 2px 10px;
     background: #C0C0C0;
     border-top: 2px solid white;
@@ -48,7 +48,7 @@
     outline-offset: -5px;
 }
 
-.report-edit select{
+.report-edit select {
     font-family: MS-sans-serif, MS, sans-serif;
     color: #000;
     appearance: none;
@@ -79,4 +79,14 @@
     border: 2px solid #7f787f;
     border-right-color: lightgrey;
     border-bottom-color: lightgrey;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
 }

@@ -2,11 +2,17 @@ import {useSignIn} from "../SignIn.ts";
 import '../css/Login.css'
 import {windowData} from "../data/windowType.ts";
 import {windowTypes} from "../data/enums.ts";
+import React from "react";
 
-function SignInTab({ signedInCheck, closeWindow, window, windows }: { signedInCheck: React.Dispatch<React.SetStateAction<boolean>>, closeWindow: (id: number) => void, window: windowData, windows: windowData[]}) {
+function SignInTab({signedInCheck, closeWindow, window, windows}: {
+    signedInCheck: React.Dispatch<React.SetStateAction<boolean>>,
+    closeWindow: (id: number) => void,
+    window: windowData,
+    windows: windowData[]
+}) {
     const {passcode, setPassword, error, handleSignIn} = useSignIn();
 
-    const handleLogin = async ()=> {
+    const handleLogin = async () => {
         const success = await handleSignIn();
         if (success) {
             signedInCheck(true);
@@ -14,24 +20,27 @@ function SignInTab({ signedInCheck, closeWindow, window, windows }: { signedInCh
             if (window) {
                 closeWindow(window.id);
             }
-        }
-        else {
+        } else {
             signedInCheck(false);
         }
-        // @ts-ignore
-        const button = document.getElementById("signin-buttons").children.item(0);
-
-        if (button) {
-            button.id = "click";
+        const buttonContainer = document.getElementById("signin-buttons")
+        if (buttonContainer) {
+            const button = buttonContainer.children.item(0);
+            if (button) {
+                button.id = "click";
+            }
         }
     }
 
     return (
         <div id={"signin"} style={{textAlign: "center"}} onClick={() => {
-            // @ts-ignore
-            const button = document.getElementById("signin-buttons").children.item(0);
-            // @ts-ignore
-            button.id = "";
+            const buttonContainer = document.getElementById("signin-buttons")
+            if (buttonContainer) {
+                const button = buttonContainer.children.item(0);
+                if (button)
+                    button.id = "";
+            }
+
         }}>
             <div id={"signin-form"}>
                 <p>Type a password to edit a report.</p>

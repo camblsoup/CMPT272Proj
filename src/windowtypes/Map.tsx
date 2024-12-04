@@ -22,10 +22,7 @@ function SetViewOnClick() {
 
 function MapWindow({reports, openWindow, changeCurrentReport, changeActiveWindow, map, changeMap}:{reports: Report[], openWindow: (type: windowTypes) => void, changeCurrentReport: (reportId: number) => void, changeActiveWindow: (index: number) => void, map: L.Map | null, changeMap: (map: L.Map) => void}) {
     
-    const markers = reports.filter(report => 
-        typeof report.lat === 'number' && 
-        typeof report.lon === 'number'
-    ).map(report =>
+    const markers = reports.map(report =>
         <Marker 
             key={report.id}
             position={[report.lat, report.lon]}
