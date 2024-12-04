@@ -198,11 +198,11 @@ function ReportWindow({
                                 <Geocoder onCoordsRetrieved={handleCoordsRetrieved}/>
                                 <p>{locations.length > 0 ? "Address: " : ""}{locations.length > 0 ? locations[0].display_name : ""}</p>
                                 <label>Latitude:</label>
-                                <input type="number" min={-90} max={90} name="lat"
+                                <input type="number" step={"any"} min={-90} max={90} name="lat"
                                        onChange={(event) => handleLatChange(event)}
                                        value={lat}/>
                                 <label> Longitude:</label>
-                                <input type="number" min={-180} max={180} name="lon"
+                                <input type="number" step={"any"} min={-180} max={180} name="lon"
                                        onChange={(event) => handleLonChange(event)}
                                        value={lon}/>
                                 <br/>
