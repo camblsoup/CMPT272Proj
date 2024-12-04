@@ -120,8 +120,10 @@ function ReportWindow({
     const handleCoordsRetrieved = (coords: Location[]) => {
         console.log(coords);
         setLocations(coords);
-        setLat(coords[0].lat);
-        setLon(coords[0].lon)
+        if (coords[0]) {
+            setLat(coords[0].lat);
+            setLon(coords[0].lon);
+        }
     };
 
     function handleLonChange(event: ChangeEvent<HTMLInputElement>) {
@@ -196,7 +198,7 @@ function ReportWindow({
                                        placeholder="Descriptive Name"/>
                                 <br/>
                                 <Geocoder onCoordsRetrieved={handleCoordsRetrieved}/>
-                                <p>{locations.length > 0 ? "Address: " : ""}{locations.length > 0 ? locations[0].display_name : ""}</p>
+                                <p style={locations.length > 0 ? {color: "black"} : {color: "red"}}>{locations.length > 0 ? "Address: " : err}{locations.length > 0 ? locations[0].display_name : ""}</p>
                                 <label>Latitude:</label>
                                 <input type="number" step={"any"} min={-90} max={90} name="lat"
                                        onChange={(event) => handleLatChange(event)}
