@@ -14,6 +14,7 @@ import {Report} from "./data/reportType"
 import React, {MouseEvent, useEffect, useState} from 'react'
 import SignInTab from './windowtypes/login.tsx'
 import {windowData} from './data/windowType.ts'
+import L from "leaflet";
 
 // Window Element Specification
 function Window({
@@ -47,8 +48,8 @@ function Window({
     closeWindow: (id: number) => void,
     isMinimized: (index: number) => boolean,
     minimizeWindow: (index: number) => void,
-    isEditing: boolean,
-    changeEditing: (editing: boolean) => void,
+    isEditing: number,
+    changeEditing: (editing: number) => void,
     openWindow: (type: windowTypes) => void
     signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
     signedIn: boolean,

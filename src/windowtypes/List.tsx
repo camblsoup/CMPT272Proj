@@ -1,8 +1,9 @@
 import {Report} from "../data/reportType.ts";
 import ListItem from "./ListItem.tsx";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {windowTypes} from "../data/enums.ts";
 import "../css/List.css";
+import L from "leaflet";
 
 function ListWindow({
                         reports,
@@ -18,7 +19,7 @@ function ListWindow({
     reports: Report[],
     changeCurrentReport: (reportId: number) => void,
     updateReports: (reports: Report[]) => void,
-    changeEditing: (editing: boolean) => void,
+    changeEditing: (editing: number) => void,
     openWindow: (type: windowTypes) => void,
     zoomToReport: (report: Report) => void,
     signedInCheck: React.Dispatch<React.SetStateAction<boolean>>;
@@ -77,7 +78,7 @@ function ListWindow({
     }, [map]);
 
     const isMarkerInBounds = (report: Report): boolean => {
-        if (!map || typeof report.lat !== 'number' || typeof report.lon !== 'number') {
+        if (!map) {
             return false;
         }
         const bounds = map.getBounds();
@@ -117,13 +118,13 @@ function ListWindow({
     function handleEdit(reportID: number) {
         openWindow(windowTypes.REPORT);
         changeCurrentReport(reportID);
-        changeEditing(true);
+        changeEditing(reportID);
     }
 
     function handleOpen(reportID: number) {
         openWindow(windowTypes.REPORT);
         changeCurrentReport(reportID);
-        changeEditing(false);
+        changeEditing(-1);
     }
 
     function deleteReport() {
@@ -138,22 +139,27 @@ function ListWindow({
         openWindow(windowTypes.REPORT);
         const report = addNewReport();
         changeCurrentReport(report);
-        changeEditing(true);
+        changeEditing(report);
     }
 
     function updateLastClicked(idx: number) {
-        // @ts-ignore
-        let buttons = document.getElementById("buttons").children;
-        for (let i = 0; i < buttons.length; i++) {
-            if (i === idx) {
-                // @ts-ignore
-                buttons.item(i).id = "lastClicked";
-                continue;
-            }
-            // @ts-ignore
-            buttons.item(i).id = "";
-        }
+        const buttonsContainer = document.getElementById("buttons");
+        if (buttonsContainer) {
+            const buttons = buttonsContainer.children;
 
+            for (let i = 0; i < buttons.length; i++) {
+                const item = buttons.item(i);
+                if (item) {
+                    if (i === idx) {
+                        item.id = "lastClicked";
+                        continue;
+                    }
+                    item.id = "";
+                }
+            }
+
+
+        }
     }
 
     return (
