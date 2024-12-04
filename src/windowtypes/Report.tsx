@@ -1,18 +1,17 @@
-import { useState } from "react";
-import { Report } from "../data/reportType.ts";
-import { GeocoderProps, Coordinates } from "../data/geoData.ts";
+import React, {useState} from "react";
+import {Report} from "../data/reportType.ts";
+import {GeocoderProps, Location} from "../data/geoData.ts";
 import "../css/Report.css";
 
-function focusButton(flag: number){
-    if(flag){
+function focusButton(flag: number) {
+    if (flag) {
         document.getElementsByClassName("search")[0].id = "focused";
-    }
-    else{
+    } else {
         document.getElementsByClassName("search")[0].id = "";
     }
 }
 
-const Geocoder: React.FC<GeocoderProps> = ({ onCoordsRetrieved }) => {
+const Geocoder: React.FC<GeocoderProps> = ({onCoordsRetrieved}) => {
     const [address, setAddress] = useState("");
     const [error, setError] = useState("");
     const handleSearch = async () => {
@@ -22,27 +21,26 @@ const Geocoder: React.FC<GeocoderProps> = ({ onCoordsRetrieved }) => {
             return;
         }
         setError("");
-        try {
-            const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1&limit=1&countrycodes=CA`
-            );
-            if (!response.ok) {
-                throw new Error("Failed to fetch data");
-            }
-            const data = await response.json();
-            if (data.length === 0) {
-                setError("No results found");
-                return;
-            }
-            const { lat, lon } = data[0];
-            if (onCoordsRetrieved) {
-                onCoordsRetrieved({lat, lon});
-            }
-        } catch (err) {
+
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&addressdetails=1&limit=3&countrycodes=CA`
+        );
+        if (!response.ok) {
             setError("An error occurred while fetching data. Please try again.");
+            return
         }
+        const data: Location[] = await response.json();
+        if (data.length === 0) {
+            onCoordsRetrieved(data);
+            setError("No results found");
+            return;
+        }
+        if (onCoordsRetrieved) {
+            onCoordsRetrieved(data);
+        }
+
     };
-  
+
     return (
         <>
             <input
@@ -52,22 +50,22 @@ const Geocoder: React.FC<GeocoderProps> = ({ onCoordsRetrieved }) => {
                 placeholder="Enter an address..."
             />
             <button type="button" className="search" onClick={handleSearch}>Search</button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p style={{color: "red"}}>{error}</p>}
         </>
     );
 };
 
-function ReportWindow({ 
-    report, 
-    isEditing,
-    updateReports,
-    changeEditing,
-    reports
-}: { 
-    report: Report, 
-    isEditing: boolean,
+function ReportWindow({
+                          report,
+                          isEditing,
+                          updateReports,
+                          changeEditing,
+                          reports
+                      }: {
+    report: Report,
+    isEditing: number,
     updateReports: (reports: Report[]) => void,
-    changeEditing: (editing: boolean) => void,
+    changeEditing: (editing: number) => void,
     reports: Report[]
 }) {
 
@@ -75,9 +73,9 @@ function ReportWindow({
         e.preventDefault(); // Prevent form submission
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
-        
+
         console.log('Current report:', report);
-        
+
         const updatedReport: Report = {
             ...report,
             type: formData.get('type') as string,
@@ -91,45 +89,56 @@ function ReportWindow({
             date: formData.get('date') as string,
             picture: formData.get('picture') as string
         };
-        if(isNaN(updatedReport.lat) || isNaN(updatedReport.lon)) {
+
+        if (locations[0]) {
+            updatedReport.address = locations[0].display_name;
+        }
+
+        if (isNaN(updatedReport.lat) || isNaN(updatedReport.lon)) {
             setErr("Please enter a location.");
             return;
         }
         console.log('Updated report:', updatedReport);
-        
+
         console.log('Reports:', reports);
 
-        const updatedReports = reports.map(r => 
+        const updatedReports = reports.map(r =>
             r.id === report.id ? updatedReport : r
         );
         updateReports(updatedReports);
-        changeEditing(false);
+        changeEditing(-1);
     }
 
     function handleCancel() {
-        changeEditing(false);
+        changeEditing(-1);
     }
 
-    const [lat, setLat] = useState<number | null>(null);
-    const [lon, setLon] = useState<number | null>(null);
+    const [lat, setLat] = useState<number>(report.lat);
+    const [lon, setLon] = useState<number>(report.lon);
     const [err, setErr] = useState<string | null>(null);
-    const handleCoordsRetrieved = (coords: Coordinates) => {
+    const [locations, setLocations] = useState<Location[]>([]);
+    const handleCoordsRetrieved = (coords: Location[]) => {
         console.log(coords);
-        setLat(coords.lat);
-        setLon(coords.lon);
+        setLocations(coords);
+        setLat(coords[0].lat);
+        setLon(coords[0].lon)
     };
 
-    if (!isEditing) {
+    if (isEditing != report.id) {
         return (
             <>
                 {report &&
                     <div className={"report"}>
-                        <img className={report.picture ? "report-image" : ""} src={report.picture} alt={report.picture ? "Report Picture" : "No image"}/>
+                        <img className={report.picture ? "report-image" : ""} src={report.picture}
+                             alt={report.picture ? "Report Picture" : "No Image"}/>
                         <h1><u>R</u>eport <u>T</u>ype: {report.type}</h1>
                         <p><u>S</u>tatus: {report.status}</p>
                         <p><u>{report.wit_name ? "W" : ""}</u>{report.wit_name ? "itness: " : ""}{report.wit_name}</p>
-                        <p><u>{report.wit_phone ? "W" : ""}</u>{report.wit_phone ? "itness Contact: " : ""}{report.wit_phone}</p>
+                        <p>
+                            <u>{report.wit_phone ? "W" : ""}</u>{report.wit_phone ? "itness Contact: " : ""}{report.wit_phone}
+                        </p>
                         <p><u>{report.location ? "L" : ""}</u>{report.location ? "ocation: " : ""}{report.location}</p>
+                        <p><u>{report.address ? "A" : ""}</u>{report.address ? "ddress: " : ""}{report.address}</p>
                         <p><u>{report.lat ? "L" : ""}</u>{report.lat ? "atitude: " : ""}{report.lat}</p>
                         <p><u>{report.lon ? "L" : ""}</u>{report.lon ? "ongitude: " : ""}{report.lon}</p>
                         <p><u>{report.comments ? "C" : ""}</u>{report.comments ? "omments: " : ""}{report.comments}</p>
@@ -144,11 +153,11 @@ function ReportWindow({
                 {report &&
                     <div className="report-edit">
                         <form onSubmit={handleSave}>
-                            <div onClick={()=>focusButton(0)}>
+                            <div onClick={() => focusButton(0)}>
                                 <label>Report Type:</label>
-                                <input type="text" name="type" defaultValue={report.type} />
+                                <input type="text" name="type" defaultValue={report.type}/>
                             </div>
-                            <div onClick={()=>focusButton(0)}>
+                            <div onClick={() => focusButton(0)}>
                                 <label>Status:</label>
                                 <select name="status" defaultValue={report.status}>
                                     <option value="Open">Open</option>
@@ -156,26 +165,32 @@ function ReportWindow({
                                     <option value="Pending">Pending</option>
                                 </select>
                             </div>
-                            <div onClick={()=>focusButton(0)}>
+                            <div onClick={() => focusButton(0)}>
                                 <label>Witness Name:</label>
-                                <input type="text" name="wit_name" defaultValue={report.wit_name} />
+                                <input type="text" name="wit_name" defaultValue={report.wit_name}/>
                             </div>
-                            <div onClick={()=>focusButton(0)}>
+                            <div onClick={() => focusButton(0)}>
                                 <label>Witness Phone:</label>
-                                <input type="text" name="wit_phone" defaultValue={report.wit_phone} />
+                                <input type="text" name="wit_phone" defaultValue={report.wit_phone}/>
                             </div>
                             <div>
                                 <label>Location:</label>
-                                <input type="text" name="location" defaultValue={report.location} placeholder="Descriptive Name"/>
-                                <br />
-                                <input type="text" name="lat" defaultValue={report.lat} value={lat || ""}/>
-                                <input type="text" name="lon" defaultValue={report.lon} value={lon || ""}/>
-                                <br />
-                                <Geocoder onCoordsRetrieved={handleCoordsRetrieved} />
+                                <input type="text" name="location" defaultValue={report.location}
+                                       placeholder="Descriptive Name"/>
+                                <br/>
+                                <Geocoder onCoordsRetrieved={handleCoordsRetrieved}/>
+                                <p>{locations.length > 0 ? "Address: " : ""}{locations.length > 0 ? locations[0].display_name : ""}</p>
+                                <label>Latitude:</label>
+                                <input type="text" name="lat" onChange={(event) => setLat(parseInt(event.target.value))}
+                                       value={lat}/>
+                                <label> Longitude:</label>
+                                <input type="text" name="lon" onChange={(event) => setLon(parseInt(event.target.value))}
+                                       value={lon}/>
+                                <br/>
                             </div>
-                            <div onClick={()=>focusButton(0)}>
+                            <div onClick={() => focusButton(0)}>
                                 <label>Comments:</label>
-                                <textarea 
+                                <textarea
                                     name="comments"
                                     defaultValue={report.comments}
                                     rows={1}
@@ -183,18 +198,19 @@ function ReportWindow({
                                     style={{verticalAlign: "top", maxWidth: "490px"}}
                                 />
                             </div>
-                            <div onClick={()=>focusButton(0)}>
+                            <div onClick={() => focusButton(0)}>
                                 <label>Date:</label>
-                                <input type="text" name="date" defaultValue={report.date} />
+                                <input type="text" name="date" defaultValue={report.date}/>
                             </div>
-                            <div onClick={()=>focusButton(0)}>
+                            <div onClick={() => focusButton(0)}>
                                 <label>Picture:</label>
-                                <input type="url" name="picture" defaultValue={report.picture} placeholder={"Enter a URL"}/>
+                                <input type="url" name="picture" defaultValue={report.picture}
+                                       placeholder={"Enter a URL"}/>
                             </div>
                             <div>
                                 {err && <p style={{color: "red"}}>{err}</p>}
                             </div>
-                            <div onClick={()=>focusButton(0)}>
+                            <div onClick={() => focusButton(0)}>
                                 <button type="submit">Save</button>
                                 <button type="button" onClick={handleCancel}>Cancel</button>
                             </div>

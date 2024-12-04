@@ -27,7 +27,7 @@ function App() {
     const [minimizedWindows, setMinimizedWindows] = useState<number[]>([]);
     const [currentReport, setCurrentReport] = useState(0);
     const [windows, setWindows] = useState<windowData[]>([]);
-    const [isEditingReport, setIsEditingReport] = useState(false);
+    const [isEditingReport, setIsEditingReport] = useState<number>(-1);
 
     const [map, setMap] = useState<L.Map | null>(null);
 
@@ -48,8 +48,8 @@ function App() {
         setCurrentReport(reportId);
     }
 
-    function changeEditingReport(editing: boolean) {
-        setIsEditingReport(editing);
+    function changeEditingReport(editingId: number) {
+        setIsEditingReport(editingId);
     }
 
     function zoomToReport(report: Report) {
@@ -81,6 +81,7 @@ function App() {
                 changeActiveWindow(existingListWindow.id);
                 return;
             }
+            data.id++;
         }
 
         if (type === windowTypes.LOGIN) {
@@ -164,7 +165,8 @@ function App() {
 
     function renderWindow(data: windowData, index: number) {
         data.index = index;
-        return <Window data={data}
+        return <Window key={data.id}
+                       data={data}
                        activeIndex={activeWindow}
                        changeActive={changeActiveWindow}
                        currentReport={currentReport}
@@ -201,7 +203,7 @@ function App() {
                     <img src={listIcon} alt={"list desktop icon"}/>
                     <p>List of reports</p>
                 </button>
-                <button className={"app"} onDoubleClick={() => openWindow(windowTypes.MAP)}>
+                <button className={"app"} onDoubleClick={() => openWindow(windowTypes.REPORT)}>
                     <img src={reportIcon} alt={"report desktop icon"}/>
                     <p>Report</p>
                 </button>
